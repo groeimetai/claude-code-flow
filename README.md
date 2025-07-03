@@ -26,10 +26,11 @@ This is an enhanced fork of [Claude-Flow](https://github.com/ruvnet/claude-code-
 - **POI Extraction** for functions, classes, methods, and more
 
 ### 🐝 **Enhanced Swarm Capabilities**
-- **Intelligent Task Distribution** based on code analysis
-- **Dependency-Aware Coordination** using knowledge graphs
-- **Auto-Discovery** of code patterns and architectures
-- **Parallel Analysis** with cognitive triangulation
+- **Self-Aware Swarms** that can improve themselves autonomously
+- **Tool Discovery** - Swarms find and use capabilities independently
+- **Meta-Learning** - Learn from experience and share knowledge
+- **Autonomous Evolution** - Swarms create improved versions of themselves
+- **Collective Intelligence** - Share learnings across swarm instances
 
 ## ⚡ **Quick Start**
 
@@ -142,6 +143,23 @@ Maintain graph integrity
   --cognitive-scan \
   --fix-vulnerabilities \
   --generate-report
+```
+
+### 🧠 **Self-Aware Swarm**
+```bash
+# Create a self-improving swarm
+./claude-flow swarm "Build self-optimizing API server" \
+  --self-aware advanced \
+  --evolution \
+  --collective \
+  --meta-learning
+
+# The swarm will:
+# 1. Build the API server
+# 2. Analyze its own performance
+# 3. Identify optimization opportunities
+# 4. Spawn specialized agents for improvements
+# 5. Learn and share insights with other swarms
 ```
 
 ## 🏗️ **Architecture**
