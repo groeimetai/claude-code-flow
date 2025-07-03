@@ -14,7 +14,10 @@ for arg in "$@"; do
 done
 
 # Try Deno first, but check if it actually works
-if command -v deno >/dev/null 2>&1 && [ -f "$ROOT_DIR/src/cli/main.ts" ]; then
+if command -v deno >/dev/null 2>&1 && [ -f "$ROOT_DIR/src/cli/main-deno.ts" ]; then
+  # Use Deno for full functionality including achieve command
+  exec deno run --allow-all "$ROOT_DIR/src/cli/main-deno.ts" "$@"
+elif command -v deno >/dev/null 2>&1 && [ -f "$ROOT_DIR/src/cli/main.ts" ]; then
   # Test if Deno can actually run the main file
   if deno check "$ROOT_DIR/src/cli/main.ts" >/dev/null 2>&1; then
     # Use Deno for full functionality

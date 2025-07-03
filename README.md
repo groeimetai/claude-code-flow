@@ -66,6 +66,13 @@ claude-flow init  # Uses original version if installed
 
 ⚠️ **Note**: The `achieve` command launches Claude Code. Make sure you have Claude Code installed and configured with your API key.
 
+### ✅ **Achieve Command Fixed!**
+The achieve command now works properly without terminal/TTY errors:
+- Uses Deno runtime for proper process spawning (like swarm and SPARC)
+- No more "setRawMode EIO" errors
+- Launches Claude Code with full meta-orchestrator capabilities
+- Compatible with all terminal environments
+
 ## 🆕 **What's New in v2.0.0**
 
 ### 🧠 **Cognitive Triangulation Integration**
