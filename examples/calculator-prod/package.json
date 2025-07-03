@@ -1,20 +1,62 @@
 {
   "name": "calculator-prod",
   "version": "1.0.0",
-  "description": "A production-ready calculator application with CLI interface",
+  "description": "A production-ready calculator with advanced features, expression parsing, and comprehensive CLI interface",
   "main": "index.js",
+  "types": "calculator.d.ts",
+  "homepage": "https://github.com/yourusername/calculator-prod#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/calculator-prod.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/calculator-prod/issues"
+  },
   "scripts": {
     "start": "node index.js",
+    "dev": "node index.js --log-level=debug",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
-    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage"
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "benchmark": "node scripts/benchmark.js",
+    "lint": "eslint src/**/*.js",
+    "format": "prettier --write src/**/*.js",
+    "prepublishOnly": "npm test && npm run benchmark",
+    "postinstall": "node scripts/postinstall.js || true",
+    "demo": "node examples/demo.js",
+    "interactive": "node index.js interactive"
   },
   "bin": {
     "calculator": "./index.js"
   },
-  "keywords": ["calculator", "cli", "math", "operations"],
-  "author": "",
+  "keywords": [
+    "calculator",
+    "cli",
+    "math",
+    "mathematics",
+    "expression-parser",
+    "scientific-calculator",
+    "command-line",
+    "arithmetic",
+    "computation",
+    "typescript"
+  ],
+  "author": {
+    "name": "Your Name",
+    "email": "your.email@example.com"
+  },
+  "contributors": [],
   "license": "MIT",
+  "files": [
+    "src/",
+    "index.js",
+    "calculator.d.ts",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "examples/",
+    ".calculatorrc.example"
+  ],
   "dependencies": {
     "commander": "^12.0.0",
     "chalk": "^5.3.0"
@@ -24,7 +66,12 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "jest": {
     "testEnvironment": "node",

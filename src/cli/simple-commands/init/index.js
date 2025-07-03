@@ -236,11 +236,18 @@ export async function initCommand(subArgs, flags) {
           "version": "1.0",
           "sparc": {
             "enabled": true,
-            "modes": ["orchestrator", "coder", "researcher", "tdd", "architect", "reviewer", "debugger", "tester", "analyzer", "optimizer", "documenter", "designer", "innovator", "swarm-coordinator", "memory-manager", "batch-executor", "workflow-manager"]
+            "modes": ["orchestrator", "coder", "researcher", "tdd", "architect", "reviewer", "debugger", "tester", "analyzer", "optimizer", "documenter", "designer", "innovator", "swarm-coordinator", "memory-manager", "batch-executor", "workflow-manager", "cognitive-analyst", "graph-architect", "neural-orchestrator", "autonomous-architect", "ml-coordinator", "quantum-security", "self-aware-orchestrator"]
           },
           "swarm": {
             "enabled": true,
             "strategies": ["research", "development", "analysis", "testing", "optimization", "maintenance"]
+          },
+          "enhancements": {
+            "cognitiveTriangulation": true,
+            "neuralSwarms": true,
+            "autonomousAgents": true,
+            "quantumSecurity": true,
+            "selfAwareness": true
           }
         };
         

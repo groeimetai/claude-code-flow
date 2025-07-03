@@ -1,0 +1,18 @@
+{
+  "cacheSize": 1000,
+  "enableCache": true,
+  "precision": 10,
+  "scientificNotation": false,
+  "thousandsSeparator": true,
+  "locale": "en-US",
+  "historySize": 100,
+  "autoSaveHistory": true,
+  "logLevel": "info",
+  "colorOutput": true,
+  "memorySlots": 10,
+  "persistMemory": true,
+  "prompt": "> ",
+  "welcomeMessage": true,
+  "showHints": true,
+  "timeout": 5000
+}

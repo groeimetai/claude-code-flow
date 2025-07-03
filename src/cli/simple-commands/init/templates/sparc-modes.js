@@ -3,7 +3,7 @@
 export function createSparcModesOverview() {
   return `# SPARC Modes Overview
 
-SPARC (Specification, Planning, Architecture, Review, Code) is a comprehensive development methodology with 17 specialized modes.
+SPARC (Specification, Planning, Architecture, Review, Code) is a comprehensive development methodology with 24 specialized modes.
 
 ## Available Modes
 
@@ -12,6 +12,7 @@ SPARC (Specification, Planning, Architecture, Review, Code) is a comprehensive d
 - **swarm-coordinator**: Specialized swarm management
 - **workflow-manager**: Process automation
 - **batch-executor**: Parallel task execution
+- **self-aware-orchestrator**: Meta-orchestration with self-improvement
 
 ### Development Modes  
 - **coder**: Autonomous code generation
@@ -25,6 +26,14 @@ SPARC (Specification, Planning, Architecture, Review, Code) is a comprehensive d
 - **optimizer**: Performance optimization
 - **cognitive-analyst**: Cognitive triangulation code analysis
 - **graph-architect**: Code knowledge graph management
+
+### AI & ML Modes
+- **neural-orchestrator**: Neural swarm intelligence (84.8% SWE-Bench)
+- **autonomous-architect**: Self-sufficient AI agents with DAA
+- **ml-coordinator**: Distributed ML workflows
+
+### Security & Protection
+- **quantum-security**: Quantum-resistant implementations
 
 ### Creative and Support Modes
 - **designer**: UI/UX design
@@ -45,6 +54,23 @@ SPARC (Specification, Planning, Architecture, Review, Code) is a comprehensive d
 # Get help for a mode
 ./claude-flow sparc help <mode>
 \`\`\`
+
+## New Enhanced Modes
+
+### 🧠 Cognitive Analysis
+- **cognitive-analyst**: Uses cognitive triangulation for deep code understanding
+- **graph-architect**: Builds knowledge graphs of code relationships
+
+### 🤖 Autonomous AI
+- **neural-orchestrator**: Leverages neural swarms with cognitive diversity
+- **autonomous-architect**: Creates fully autonomous agents with economic models
+- **ml-coordinator**: Orchestrates distributed ML with Prime framework
+
+### 🔐 Security
+- **quantum-security**: Future-proof quantum-resistant security
+
+### 🎯 Meta-Level
+- **self-aware-orchestrator**: Achieves goals autonomously with self-improvement
 `;
 }
 
@@ -247,7 +273,15 @@ export function createSparcModeTemplates() {
     'swarm-coordinator.md': createSwarmCoordinatorMode(),
     'tdd.md': createTddMode(),
     'tester.md': createTesterMode(),
-    'workflow-manager.md': createWorkflowManagerMode()
+    'workflow-manager.md': createWorkflowManagerMode(),
+    // New modes from our enhancements
+    'cognitive-analyst.md': createCognitiveAnalystMode(),
+    'graph-architect.md': createGraphArchitectMode(),
+    'neural-orchestrator.md': createNeuralOrchestratorMode(),
+    'autonomous-architect.md': createAutonomousArchitectMode(),
+    'ml-coordinator.md': createMlCoordinatorMode(),
+    'quantum-security.md': createQuantumSecurityMode(),
+    'self-aware-orchestrator.md': createSelfAwareOrchestratorMode()
   };
 }
 
@@ -788,5 +822,229 @@ Process automation with TodoWrite planning and Task execution.
 - Progress tracking
 - Result validation
 - Rollback capability
+`;
+}
+
+function createCognitiveAnalystMode() {
+  return `# SPARC Cognitive Analyst Mode
+
+## Purpose
+Deep code analysis using cognitive triangulation to understand complex codebases.
+
+## Activation
+\`./claude-flow sparc run cognitive-analyst "analyze authentication system architecture"\`
+
+## Core Capabilities
+- Cognitive triangulation analysis
+- Code relationship mapping
+- Architecture visualization
+- Dependency graph creation
+- Semantic code understanding
+
+## MCP Tools Used
+- cognitive_triangulation/analyze_codebase
+- cognitive_triangulation/extract_pois
+- cognitive_triangulation/query_relationships
+- cognitive_triangulation/build_graph
+- cognitive_triangulation/cleanup_graph
+
+## Analysis Features
+- Pattern recognition
+- Architecture discovery
+- Impact analysis
+- Code quality assessment
+- Technical debt identification
+`;
+}
+
+function createGraphArchitectMode() {
+  return `# SPARC Graph Architect Mode
+
+## Purpose
+Build and query code knowledge graphs for architecture visualization.
+
+## Activation
+\`./claude-flow sparc run graph-architect "create knowledge graph of API endpoints"\`
+
+## Core Capabilities
+- Knowledge graph construction
+- Relationship mapping
+- Graph querying
+- Visual representations
+- Graph maintenance
+
+## Graph Formats
+- Neo4j (recommended)
+- JSON (local storage)
+- GraphML (export)
+- D3.js visualizations
+- Mermaid diagrams
+
+## Use Cases
+- Architecture documentation
+- Dependency analysis
+- Impact assessment
+- Code navigation
+- Refactoring planning
+`;
+}
+
+function createNeuralOrchestratorMode() {
+  return `# SPARC Neural Orchestrator Mode
+
+## Purpose
+Orchestrate tasks using neural swarm intelligence with 84.8% SWE-Bench performance.
+
+## Activation
+\`./claude-flow sparc run neural-orchestrator "optimize system using neural swarms"\`
+
+## Core Capabilities
+- Neural swarm coordination
+- Cognitive pattern application
+- WASM/SIMD optimization
+- Performance forecasting
+- Adaptive learning
+
+## Cognitive Patterns
+- Convergent thinking
+- Divergent exploration
+- Lateral connections
+- Critical analysis
+- Creative synthesis
+
+## Performance Features
+- 84.8% SWE-Bench score
+- WebAssembly acceleration
+- SIMD optimizations
+- Real-time adaptation
+- Collective intelligence
+`;
+}
+
+function createAutonomousArchitectMode() {
+  return `# SPARC Autonomous Architect Mode
+
+## Purpose
+Design and deploy fully autonomous AI agents with economic models and quantum security.
+
+## Activation
+\`./claude-flow sparc run autonomous-architect "create self-sufficient trading agent"\`
+
+## Core Capabilities
+- Autonomous agent design
+- MRAP cycle implementation
+- Economic model creation
+- Governance rules setup
+- Quantum-resistant security
+
+## MRAP Cycle
+- Monitor: Environment sensing
+- Reason: Decision making
+- Act: Autonomous execution
+- Reflect: Performance analysis
+- Adapt: Self-improvement
+
+## Security Features
+- QuDAG protocol
+- Post-quantum cryptography
+- Byzantine fault tolerance
+- Secure multi-party computation
+- Zero-knowledge proofs
+`;
+}
+
+function createMlCoordinatorMode() {
+  return `# SPARC ML Coordinator Mode
+
+## Purpose
+Coordinate distributed machine learning workflows with federated learning.
+
+## Activation
+\`./claude-flow sparc run ml-coordinator "orchestrate federated model training"\`
+
+## Core Capabilities
+- Distributed ML training
+- Federated learning coordination
+- Prime framework integration
+- Neural forecasting
+- Byzantine fault tolerance
+
+## ML Operations
+- Model distribution
+- Gradient aggregation
+- Hyperparameter tuning
+- Performance monitoring
+- Resource optimization
+
+## Framework Integration
+- Prime distributed ML
+- Neural forecasting models
+- Swarm intelligence
+- Edge computing
+- Privacy preservation
+`;
+}
+
+function createQuantumSecurityMode() {
+  return `# SPARC Quantum Security Mode
+
+## Purpose
+Implement quantum-resistant security for future-proof systems.
+
+## Activation
+\`./claude-flow sparc run quantum-security "audit and secure authentication system"\`
+
+## Core Capabilities
+- Quantum resistance audit
+- Post-quantum cryptography
+- QuDAG implementation
+- Security hardening
+- Vulnerability assessment
+
+## Quantum Algorithms
+- CRYSTALS-Kyber (KEM)
+- CRYSTALS-Dilithium (signatures)
+- SPHINCS+ (hash-based)
+- NTRU (lattice-based)
+- Classic McEliece (code-based)
+
+## Security Features
+- Quantum-safe protocols
+- Hybrid cryptography
+- Key management
+- Secure channels
+- Compliance verification
+`;
+}
+
+function createSelfAwareOrchestratorMode() {
+  return `# SPARC Self-Aware Orchestrator Mode
+
+## Purpose
+Meta-orchestration with self-awareness and autonomous improvement capabilities.
+
+## Activation
+\`./claude-flow sparc run self-aware-orchestrator "achieve goal with full autonomy"\`
+
+## Core Capabilities
+- Self-awareness mechanisms
+- Autonomous goal achievement
+- Meta-learning systems
+- Self-improvement cycles
+- Collective intelligence
+
+## Autonomous Features
+- Goal decomposition
+- Strategy selection
+- Performance monitoring
+- Self-correction
+- Knowledge accumulation
+
+## Meta-Orchestration
+- Swarm spawning
+- Resource allocation
+- Progress tracking
+- Success evaluation
+- Continuous optimization
 `;
 }
