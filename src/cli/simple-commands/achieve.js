@@ -9,9 +9,9 @@ import { printSuccess, printError, printWarning } from '../utils.js';
 export async function achieveCommand(subArgs, flags) {
   const goal = subArgs.join(' ');
   
-  if (!goal) {
-    printError('Please provide a goal to achieve');
-    console.log('Example: claude-flow achieve "Create a profitable trading bot"');
+  // Handle help flag
+  if (flags.help || flags.h || !goal) {
+    showAchieveHelp();
     return;
   }
 
@@ -405,23 +405,77 @@ async function executeClaude(enhancedTask, goalId, subArgs, flags) {
 
 // Help function
 function showAchieveHelp() {
-  console.log('Achieve command:');
-  console.log('  <goal>                   Autonomously achieve any goal');
-  console.log();
-  console.log('Examples:');
-  console.log('  claude-flow achieve "Create a profitable trading bot"');
-  console.log('  claude-flow achieve "Build REST API" --max-iterations 20');
-  console.log('  claude-flow achieve "Optimize performance" --parallel --verbose');
-  console.log();
-  console.log('Options:');
-  console.log('  --max-iterations <n>     Maximum iterations (default: 10)');
-  console.log('  --convergence <n>        Success threshold 0-1 (default: 0.95)');
-  console.log('  --parallel               Enable parallel swarm execution');
-  console.log('  --no-evolve              Disable autonomous evolution');
-  console.log('  --budget <n>             Maximum resource budget');
-  console.log('  --deadline <date>        Deadline for goal achievement');
-  console.log('  --verbose                Show detailed progress');
-  console.log('  --dry-run                Show configuration without executing');
+  console.log(`
+🎯 Claude-Flow Achieve: Autonomous Goal Achievement
+
+USAGE:
+  claude-flow achieve <goal> [options]
+
+DESCRIPTION:
+  Launches an autonomous meta-orchestrator that iteratively spawns swarms
+  until your goal is achieved. Uses self-improving loops with parallel agents.
+
+EXAMPLES:
+  claude-flow achieve "Create a calculator app"
+  claude-flow achieve "Build profitable trading system" --max-iterations 20
+  claude-flow achieve "Optimize database performance" --parallel --convergence 0.9
+  claude-flow achieve "Create REST API" --dry-run
+
+FLAGS:
+  --max-iterations <n>     Maximum iteration loops (default: 10)
+  --convergence <0-1>      Success threshold percentage (default: 0.95)
+  --parallel               Enable parallel swarm execution
+  --no-evolve              Disable self-improvement between iterations
+  --budget <amount>        Resource budget constraints
+  --deadline <time>        Time deadline for completion
+  --dry-run, -d            Preview configuration without executing
+  --verbose, -v            Show detailed progress
+  --help, -h               Show this help message
+
+ADVANCED FLAGS:
+  --monitor                Real-time monitoring of swarm progress
+  --strategy <type>        Force specific swarm strategy
+  --max-agents <n>         Max agents per swarm (default: 5)
+  --memory-namespace <ns>  Custom memory namespace
+  --output <format>        Output format: json, markdown, html
+
+ITERATION PHASES:
+  0-30%: Research and planning phase
+  30-60%: Core implementation phase  
+  60-80%: Testing and optimization phase
+  80-95%: Polish and documentation phase
+  95%+: Final validation and delivery
+
+COORDINATION PATTERNS:
+  - Single swarm: Basic goals with 3-5 agents
+  - Multi-coordinator: Complex goals with 4+ coordinators
+  - Hierarchical: Coordinators spawn sub-swarms
+  - Adaptive: System chooses best pattern
+
+DOCUMENTATION:
+  Agents automatically create and maintain:
+  - SWARM_COORDINATION.md: Overall progress tracking
+  - ARCHITECTURE.md: System design documentation
+  - PLAN.md: Iteration goals and strategies
+  - LEARNINGS.md: Knowledge accumulation
+
+EXAMPLES BY COMPLEXITY:
+  Simple (calculator):
+    claude-flow achieve "Create calculator"
+  
+  Medium (API):
+    claude-flow achieve "Build REST API with auth" --parallel
+  
+  Complex (trading):
+    claude-flow achieve "Create profitable trading system" \\
+      --max-iterations 20 --parallel --monitor
+  
+  Expert (ML system):
+    claude-flow achieve "Build self-improving recommendation engine" \\
+      --max-iterations 30 --convergence 0.98 --parallel
+
+For more info: https://github.com/ruvnet/claude-code-flow
+`);
 }
 
 // Allow direct execution
