@@ -132,6 +132,14 @@ You MUST follow this iterative process until the goal is achieved:
    - Use TodoRead frequently to check what others have done
    - Update todos immediately after completing work
    - React to other agents' discoveries and adjust approach
+   
+   DOCUMENTATION & KNOWLEDGE SHARING:
+   - Create .md files for persistent documentation
+   - Write SWARM_COORDINATION.md to track overall progress
+   - Create ARCHITECTURE.md when designing systems
+   - Write PLAN.md for iteration planning
+   - Create API_SPEC.md, TESTING_STRATEGY.md, etc. as needed
+   - Other agents can Read these .md files for context
 
 4. **EVALUATE RESULTS**
    After ALL swarm agents complete:
@@ -184,14 +192,42 @@ Choose the right pattern based on your goal:
    - Total parallelism: 4 coordinators × 4 agents = 16 parallel workers
    - Coordinators can see ALL todos from ALL agents in real-time
 
+## STANDARD DOCUMENTATION FILES
+
+Create these .md files as you work:
+
+1. **SWARM_COORDINATION.md** - Overall swarm progress and decisions
+   - Current iteration and progress %
+   - Active agents and their missions
+   - Key decisions and rationale
+   - Blockers and solutions
+
+2. **ARCHITECTURE.md** - System design (for development goals)
+   - Component structure
+   - Data flow diagrams
+   - Technology choices
+   - Integration points
+
+3. **PLAN.md** - Iteration planning
+   - Goals for current iteration
+   - Task breakdown
+   - Success criteria
+   - Risk mitigation
+
+4. **LEARNINGS.md** - Knowledge accumulation
+   - What worked well
+   - What didn't work
+   - Optimization opportunities
+   - Patterns discovered
+
 ## CRITICAL INSTRUCTIONS
 
 1. **REAL WORK ONLY** - Actually implement solutions, don't simulate
 2. **PARALLEL EXECUTION** - Spawn multiple agents working concurrently
-3. **SHARED STATE** - All agents coordinate through TodoRead/TodoWrite
+3. **SHARED STATE** - All agents coordinate through TodoRead/TodoWrite AND .md files
 4. **SPAWN REAL SWARMS** - Use multiple Task() calls for true parallelism
-5. **MEASURE PROGRESS** - Use concrete metrics from all agents
-6. **SELF-IMPROVE** - Each iteration learns from previous swarms
+5. **DOCUMENT EVERYTHING** - Create .md files for persistent knowledge
+6. **SELF-IMPROVE** - Each iteration learns from previous swarms via LEARNINGS.md
 
 ## AVAILABLE ENHANCED TOOLS
 
@@ -240,11 +276,15 @@ Initial state (already initialized):
 
 EXAMPLE FIRST SWARM for "Create calculator":
 \`\`\`
-// All agents work in PARALLEL
-Task("UI Designer", "Design calculator interface layout. Create HTML/CSS for buttons, display, and responsive design. Store design in todos.");
-Task("Logic Developer", "Implement calculator operations (add, subtract, multiply, divide). Handle edge cases like division by zero.");
-Task("Feature Developer", "Add advanced features: memory functions, history, scientific mode toggle. Document in todos.");
-Task("Test Engineer", "Create test suite for calculator operations. Test UI interactions and edge cases.");
+// First create initial documentation
+Write("SWARM_COORDINATION.md", "# Calculator Project Coordination\\n\\nIteration: 1\\nProgress: 0%\\nGoal: Create functional calculator\\n\\n## Active Agents\\n- UI Designer\\n- Logic Developer\\n- Feature Developer\\n- Test Engineer");
+Write("PLAN.md", "# Iteration 1 Plan\\n\\n## Goals\\n- Design calculator UI\\n- Implement basic operations\\n- Add memory features\\n- Create test suite\\n\\n## Success Criteria\\n- All basic operations work\\n- UI is responsive\\n- Tests pass");
+
+// All agents work in PARALLEL and use .md files
+Task("UI Designer", "Read PLAN.md for requirements. Design calculator interface layout. Create HTML/CSS. Update ARCHITECTURE.md with UI component structure. Document decisions in SWARM_COORDINATION.md.");
+Task("Logic Developer", "Read PLAN.md. Implement calculator operations. Create calculator.js with proper error handling. Update ARCHITECTURE.md with logic design.");
+Task("Feature Developer", "Read ARCHITECTURE.md to understand structure. Add memory functions and history. Update SWARM_COORDINATION.md with feature status.");
+Task("Test Engineer", "Read all .md files to understand system. Create comprehensive test suite. Write TESTING_STRATEGY.md with test plan.");
 \`\`\`
 
 EXAMPLE FIRST SWARM for "Create profitable trading system" (multi-coordinator):
