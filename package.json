@@ -4,9 +4,9 @@
   "description": "Advanced AI agent orchestration system for Claude Code with Cognitive Triangulation",
   "main": "cli.js",
   "bin": {
-    "claude-flow": "./cli.js",
-    "claude-flow-enhanced": "./cli.js",
-    "cf-enhanced": "./cli.js"
+    "claude-flow": "./bin/claude-flow",
+    "claude-flow-enhanced": "./bin/claude-flow-enhanced",
+    "cf-enhanced": "./bin/cf-enhanced"
   },
   "scripts": {
     "dev": "tsx src/cli/main.ts",

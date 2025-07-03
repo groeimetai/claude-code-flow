@@ -7,9 +7,47 @@ import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { existsSync } from 'fs';
+import { execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// Check if we should use the bin script instead
+function shouldUseBinScript() {
+  const command = process.argv[2];
+  const denoCommands = ['achieve', 'sparc', 'swarm', 'memory'];
+  
+  // Check if Deno is available
+  try {
+    execSync('which deno', { stdio: 'ignore' });
+    // Check if command requires Deno
+    return denoCommands.includes(command);
+  } catch {
+    return false;
+  }
+}
+
+// If we should use bin script, exec it directly
+if (shouldUseBinScript()) {
+  const binPath = join(__dirname, 'bin', 'claude-flow');
+  if (existsSync(binPath)) {
+    const child = spawn(binPath, process.argv.slice(2), {
+      stdio: 'inherit',
+      shell: true
+    });
+    
+    child.on('exit', (code) => {
+      process.exit(code || 0);
+    });
+    
+    child.on('error', (err) => {
+      console.error('Failed to execute command:', err);
+      process.exit(1);
+    });
+    
+    return;
+  }
+}
 
 // Quick check for achieve command
 async function handleAchieve() {
