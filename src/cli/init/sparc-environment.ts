@@ -2,10 +2,10 @@
 export async function createSparcEnvironment(): Promise<void> {
   const fs = await import('fs/promises');
   
-  // Create .roomodes file with 17 pre-configured modes
+  // Create .roomodes file with 24 enhanced modes
   const roomodes = createRoomodes();
   await fs.writeFile('.roomodes', JSON.stringify(roomodes, null, 2));
-  console.log('  ✅ Created .roomodes file with 17 pre-configured modes');
+  console.log('  ✅ Created comprehensive .roomodes file with 24 modes');
   
   // Create comprehensive CLAUDE.md with batch tools integration
   const claudeMd = createClaudeMd();
@@ -101,6 +101,41 @@ function createRoomodes() {
       "description": "Workflow automation and process management",
       "prompt": "SPARC: workflow-manager\\nYou design and manage automated workflows using TodoWrite for process planning and Task coordination for execution.",
       "tools": ["TodoWrite", "TodoRead", "Task", "Bash", "Memory"]
+    },
+    "cognitive-analyst": {
+      "description": "Deep code analysis using cognitive triangulation",
+      "prompt": "SPARC: cognitive-analyst\\nYou are a code analysis specialist using cognitive triangulation to understand complex codebases through MCP tools.",
+      "tools": ["Read", "mcp__cognitive_triangulation__analyze_codebase", "mcp__cognitive_triangulation__extract_pois", "mcp__cognitive_triangulation__query_relationships", "Memory", "TodoWrite"]
+    },
+    "graph-architect": {
+      "description": "Build and query code knowledge graphs",
+      "prompt": "SPARC: graph-architect\\nYou specialize in building code knowledge graphs using cognitive triangulation for architecture visualization.",
+      "tools": ["Read", "Write", "mcp__cognitive_triangulation__build_graph", "mcp__cognitive_triangulation__query_relationships", "mcp__cognitive_triangulation__cleanup_graph", "Memory"]
+    },
+    "neural-orchestrator": {
+      "description": "Neural swarm intelligence orchestration",
+      "prompt": "SPARC: neural-orchestrator\\nYou orchestrate tasks using neural swarm intelligence with 84.8% SWE-Bench performance.",
+      "tools": ["TodoWrite", "Task", "mcp__ruv_swarm__initialize", "mcp__ruv_swarm__spawn_agent", "mcp__ruv_swarm__monitor_swarm", "Memory"]
+    },
+    "autonomous-architect": {
+      "description": "Design fully autonomous AI agents",
+      "prompt": "SPARC: autonomous-architect\\nYou design autonomous AI agents with economic models and quantum security using DAA framework.",
+      "tools": ["Write", "mcp__daa__create_agent", "mcp__daa__set_governance", "mcp__daa__quantum_security", "Memory", "TodoWrite"]
+    },
+    "ml-coordinator": {
+      "description": "Coordinate distributed ML workflows",
+      "prompt": "SPARC: ml-coordinator\\nYou coordinate distributed machine learning workflows with federated learning and Prime framework.",
+      "tools": ["TodoWrite", "mcp__daa__prime_train", "mcp__ruv_swarm__neural_forecast", "mcp__integration__distributed_ml_training", "Memory"]
+    },
+    "quantum-security": {
+      "description": "Implement quantum-resistant security",
+      "prompt": "SPARC: quantum-security\\nYou implement quantum-resistant security using QuDAG protocol and post-quantum cryptography.",
+      "tools": ["Read", "Edit", "mcp__daa__quantum_security", "mcp__integration__quantum_security_audit", "Memory"]
+    },
+    "self-aware-orchestrator": {
+      "description": "Meta-orchestration with self-improvement",
+      "prompt": "SPARC: self-aware-orchestrator\\nYou achieve goals autonomously through self-aware orchestration and continuous improvement.",
+      "tools": ["TodoWrite", "TodoRead", "Task", "Memory", "mcp__integration__self_aware_swarm", "mcp__integration__cognitive_swarm_analysis"]
     }
   };
 }
@@ -164,7 +199,8 @@ Claude-flow provides powerful AI orchestration tools to accelerate YOUR applicat
 - \`./claude-flow sparc tdd "Shopping cart functionality"\`: Build YOUR features test-first
 - \`./claude-flow sparc run architect "Design my app's database schema"\`: Design YOUR architecture
 
-**Available SPARC modes for YOUR project:**
+**Available SPARC modes for YOUR project (24 modes):**
+- **orchestrator**: Coordinate complex multi-agent tasks
 - **coder**: Write code for YOUR application
 - **architect**: Design YOUR system architecture
 - **tdd**: Test-driven development for YOUR features
@@ -172,7 +208,22 @@ Claude-flow provides powerful AI orchestration tools to accelerate YOUR applicat
 - **reviewer**: Review YOUR code quality
 - **debugger**: Debug issues in YOUR application
 - **tester**: Test YOUR application thoroughly
+- **analyzer**: Analyze code and data patterns
+- **optimizer**: Optimize performance and efficiency
 - **documenter**: Document YOUR project
+- **designer**: Design UI/UX for YOUR application
+- **innovator**: Creative problem solving
+- **swarm-coordinator**: Manage AI agent swarms
+- **memory-manager**: Manage project knowledge
+- **batch-executor**: Execute parallel tasks
+- **workflow-manager**: Automate workflows
+- **cognitive-analyst**: Deep code analysis with cognitive triangulation
+- **graph-architect**: Build code knowledge graphs
+- **neural-orchestrator**: Neural swarm intelligence (84.8% SWE-Bench)
+- **autonomous-architect**: Design self-sufficient AI agents
+- **ml-coordinator**: Coordinate distributed ML workflows
+- **quantum-security**: Implement quantum-resistant security
+- **self-aware-orchestrator**: Autonomous goal achievement
 
 ### 🐝 Swarm Mode: Multiple AI Agents for Your Project
 \`./claude-flow swarm "Build a complete e-commerce website" --strategy development --parallel\`
@@ -399,6 +450,42 @@ When Claude Code writes code for YOUR application, it will follow these best pra
 - Security best practices
 - Performance optimization
 - Proper documentation
+
+## 🆕 Enhanced Capabilities
+
+### 🧠 Cognitive Triangulation
+Use advanced code analysis to understand complex codebases:
+\`\`\`bash
+# Analyze YOUR project's architecture
+./claude-flow sparc run cognitive-analyst "Analyze the architecture of my application"
+
+# Build a knowledge graph of YOUR code
+./claude-flow sparc run graph-architect "Create a knowledge graph of all API endpoints"
+\`\`\`
+
+### 🤖 Autonomous Development
+Build with fully autonomous AI agents:
+\`\`\`bash
+# Achieve complex goals autonomously
+./claude-flow achieve "Create a profitable trading system"
+
+# Use neural swarms for optimal development
+./claude-flow sparc run neural-orchestrator "Optimize my application using neural swarms"
+\`\`\`
+
+### 🔐 Advanced Security
+Implement quantum-resistant security:
+\`\`\`bash
+# Quantum-secure YOUR application
+./claude-flow sparc run quantum-security "Implement quantum-resistant authentication"
+\`\`\`
+
+### 🎯 Self-Improving AI
+Use self-aware orchestration that improves over time:
+\`\`\`bash
+# Self-improving development
+./claude-flow sparc run self-aware-orchestrator "Build and continuously improve my API"
+\`\`\`
 
 ## 🚨 Important Reminders
 

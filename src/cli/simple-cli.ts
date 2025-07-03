@@ -353,7 +353,9 @@ async function loadAllSparcModes(): Promise<Record<string, any>> {
     const defaultModes = [
       'orchestrator', 'coder', 'researcher', 'tdd', 'architect', 'reviewer',
       'debugger', 'tester', 'analyzer', 'optimizer', 'documenter', 'designer',
-      'innovator', 'swarm-coordinator', 'memory-manager', 'batch-executor', 'workflow-manager'
+      'innovator', 'swarm-coordinator', 'memory-manager', 'batch-executor', 'workflow-manager',
+      'cognitive-analyst', 'graph-architect', 'neural-orchestrator', 'autonomous-architect',
+      'ml-coordinator', 'quantum-security', 'self-aware-orchestrator'
     ];
     
     defaultModes.forEach(mode => {
@@ -467,7 +469,7 @@ async function createProgram() {
       output += '  npx claude-flow@latest init --sparc  # Initialize SPARC development environment\n';
       output += '  \n';
       output += '  The --sparc flag creates:\n';
-      output += '  • .roomodes file with 17 pre-configured SPARC modes\n';
+      output += '  • .roomodes file with 24 pre-configured SPARC modes\n';
       output += '  • CLAUDE.md for project instructions\n';
       output += '  • Ready-to-use TDD and code generation environment\n\n';
       
@@ -1802,10 +1804,10 @@ See .claude/commands/swarm/ for detailed documentation on each strategy.
 
   sparcCmd
     .command('modes')
-    .description('List all 17 available SPARC development modes')
+    .description('List all 24 available SPARC development modes')
     .option('--detailed', 'Show detailed descriptions for each mode')
     .action(async (options) => {
-      printSuccess('🧠 SPARC Development Modes - Complete Collection (17 Modes)');
+      printSuccess('🧠 SPARC Development Modes - Complete Collection (24 Modes)');
       
       if (options.detailed) {
         // Load mode descriptions from files
@@ -1844,9 +1846,20 @@ See .claude/commands/swarm/ for detailed documentation on each strategy.
         console.log('  • tester - Comprehensive testing with parallel execution');
         console.log('  • memory-manager - Knowledge management with Memory tools');
         
+        console.log('\n🧠 Advanced AI & Analysis (7 modes):');
+        console.log('  • cognitive-analyst - Deep code analysis with cognitive triangulation');
+        console.log('  • graph-architect - Build and query code knowledge graphs');
+        console.log('  • neural-orchestrator - Neural swarm intelligence (84.8% SWE-Bench)');
+        console.log('  • autonomous-architect - Design fully autonomous AI agents');
+        console.log('  • ml-coordinator - Coordinate distributed ML workflows');
+        console.log('  • quantum-security - Implement quantum-resistant security');
+        console.log('  • self-aware-orchestrator - Meta-orchestration with self-improvement');
+        
         console.log('\n💡 Usage Examples:');
         console.log('  claude-flow sparc run coder "Build REST API"');
         console.log('  claude-flow sparc run researcher "Analyze market trends" --parallel');
+        console.log('  claude-flow sparc run cognitive-analyst "Analyze codebase architecture"');
+        console.log('  claude-flow sparc run neural-orchestrator "Optimize system performance"');
         console.log('  claude-flow sparc run architect "Design microservices" --memory-key arch_design');
         console.log('  claude-flow sparc tdd "User authentication system"');
         
@@ -3049,11 +3062,46 @@ Use ▶ to indicate actionable items`;
         "description": "Workflow automation and process management",
         "prompt": "SPARC: workflow-manager\\nYou design and manage automated workflows using TodoWrite for process planning and Task coordination for execution.",
         "tools": ["TodoWrite", "TodoRead", "Task", "Bash", "Memory"]
+      },
+      "cognitive-analyst": {
+        "description": "Deep code analysis using cognitive triangulation",
+        "prompt": "SPARC: cognitive-analyst\\nYou are a code analysis specialist using cognitive triangulation to understand complex codebases through MCP tools.",
+        "tools": ["Read", "mcp__cognitive_triangulation__analyze_codebase", "mcp__cognitive_triangulation__extract_pois", "mcp__cognitive_triangulation__query_relationships", "Memory", "TodoWrite"]
+      },
+      "graph-architect": {
+        "description": "Build and query code knowledge graphs",
+        "prompt": "SPARC: graph-architect\\nYou specialize in building code knowledge graphs using cognitive triangulation for architecture visualization.",
+        "tools": ["Read", "Write", "mcp__cognitive_triangulation__build_graph", "mcp__cognitive_triangulation__query_relationships", "mcp__cognitive_triangulation__cleanup_graph", "Memory"]
+      },
+      "neural-orchestrator": {
+        "description": "Neural swarm intelligence orchestration",
+        "prompt": "SPARC: neural-orchestrator\\nYou orchestrate tasks using neural swarm intelligence with 84.8% SWE-Bench performance.",
+        "tools": ["TodoWrite", "Task", "mcp__ruv_swarm__initialize", "mcp__ruv_swarm__spawn_agent", "mcp__ruv_swarm__monitor_swarm", "Memory"]
+      },
+      "autonomous-architect": {
+        "description": "Design fully autonomous AI agents",
+        "prompt": "SPARC: autonomous-architect\\nYou design autonomous AI agents with economic models and quantum security using DAA framework.",
+        "tools": ["Write", "mcp__daa__create_agent", "mcp__daa__set_governance", "mcp__daa__quantum_security", "Memory", "TodoWrite"]
+      },
+      "ml-coordinator": {
+        "description": "Coordinate distributed ML workflows",
+        "prompt": "SPARC: ml-coordinator\\nYou coordinate distributed machine learning workflows with federated learning and Prime framework.",
+        "tools": ["TodoWrite", "mcp__daa__prime_train", "mcp__ruv_swarm__neural_forecast", "mcp__integration__distributed_ml_training", "Memory"]
+      },
+      "quantum-security": {
+        "description": "Implement quantum-resistant security",
+        "prompt": "SPARC: quantum-security\\nYou implement quantum-resistant security using QuDAG protocol and post-quantum cryptography.",
+        "tools": ["Read", "Edit", "mcp__daa__quantum_security", "mcp__integration__quantum_security_audit", "Memory"]
+      },
+      "self-aware-orchestrator": {
+        "description": "Meta-orchestration with self-improvement",
+        "prompt": "SPARC: self-aware-orchestrator\\nYou achieve goals autonomously through self-aware orchestration and continuous improvement.",
+        "tools": ["TodoWrite", "TodoRead", "Task", "Memory", "mcp__integration__self_aware_swarm", "mcp__integration__cognitive_swarm_analysis"]
       }
     };
     
     await fs.writeFile('.roomodes', JSON.stringify(roomodes, null, 2));
-    console.log('   ✅ Created comprehensive .roomodes file with 17 modes');
+    console.log('   ✅ Created comprehensive .roomodes file with 24 modes');
     
     // Create SPARC command files directory
     const path = await import('path');
