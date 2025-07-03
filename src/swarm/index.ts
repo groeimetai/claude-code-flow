@@ -17,6 +17,12 @@ export * from './prompt-cli';
 // Optimizations
 export * from './optimizations';
 
+// Goal validation system exports
+export { GoalValidationSystem } from './goal-validator.js';
+export { ProgressCalculator } from './progress-calculator.js';
+export { AdaptiveGoalPlanner } from './adaptive-planner.js';
+export { ValidatedMetaOrchestrator, createValidatedMetaOrchestrator } from './meta-orchestrator-validated.js';
+
 // Utility function to get all exports
 export function getSwarmComponents() {
   return {
@@ -43,6 +49,14 @@ export function getSwarmComponents() {
     promptCli: () => import('./prompt-cli'),
     
     // Optimizations
-    optimizations: () => import('./optimizations')
+    optimizations: () => import('./optimizations'),
+    
+    // Goal validation system
+    validation: {
+      goalValidator: () => import('./goal-validator.js'),
+      progressCalculator: () => import('./progress-calculator.js'),
+      adaptivePlanner: () => import('./adaptive-planner.js'),
+      validatedOrchestrator: () => import('./meta-orchestrator-validated.js')
+    }
   };
 }

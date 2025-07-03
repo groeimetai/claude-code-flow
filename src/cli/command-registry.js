@@ -12,6 +12,7 @@ import { startCommand } from './simple-commands/start.js';
 import { swarmCommand } from './simple-commands/swarm.js';
 import { batchManagerCommand } from './simple-commands/batch-manager.js';
 import achieveCommand from './simple-commands/achieve.js';
+import { handleAchieveValidatedCommand } from './commands/achieve-validated.js';
 
 // Command registry for extensible CLI
 export const commandRegistry = new Map();
@@ -201,6 +202,27 @@ The achieve command enables fully autonomous goal achievement:
   • Continues until goal is achieved
   
 No manual intervention required!`
+  });
+
+  commandRegistry.set('achieve-validated', {
+    handler: handleAchieveValidatedCommand,
+    description: 'Achieve any goal with real validation (not simulated progress)',
+    usage: 'achieve-validated <goal> [options]',
+    examples: [
+      'achieve-validated "Create a profitable trading bot"',
+      'achieve-validated "Build REST API with authentication" --verbose',
+      'achieve-validated "Develop tested application" --max-iterations 20 --report'
+    ],
+    details: `
+The achieve-validated command provides REAL goal validation:
+  • Parses goals into concrete, measurable success criteria
+  • Validates actual implementation, not just file presence
+  • Tracks real metrics: code coverage, test results, performance
+  • Identifies specific missing components with actionable hints
+  • Adapts strategy based on validation results
+  • Provides detailed progress reports with bottleneck analysis
+  
+This ensures genuine progress, not fake checkmarks!`
   });
 }
 
