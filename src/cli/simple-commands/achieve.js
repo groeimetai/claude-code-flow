@@ -3,13 +3,13 @@
  * Automatically spawns and manages swarms until goal is achieved
  */
 
-const { MetaOrchestrator } = require('../../swarm/meta-orchestrator');
-const { Logger } = require('../../core/logger');
-const { EventBus } = require('../../core/event-bus');
-const chalk = require('chalk');
-const ora = require('ora');
+import { MetaOrchestrator } from '../../swarm/meta-orchestrator.js';
+import { Logger } from '../../core/logger.js';
+import { EventBus } from '../../core/event-bus.js';
+import chalk from 'chalk';
+import ora from 'ora';
 
-module.exports = {
+export default {
   name: 'achieve',
   description: 'Autonomously achieve any goal through iterative swarm orchestration',
   arguments: '<goal>',

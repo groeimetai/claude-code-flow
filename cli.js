@@ -12,32 +12,38 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Quick check for achieve command
-if (process.argv[2] === 'achieve') {
-  // Handle achieve command directly
-  import('./src/cli/simple-commands/achieve.js').then(module => {
-    const achieveCommand = module.default;
-    const goal = process.argv[3];
-    const options = {
-      verbose: process.argv.includes('--verbose'),
-      monitor: process.argv.includes('--monitor'),
-      parallel: process.argv.includes('--parallel'),
-      maxIterations: process.argv.find((arg, i) => process.argv[i-1] === '--max-iterations') || '10',
-      convergence: process.argv.find((arg, i) => process.argv[i-1] === '--convergence') || '0.95'
-    };
-    
-    if (!goal) {
-      console.error('❌ Please provide a goal for the achieve command');
-      console.error('Example: claude-flow achieve "Create a trading bot"');
+async function handleAchieve() {
+  if (process.argv[2] === 'achieve') {
+    // Handle achieve command directly
+    try {
+      const module = await import('./src/cli/simple-commands/achieve.js');
+      const achieveCommand = module.default;
+      const goal = process.argv[3];
+      const options = {
+        verbose: process.argv.includes('--verbose'),
+        monitor: process.argv.includes('--monitor'),
+        parallel: process.argv.includes('--parallel'),
+        maxIterations: process.argv.find((arg, i) => process.argv[i-1] === '--max-iterations') || '10',
+        convergence: process.argv.find((arg, i) => process.argv[i-1] === '--convergence') || '0.95'
+      };
+      
+      if (!goal) {
+        console.error('❌ Please provide a goal for the achieve command');
+        console.error('Example: claude-flow achieve "Create a trading bot"');
+        process.exit(1);
+      }
+      
+      await achieveCommand.action(goal, options);
+      process.exit(0);
+    } catch (err) {
+      console.error('❌ Failed to load achieve command:', err.message);
       process.exit(1);
     }
-    
-    achieveCommand.action(goal, options);
-  }).catch(err => {
-    console.error('❌ Failed to load achieve command:', err.message);
-    process.exit(1);
-  });
-  return;
+  }
 }
+
+// Check for achieve command first
+await handleAchieve();
 
 // Check if we have the compiled version
 const compiledPath = join(__dirname, 'dist', 'cli', 'simple-cli.js');
