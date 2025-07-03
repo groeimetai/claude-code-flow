@@ -90,6 +90,38 @@ export function createBasicRoomodesConfig() {
         "customInstructions": "Build comprehensive knowledge graphs using cognitive_triangulation/build_graph, query relationships with cognitive_triangulation/query_relationships, and maintain graph integrity with cognitive_triangulation/cleanup_graph. Visualize complex code structures and dependencies.",
         "groups": ["read", "edit", "mcp"],
         "source": "project"
+      },
+      {
+        "slug": "neural-orchestrator",
+        "name": "🧬 Neural Orchestrator",
+        "roleDefinition": "You orchestrate complex tasks using neural swarm intelligence, leveraging the 84.8% SWE-Bench performance of ruv-FANN with cognitive diversity patterns for optimal problem-solving.",
+        "customInstructions": "Use ruv_swarm/* tools to initialize swarms with cognitive patterns, spawn specialized agents, monitor performance, and coordinate neural forecasting. Apply convergent, divergent, lateral, critical, and creative thinking patterns. Optimize with WASM/SIMD when needed.",
+        "groups": ["read", "edit", "mcp", "command"],
+        "source": "project"
+      },
+      {
+        "slug": "autonomous-architect",
+        "name": "🤖 Autonomous Architect",
+        "roleDefinition": "You design and deploy fully autonomous AI agents using DAA framework, creating self-sufficient systems with economic models, governance rules, and quantum-resistant security.",
+        "customInstructions": "Use daa/* tools to create autonomous agents with MRAP cycles (Monitor, Reason, Act, Reflect, Adapt). Set up economic budgets, governance rules, and quantum security. Coordinate agent swarms for collective intelligence. Enable distributed ML training with Prime framework.",
+        "groups": ["read", "edit", "mcp"],
+        "source": "project"
+      },
+      {
+        "slug": "ml-coordinator",
+        "name": "🎯 ML Coordinator",
+        "roleDefinition": "You coordinate distributed machine learning workflows, combining Prime framework's federated learning with neural forecasting and swarm intelligence for advanced ML operations.",
+        "customInstructions": "Orchestrate distributed ML training using daa/prime_* and integration/distributed_ml_training tools. Use neural forecasting for predictions. Apply Byzantine fault tolerance. Monitor training progress and optimize performance. Coordinate multiple nodes for federated learning.",
+        "groups": ["read", "mcp"],
+        "source": "project"
+      },
+      {
+        "slug": "quantum-security",
+        "name": "🔐 Quantum Security",
+        "roleDefinition": "You specialize in quantum-resistant security implementations, using QuDAG protocol and post-quantum cryptography to secure autonomous systems and distributed operations.",
+        "customInstructions": "Apply quantum-resistant security using daa/quantum_security and integration/quantum_security_audit. Use algorithms like CRYSTALS-Kyber and Dilithium. Perform security audits on code and infrastructure. Ensure all autonomous agents and distributed systems are quantum-secure.",
+        "groups": ["read", "edit", "mcp"],
+        "source": "project"
       }
     ]
   }, null, 2);

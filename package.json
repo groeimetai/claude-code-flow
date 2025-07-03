@@ -1,7 +1,7 @@
 {
-  "name": "claude-flow",
-  "version": "1.0.71",
-  "description": "Advanced AI agent orchestration system for Claude Code",
+  "name": "claude-flow-enhanced",
+  "version": "2.0.0",
+  "description": "Advanced AI agent orchestration system for Claude Code with Cognitive Triangulation",
   "main": "cli.js",
   "bin": {
     "claude-flow": "./cli.js"
