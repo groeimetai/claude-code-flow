@@ -18,40 +18,40 @@ This is an enhanced fork of [Claude-Flow](https://github.com/ruvnet/claude-code-
 
 ## 🏃 **Test Drive - Quick Start!**
 
-### Recommended: Full Installation (for all features including `achieve`)
+### 🚀 **Try Without Installation (NPX)**
 ```bash
-# Clone and install globally
+# Initialize project with SPARC modes
+npx github:groeimetai/claude-code-flow init --sparc
+
+# Test the achieve command (launches Claude Code)
+npx github:groeimetai/claude-code-flow achieve "Create a calculator" --dry-run
+
+# Full autonomous development (requires Claude Code installed)
+npx github:groeimetai/claude-code-flow achieve "Build trading system"
+```
+
+### 📦 **Full Installation (Recommended)**
+```bash
+# Clone and install
 git clone https://github.com/groeimetai/claude-code-flow.git
 cd claude-code-flow
-./install.sh  # Or: npm install && npm link
+npm install
+npm link  # Makes 'claude-flow' available globally
 
 # Now use anywhere:
 claude-flow init --sparc
 claude-flow achieve "Create a URL shortener service with analytics"
 ```
 
-### Quick Start in New Project
-```bash
-# In your project directory:
-claude-flow init --sparc                    # Initialize with SPARC modes
-claude-flow achieve "Build trading system"  # Start autonomous development
+### 🤖 **What happens with `achieve` command:**
+1. Launches Claude Code with meta-orchestrator prompt
+2. Claude analyzes your goal and creates a plan
+3. Spawns specialized swarms iteratively
+4. Uses cognitive triangulation for code understanding
+5. Self-corrects and improves with each iteration
+6. Continues until goal is achieved (95% threshold)
 
-# What happens with achieve:
-# 1. Launches Claude Code with meta-orchestrator prompt
-# 2. Claude analyzes your goal and creates a plan
-# 3. Spawns specialized swarms iteratively
-# 4. Uses cognitive triangulation for understanding
-# 5. Self-corrects and improves with each iteration
-# 6. Continues until goal is achieved (95% threshold)
-```
-
-### Alternative: NPX (limited features)
-```bash
-# For init and basic commands only (achieve may not work properly via npx)
-npx github:groeimetai/claude-code-flow init --sparc
-```
-
-⚠️ **Note**: The `achieve` command requires a full installation due to its complex interaction with Claude Code. NPX may cause terminal rendering issues.
+⚠️ **Note**: The `achieve` command launches Claude Code. Make sure you have Claude Code installed and configured with your API key.
 
 ## 🆕 **What's New in v2.0.0**
 
@@ -69,36 +69,6 @@ npx github:groeimetai/claude-code-flow init --sparc
 - **Meta-Learning** - Learn from experience and share knowledge
 - **Autonomous Evolution** - Swarms create improved versions of themselves
 - **Collective Intelligence** - Share learnings across swarm instances
-
-## ⚡ **Quick Start**
-
-### 🚀 **Try Without Installation (Recommended)**
-```bash
-# Run directly with npx - no installation needed!
-npx github:groeimetai/claude-code-flow achieve "Create a profitable trading system"
-
-# Or with options
-npx github:groeimetai/claude-code-flow achieve "Build an e-commerce platform" --max-iterations 20 --parallel
-
-# Initialize a new project with npx
-npx github:groeimetai/claude-code-flow init --sparc --cognitive
-```
-
-### 📦 **Full Installation**
-```bash
-# Clone this enhanced version
-git clone https://github.com/groeimetai/claude-code-flow.git
-cd claude-code-flow
-
-# Install dependencies
-npm install
-
-# Initialize with SPARC and Cognitive Triangulation
-./claude-flow init --sparc --cognitive
-
-# Start with UI
-./claude-flow start --ui --port 3000
-```
 
 ### 🎯 **Autonomous Goal Achievement** (NEW!)
 ```bash
@@ -119,6 +89,31 @@ npm install
 # 6. No manual intervention - fully autonomous!
 
 # Requires Claude Code to be installed: https://claude.ai/code
+```
+
+#### 🎮 **Achieve Command Options**
+```bash
+claude-flow achieve <goal> [options]
+
+Options:
+  --max-iterations <n>  Maximum iterations to attempt (default: 10)
+  --convergence <n>     Success threshold 0-1 (default: 0.95)
+  --parallel           Enable parallel swarm execution
+  --no-evolve          Disable autonomous evolution
+  --budget <n>         Maximum resource budget
+  --deadline <date>    Deadline for goal achievement
+  --verbose            Show detailed progress
+  --dry-run            Show configuration without executing
+
+Examples:
+  # Simple goal
+  claude-flow achieve "Create a todo app" --dry-run
+  
+  # Complex with options
+  claude-flow achieve "Build ML trading bot" --max-iterations 20 --parallel
+  
+  # With constraints
+  claude-flow achieve "Create SaaS platform" --budget 1000 --deadline 2024-02-01
 ```
 
 ### 🧠 **Cognitive Triangulation Usage**
