@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Claude-Flow Enhanced local wrapper
+# This script runs the enhanced version with cognitive triangulation
+
+# Save the current directory
+PROJECT_DIR="${PWD}"
+
+# Set environment to ensure correct working directory
+export PWD="${PROJECT_DIR}"
+export CLAUDE_WORKING_DIR="${PROJECT_DIR}"
+
+# Try to find claude-flow binary
+# Check common locations for npm/npx installations
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Use the enhanced version from this directory
+if [ -f "${SCRIPT_DIR}/bin/claude-flow" ]; then
+  cd "${PROJECT_DIR}"
+  exec "${SCRIPT_DIR}/bin/claude-flow" "$@"
+else
+  echo "Error: Enhanced claude-flow not found in ${SCRIPT_DIR}/bin/"
+  echo "Make sure you're running this from the claude-code-flow-fork directory"
+  exit 1
+fi

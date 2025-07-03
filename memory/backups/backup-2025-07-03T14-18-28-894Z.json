@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-07-03T14:16:09.371Z",
+  "timestamp": "2025-07-03T14:18:28.894Z",
   "version": "1.0",
   "entries": [
     {
@@ -754,80 +754,361 @@
       "checksum": "aefb9b31ad64d1cf6f36b79012c7ad01ca7cbb540244052c4267cbb99bed44b1",
       "references": [],
       "dependencies": []
+    },
+    {
+      "id": "entry_mcngy0br_0rfa9mtet",
+      "key": "goal/1751551849375-13tqgwph9/test_gaps",
+      "value": {
+        "untested_directories": {
+          "agents": {
+            "files": 2,
+            "tests": 0
+          },
+          "communication": {
+            "files": 1,
+            "tests": 0
+          },
+          "config": {
+            "files": 2,
+            "tests": 0
+          },
+          "enterprise": {
+            "files": 7,
+            "tests": 0
+          },
+          "monitoring": {
+            "files": 1,
+            "tests": 0
+          },
+          "resources": {
+            "files": 1,
+            "tests": 0
+          },
+          "task": {
+            "files": 4,
+            "tests": 0
+          }
+        },
+        "low_coverage_directories": {
+          "cli": {
+            "files": 50,
+            "tests": 13
+          },
+          "coordination": {
+            "files": 16,
+            "tests": 2
+          },
+          "core": {
+            "files": 7,
+            "tests": 6
+          },
+          "memory": {
+            "files": 9,
+            "tests": 1
+          },
+          "terminal": {
+            "files": 7,
+            "tests": 1
+          },
+          "utils": {
+            "files": 4,
+            "tests": 1
+          }
+        },
+        "critical_untested_components": [
+          "agent-manager.ts",
+          "agent-registry.ts",
+          "task/engine.ts",
+          "task/coordination.ts",
+          "swarm/coordinator.ts",
+          "swarm/executor.ts",
+          "memory/backends/*.ts",
+          "terminal/manager.ts",
+          "enterprise/*.ts"
+        ]
+      },
+      "type": "object",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-07-03T14:16:20.775Z",
+      "updatedAt": "2025-07-03T14:16:20.775Z",
+      "lastAccessedAt": "2025-07-03T14:16:20.775Z",
+      "version": 1,
+      "size": 726,
+      "compressed": false,
+      "checksum": "643202e17fc78bffed6ff9b732a302acd3f3f0d44af3bb0b3f7c200277c87472",
+      "references": [],
+      "dependencies": []
+    },
+    {
+      "id": "entry_mcngy33z_5byk6lg70",
+      "key": "goal/1751551930735-41rn43stq/artifacts",
+      "value": "Production-ready calculator located at: examples/calculator-prod/ with full source code, tests, documentation, and examples. Key files: src/calculator.js (core logic), src/interactive.js (REPL), src/cli.js (CLI interface), src/memory.js (persistent memory), comprehensive test suite in tests/ directory.",
+      "type": "string",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-07-03T14:16:24.383Z",
+      "updatedAt": "2025-07-03T14:16:24.383Z",
+      "lastAccessedAt": "2025-07-03T14:16:24.383Z",
+      "version": 1,
+      "size": 334,
+      "compressed": false,
+      "checksum": "da90ecc41f1381d7d2fc8e2ad30e558f697a68e1fd7c2568e82187f8e6edc268",
+      "references": [],
+      "dependencies": []
+    },
+    {
+      "id": "entry_mcngydk3_nu7uhi2o8",
+      "key": "goal/1751551849375-13tqgwph9/test_strategy",
+      "value": {
+        "approach": "phased",
+        "phases": [
+          {
+            "phase": 1,
+            "name": "Fix existing tests",
+            "tasks": [
+              "Fix jest.config.js moduleNameMapping typo",
+              "Resolve missing dependencies",
+              "Fix import paths",
+              "Ensure all existing tests pass"
+            ],
+            "priority": "critical"
+          },
+          {
+            "phase": 2,
+            "name": "Test critical infrastructure",
+            "tasks": [
+              "Add tests for agent-manager and agent-registry",
+              "Add tests for task engine and coordination",
+              "Add tests for swarm coordinator and executor",
+              "Add tests for memory backends"
+            ],
+            "priority": "high"
+          },
+          {
+            "phase": 3,
+            "name": "Increase directory coverage",
+            "tasks": [
+              "Bring CLI tests to 80%",
+              "Add communication layer tests",
+              "Add config management tests",
+              "Add terminal manager tests"
+            ],
+            "priority": "medium"
+          },
+          {
+            "phase": 4,
+            "name": "Complete coverage",
+            "tasks": [
+              "Add enterprise module tests",
+              "Add monitoring tests",
+              "Add remaining utils tests",
+              "Add integration tests"
+            ],
+            "priority": "low"
+          }
+        ],
+        "testing_framework": "Jest with TypeScript",
+        "coverage_tools": "jest --coverage with lcov reports",
+        "estimated_effort": "40-60 hours total"
+      },
+      "type": "object",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-07-03T14:16:37.923Z",
+      "updatedAt": "2025-07-03T14:16:37.923Z",
+      "lastAccessedAt": "2025-07-03T14:16:37.923Z",
+      "version": 1,
+      "size": 1012,
+      "compressed": false,
+      "checksum": "8c6ec273ccc13dc1bf208485a5e7e126899edc9b8e7f57b581f6edaccdcc5633",
+      "references": [],
+      "dependencies": []
+    },
+    {
+      "id": "entry_mcngz4i3_yxqqgeaa1",
+      "key": "goal/1751551849375-13tqgwph9/learnings",
+      "value": {
+        "project_overview": "Claude-Flow Enhanced v2.0.0 - AI orchestration system",
+        "codebase_stats": {
+          "total_source_files": 168,
+          "total_test_files": 53,
+          "directories_with_no_tests": 7,
+          "test_framework": "Jest 29.7.0"
+        },
+        "key_findings": [
+          "All current tests are failing due to configuration issues",
+          "Project uses ES modules with TypeScript",
+          "Test coverage reporting is configured but not working",
+          "Many critical components have zero test coverage",
+          "Project has both src and tests directories for tests"
+        ],
+        "immediate_actions_needed": [
+          "Fix jest.config.js moduleNameMapping typo",
+          "Install missing vitest dependency or migrate tests",
+          "Fix module resolution issues",
+          "Update test imports to match ES module structure"
+        ],
+        "coverage_estimate": "Currently ~20% (estimated), need 75% more coverage to reach 95%"
+      },
+      "type": "object",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-07-03T14:17:12.843Z",
+      "updatedAt": "2025-07-03T14:17:12.843Z",
+      "lastAccessedAt": "2025-07-03T14:17:12.843Z",
+      "version": 1,
+      "size": 807,
+      "compressed": false,
+      "checksum": "32a80982d892a94b8ad3556ea0967a8582c93ec58095b228801d04b9485945d7",
+      "references": [],
+      "dependencies": []
+    },
+    {
+      "id": "entry_mcnh0auw_a617hwrpe",
+      "key": "goal/1751552076840-zpxljwgd4/current_state",
+      "value": "\"## Calculator Project Current State\\n\\n### Overview\\nThe calculator project at examples/calculator-prod is a **FULLY COMPLETE**, production-ready command-line calculator application with extensive features far beyond a simple calculator.\\n\\n### Key Features Implemented:\\n1. **Basic Arithmetic**: add, subtract, multiply, divide\\n2. **Scientific Operations**: sin, cos, tan, log, ln, sqrt, power, factorial\\n3. **Advanced Math**: GCD, LCM, percentage calculations\\n4. **Expression Parser**: Full mathematical expression evaluation with proper operator precedence (PEMDAS)\\n5. **Memory System**: Persistent memory storage with M+, M-, MR, MC, MS operations\\n6. **Interactive REPL Mode**: Full interactive mode with history, auto-completion, and syntax highlighting\\n7. **CLI Interface**: Comprehensive command-line interface using Commander.js\\n8. **Error Handling**: Robust error handling for edge cases\\n9. **History Tracking**: Complete calculation history with timestamps\\n10. **Configuration System**: Support for .calculatorrc configuration files\\n11. **Performance Optimization**: Cached parser with 2.1x speedup\\n12. **Full Test Coverage**: 77 tests all passing\\n13. **Documentation**: Complete with README, API docs, FAQ, Quick Reference, and User Guide\\n14. **Production Build**: Package.json configured for npm publishing\\n15. **Type Definitions**: TypeScript definitions included\\n\\n### Architecture:\\n- Modular design with clear separation of concerns\\n- Core calculator engine separate from CLI\\n- Pure functions for operations\\n- Optimized expression parser with caching\\n- Persistent memory and history storage\\n- Interactive REPL with advanced features\\n\\n### Test Results:\\n- Total Tests: 77 (ALL PASSING)\\n- Test Suites: 4 (calculator, cli, memory, parser)\\n- No failures or warnings\\n- Full coverage of all features\\n\\n### Performance:\\n- Basic operations: < 0.5ms\\n- Expression parsing: < 0.002ms\\n- Scientific functions: < 0.002ms\\n- All operations well under 10ms target\\n\\n### Production Status:\\n- Version 1.0.0\\n- MIT Licensed\\n- Ready for npm publishing\\n- Includes postinstall scripts\\n- Has benchmark scripts\\n- Security audit shows 0 vulnerabilities\"",
+      "type": "string",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-07-03T14:18:07.736Z",
+      "updatedAt": "2025-07-03T14:18:07.736Z",
+      "lastAccessedAt": "2025-07-03T14:18:07.736Z",
+      "version": 1,
+      "size": 2260,
+      "compressed": true,
+      "checksum": "1341204990ab8f950d272ad2b308638a0b820411e5d6ecb9663baab43750942e",
+      "references": [],
+      "dependencies": []
+    },
+    {
+      "id": "entry_mcnh0gv9_fmkt9qcmw",
+      "key": "goal/1751552076840-zpxljwgd4/progress",
+      "value": 100,
+      "type": "number",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-07-03T14:18:15.525Z",
+      "updatedAt": "2025-07-03T14:18:15.525Z",
+      "lastAccessedAt": "2025-07-03T14:18:15.525Z",
+      "version": 1,
+      "size": 32,
+      "compressed": false,
+      "checksum": "ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
+      "references": [],
+      "dependencies": []
+    },
+    {
+      "id": "entry_mcnh0r6i_tekszudop",
+      "key": "goal/1751551849375-13tqgwph9/progress",
+      "value": 20,
+      "type": "number",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-07-03T14:18:28.890Z",
+      "updatedAt": "2025-07-03T14:18:28.890Z",
+      "lastAccessedAt": "2025-07-03T14:18:28.890Z",
+      "version": 1,
+      "size": 31,
+      "compressed": false,
+      "checksum": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+      "references": [],
+      "dependencies": []
     }
   ],
   "statistics": {
     "overview": {
-      "totalEntries": 35,
-      "totalSize": 15504,
-      "compressedEntries": 6,
-      "compressionRatio": -3.8571968265961467,
-      "indexSize": 1750,
-      "memoryUsage": 6803560,
+      "totalEntries": 42,
+      "totalSize": 20706,
+      "compressedEntries": 7,
+      "compressionRatio": -1.704777241009125,
+      "indexSize": 2100,
+      "memoryUsage": 6930136,
       "diskUsage": 0
     },
     "distribution": {
       "byNamespace": {
         "default": {
-          "count": 35,
-          "size": 15504
+          "count": 42,
+          "size": 20706
         }
       },
       "byType": {
         "string": {
-          "count": 8,
-          "size": 755
+          "count": 10,
+          "size": 3349
         },
         "number": {
-          "count": 18,
-          "size": 552
+          "count": 20,
+          "size": 615
         },
         "object": {
-          "count": 9,
-          "size": 14197
+          "count": 12,
+          "size": 16742
         }
       },
       "byOwner": {
         "system": {
-          "count": 35,
-          "size": 15504
+          "count": 42,
+          "size": 20706
         }
       },
       "byAccessLevel": {
         "shared": {
-          "count": 35,
-          "size": 15504
+          "count": 42,
+          "size": 20706
         }
       }
     },
     "temporal": {
-      "entriesCreatedLast24h": 35,
-      "entriesUpdatedLast24h": 35,
-      "entriesAccessedLast24h": 35,
+      "entriesCreatedLast24h": 42,
+      "entriesUpdatedLast24h": 42,
+      "entriesAccessedLast24h": 42,
       "oldestEntry": "2025-07-03T13:05:01.173Z",
-      "newestEntry": "2025-07-03T14:16:09.368Z"
+      "newestEntry": "2025-07-03T14:18:28.890Z"
     },
     "performance": {
       "averageQueryTime": 0,
-      "averageWriteTime": 0,
+      "averageWriteTime": 1,
       "cacheHitRatio": 0,
       "indexEfficiency": 0.95
     },
     "health": {
       "expiredEntries": 0,
       "orphanedReferences": 0,
-      "duplicateKeys": 3,
+      "duplicateKeys": 5,
       "corruptedEntries": 0,
       "recommendedCleanup": false
     },
     "optimization": {
       "suggestions": [
-        "3 duplicate keys found"
+        "5 duplicate keys found"
       ],
       "potentialSavings": {
         "compression": 0,
         "cleanup": 0,
-        "deduplication": 386
+        "deduplication": 449
       },
       "indexOptimization": [
         "Consider periodic index rebuilding for optimal performance"

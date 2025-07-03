@@ -5,7 +5,8 @@
   "main": "cli.js",
   "bin": {
     "claude-flow": "./cli.js",
-    "claude-flow-enhanced": "./cli.js"
+    "claude-flow-enhanced": "./cli.js",
+    "cf-enhanced": "./cli.js"
   },
   "scripts": {
     "dev": "tsx src/cli/main.ts",

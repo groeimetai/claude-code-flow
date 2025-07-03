@@ -16,6 +16,12 @@ This is an enhanced fork of [Claude-Flow](https://github.com/ruvnet/claude-code-
 
 > 🎯 **Version 2.0.0**: Adds advanced code analysis, knowledge graphs, and intelligent swarm coordination
 
+### 🔀 **Coexistence with Original Claude-Flow**
+This enhanced version can be installed alongside the original claude-flow:
+- Use `claude-flow-enhanced` or `cf-enhanced` for this version
+- Use `claude-flow` for the original version
+- Both can coexist on the same system without conflicts
+
 ## 🏃 **Test Drive - Quick Start!**
 
 ### 🚀 **Try Without Installation (NPX)**
@@ -33,14 +39,21 @@ npx github:groeimetai/claude-code-flow achieve "Build trading system"
 ### 📦 **Full Installation (Recommended)**
 ```bash
 # Clone and install
-git clone https://github.com/groeimetai/claude-code-flow.git
-cd claude-code-flow
+git clone https://github.com/groeimetai/claude-code-flow.git claude-flow-enhanced
+cd claude-flow-enhanced
 npm install
-npm link  # Makes 'claude-flow' available globally
+npm link  # Makes commands available globally
 
-# Now use anywhere:
-claude-flow init --sparc
-claude-flow achieve "Create a URL shortener service with analytics"
+# Now use anywhere with enhanced commands:
+claude-flow-enhanced init --sparc          # Full command
+cf-enhanced achieve "Build trading bot"    # Short alias
+
+# Or use from the directory without global install:
+./claude-flow-enhanced init --sparc
+./cf-enhanced achieve "Create calculator"
+
+# Original claude-flow still works normally:
+claude-flow init  # Uses original version if installed
 ```
 
 ### 🤖 **What happens with `achieve` command:**
