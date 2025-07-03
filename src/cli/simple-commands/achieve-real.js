@@ -230,89 +230,64 @@ function extractSuccessCriteria(goal) {
  */
 async function launchClaudeWithMetaOrchestrator(prompt, goalId, options) {
   const { spawn } = await import('child_process');
-  const fs = await import('fs/promises');
-  const path = await import('path');
-  const os = await import('os');
   
-  // Write the prompt to a temporary file (like SPARC does)
-  const tempDir = os.tmpdir();
-  const promptFile = path.join(tempDir, `achieve-prompt-${goalId}.txt`);
+  printSuccess('🚀 Starting autonomous goal achievement loop...');
+  console.log();
+  console.log('The system will now:');
+  console.log('1. Analyze your goal and create a plan');
+  console.log('2. Spawn specialized swarms iteratively');
+  console.log('3. Use cognitive triangulation for understanding');
+  console.log('4. Self-correct and improve with each iteration');
+  console.log('5. Continue until goal is achieved');
+  console.log();
+  console.log('🤖 No manual intervention required - sit back and watch!');
+  console.log();
   
-  try {
-    await fs.writeFile(promptFile, prompt, 'utf8');
-    
-    printSuccess('🚀 Starting autonomous goal achievement loop...');
-    console.log();
-    console.log('The system will now:');
-    console.log('1. Analyze your goal and create a plan');
-    console.log('2. Spawn specialized swarms iteratively');
-    console.log('3. Use cognitive triangulation for understanding');
-    console.log('4. Self-correct and improve with each iteration');
-    console.log('5. Continue until goal is achieved');
-    console.log();
-    console.log('🤖 No manual intervention required - sit back and watch!');
-    console.log();
-    
-    // Set environment variables for the meta-orchestrator
-    const env = {
-      ...process.env,
-      CLAUDE_META_ORCHESTRATOR: 'true',
-      CLAUDE_GOAL_ID: goalId,
-      CLAUDE_FLOW_MEMORY_ENABLED: 'true',
-      CLAUDE_FLOW_MEMORY_NAMESPACE: `goal_${goalId}`,
-    };
-    
-    // Launch claude using cat to pipe the prompt (avoids terminal issues)
-    const claudeProcess = spawn('bash', ['-c', `cat "${promptFile}" | claude --dangerously-skip-permissions`], {
-      cwd: process.cwd(),
-      env: env,
-      stdio: 'inherit',
-      shell: false
-    });
-    
-    claudeProcess.on('close', async (code) => {
-      // Cleanup temp file
-      try {
-        await fs.unlink(promptFile);
-      } catch (err) {
-        // Ignore cleanup errors
-      }
-      
-      if (code === 0) {
-        printSuccess('✅ Goal achievement process completed!');
-        console.log(`Check memory namespace "goal_${goalId}" for results`);
-      } else {
-        printError(`Process exited with code ${code}`);
-      }
-    });
-    
-    claudeProcess.on('error', async (error) => {
-      // Cleanup temp file
-      try {
-        await fs.unlink(promptFile);
-      } catch (err) {
-        // Ignore cleanup errors
-      }
-      
-      if (error.code === 'ENOENT') {
-        printError('Claude Code is not installed or not in PATH');
-        console.log('\n📦 To install Claude Code:');
-        console.log('  1. Install via Cursor/VS Code extension');
-        console.log('  2. Or download from: https://claude.ai/code');
-        console.log('\n💡 Alternatively, copy this prompt to use manually:');
-        console.log('\n' + '─'.repeat(60));
-        console.log(prompt);
-        console.log('─'.repeat(60));
-      } else {
-        printError(`Failed to launch Claude Code: ${error.message}`);
-      }
-    });
-    
-  } catch (error) {
-    printError(`Failed to create prompt file: ${error.message}`);
-    console.log('\n💡 Fallback - copy this prompt to use manually:');
-    console.log('\n' + '─'.repeat(60));
-    console.log(prompt);
-    console.log('─'.repeat(60));
+  // Set environment variables for the meta-orchestrator
+  const env = {
+    ...process.env,
+    CLAUDE_META_ORCHESTRATOR: 'true',
+    CLAUDE_GOAL_ID: goalId,
+    CLAUDE_FLOW_MEMORY_ENABLED: 'true',
+    CLAUDE_FLOW_MEMORY_NAMESPACE: `goal_${goalId}`,
+  };
+  
+  // Launch claude the same way SPARC does it - with direct arguments
+  const claudeArgs = [prompt, '--dangerously-skip-permissions'];
+  
+  if (options.verbose) {
+    claudeArgs.push('--verbose');
   }
+  
+  console.log('\n📡 Launching claude process...\n');
+  
+  const claudeProcess = spawn('claude', claudeArgs, {
+    cwd: process.cwd(),
+    env: env,
+    stdio: 'inherit'
+  });
+    
+  claudeProcess.on('close', (code) => {
+    if (code === 0) {
+      printSuccess('✅ Goal achievement process completed!');
+      console.log(`Check memory namespace "goal_${goalId}" for results`);
+    } else {
+      printError(`Process exited with code ${code}`);
+    }
+  });
+  
+  claudeProcess.on('error', (error) => {
+    if (error.code === 'ENOENT') {
+      printError('Claude Code is not installed or not in PATH');
+      console.log('\n📦 To install Claude Code:');
+      console.log('  1. Install via Cursor/VS Code extension');
+      console.log('  2. Or download from: https://claude.ai/code');
+      console.log('\n💡 Alternatively, copy this prompt to use manually:');
+      console.log('\n' + '─'.repeat(60));
+      console.log(prompt);
+      console.log('─'.repeat(60));
+    } else {
+      printError(`Failed to launch Claude Code: ${error.message}`);
+    }
+  });
 }
