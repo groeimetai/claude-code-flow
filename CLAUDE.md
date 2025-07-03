@@ -40,7 +40,7 @@
 - `./claude-flow sparc tdd "<feature>"`: Test-driven development mode
 - `./claude-flow sparc modes`: List all 17 available SPARC modes
 
-Available SPARC modes: orchestrator, coder, researcher, tdd, architect, reviewer, debugger, tester, analyzer, optimizer, documenter, designer, innovator, swarm-coordinator, memory-manager, batch-executor, workflow-manager
+Available SPARC modes: orchestrator, coder, researcher, tdd, architect, reviewer, debugger, tester, analyzer, optimizer, documenter, designer, innovator, swarm-coordinator, memory-manager, batch-executor, workflow-manager, cognitive-analyst, graph-architect
 
 ### Swarm Coordination
 - `./claude-flow swarm "<objective>" [options]`: Multi-agent swarm coordination
@@ -243,4 +243,65 @@ Task("Backend Team", "Implement APIs according to Memory specifications");
 - **Monitor progress** with TodoRead during long-running operations
 - **Enable parallel execution** with --parallel flags for maximum efficiency
 
-This configuration ensures optimal use of Claude Code's batch tools for swarm orchestration and parallel task execution with full Claude-Flow capabilities.
+## 🆕 Cognitive Triangulation Integration
+
+Claude-Flow now includes integrated Cognitive Triangulation MCP tools for advanced code analysis:
+
+### Available Cognitive Triangulation Tools
+
+1. **`cognitive_triangulation/analyze_codebase`** - Comprehensive codebase analysis
+   - Builds knowledge graph of code relationships
+   - Identifies dependencies and architecture patterns
+   - Supports include/exclude patterns
+
+2. **`cognitive_triangulation/extract_pois`** - Extract Points of Interest
+   - Identifies functions, classes, methods, interfaces
+   - Provides context for each POI
+   - Supports filtering by type
+
+3. **`cognitive_triangulation/query_relationships`** - Query code relationships
+   - Natural language queries about code structure
+   - Scope queries to specific files/directories
+   - Configurable traversal depth
+
+4. **`cognitive_triangulation/build_graph`** - Build knowledge graphs
+   - Supports multiple output formats (Neo4j, JSON, GraphML)
+   - Incremental updates for large codebases
+   - Persistent graph storage
+
+5. **`cognitive_triangulation/cleanup_graph`** - Graph maintenance
+   - Remove orphaned nodes and relationships
+   - Dry-run mode for safety
+   - Optimize graph performance
+
+### New SPARC Modes for Cognitive Analysis
+
+- **`cognitive-analyst`**: Deep code analysis using cognitive triangulation
+  ```bash
+  ./claude-flow sparc run cognitive-analyst "Analyze the authentication system architecture"
+  ```
+
+- **`graph-architect`**: Build and query code knowledge graphs
+  ```bash
+  ./claude-flow sparc run graph-architect "Create a knowledge graph of the API endpoints"
+  ```
+
+### Integration Examples
+
+```bash
+# Analyze a project with cognitive triangulation
+./claude-flow sparc run cognitive-analyst "Use cognitive triangulation to understand this codebase"
+
+# Build a knowledge graph
+./claude-flow sparc run graph-architect "Build a complete knowledge graph of the project"
+
+# Combine with other modes
+./claude-flow sparc run researcher "Research the project structure" && \
+./claude-flow sparc run cognitive-analyst "Analyze code relationships" && \
+./claude-flow sparc run architect "Design improvements based on the analysis"
+
+# Store analysis results in memory
+./claude-flow memory store "code_analysis" "Results from cognitive triangulation"
+```
+
+This configuration ensures optimal use of Claude Code's batch tools for swarm orchestration and parallel task execution with full Claude-Flow capabilities, now enhanced with Cognitive Triangulation for deep code analysis.

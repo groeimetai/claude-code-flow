@@ -29,6 +29,7 @@ import { AuthManager, IAuthManager } from './auth.js';
 import { LoadBalancer, ILoadBalancer, RequestQueue } from './load-balancer.js';
 import { createClaudeFlowTools, ClaudeFlowToolContext } from './claude-flow-tools.js';
 import { createSwarmTools, SwarmToolContext } from './swarm-tools.js';
+import { createCognitiveTriangulationTools, CognitiveTriangulationContext } from './cognitive-triangulation-tools.js';
 import { platform, arch } from 'node:os';
 import { performance } from 'node:perf_hooks';
 
@@ -549,6 +550,26 @@ export class MCPServer implements IMCPServer {
     } else {
       this.logger.warn('Swarm components not available - Swarm tools not registered');
     }
+
+    // Register Cognitive Triangulation tools
+    const cognitiveTriangulationTools = createCognitiveTriangulationTools(this.logger);
+    
+    for (const tool of cognitiveTriangulationTools) {
+      // Wrap the handler to inject cognitive triangulation context
+      const originalHandler = tool.handler;
+      tool.handler = async (input: unknown, context?: MCPContext) => {
+        const ctContext: CognitiveTriangulationContext = {
+          ...context,
+          cognitiveTriangulationPath: process.env.COGNITIVE_TRIANGULATION_PATH,
+        } as CognitiveTriangulationContext;
+        
+        return await originalHandler(input, ctContext);
+      };
+      
+      this.registerTool(tool);
+    }
+    
+    this.logger.info('Registered Cognitive Triangulation tools', { count: cognitiveTriangulationTools.length });
   }
 
   private errorToMCPError(error: unknown): MCPError {

@@ -74,6 +74,22 @@ export function createBasicRoomodesConfig() {
         "customInstructions": "Coordinate advanced multi-agent swarms with timeout-free execution capabilities. Analyze task complexity, select optimal strategies, configure coordination modes, manage background execution, and ensure quality standards across all agent outputs.",
         "groups": ["read", "edit", "command"],
         "source": "project"
+      },
+      {
+        "slug": "cognitive-analyst",
+        "name": "🧠 Cognitive Analyst",
+        "roleDefinition": "You are a code analysis specialist using cognitive triangulation to understand complex codebases, identify patterns, relationships, and architectural insights through deep semantic analysis.",
+        "customInstructions": "Use cognitive triangulation tools to analyze code structure, build knowledge graphs, extract POIs, and query relationships. Provide insights about code architecture, dependencies, and potential improvements. Always use the cognitive_triangulation/* MCP tools for analysis.",
+        "groups": ["read", "mcp"],
+        "source": "project"
+      },
+      {
+        "slug": "graph-architect",
+        "name": "🕸️ Graph Architect",
+        "roleDefinition": "You specialize in building and querying code knowledge graphs using cognitive triangulation, creating visual and semantic representations of code relationships and dependencies.",
+        "customInstructions": "Build comprehensive knowledge graphs using cognitive_triangulation/build_graph, query relationships with cognitive_triangulation/query_relationships, and maintain graph integrity with cognitive_triangulation/cleanup_graph. Visualize complex code structures and dependencies.",
+        "groups": ["read", "edit", "mcp"],
+        "source": "project"
       }
     ]
   }, null, 2);

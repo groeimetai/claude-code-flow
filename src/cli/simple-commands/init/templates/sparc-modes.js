@@ -23,6 +23,8 @@ SPARC (Specification, Planning, Architecture, Review, Code) is a comprehensive d
 - **researcher**: Deep research capabilities
 - **analyzer**: Code and data analysis
 - **optimizer**: Performance optimization
+- **cognitive-analyst**: Cognitive triangulation code analysis
+- **graph-architect**: Code knowledge graph management
 
 ### Creative and Support Modes
 - **designer**: UI/UX design
