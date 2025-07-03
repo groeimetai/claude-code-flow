@@ -220,12 +220,30 @@ Create these .md files as you work:
    - Optimization opportunities
    - Patterns discovered
 
+## IMPORTANT: PARALLELISM IN CLAUDE FLOW
+
+Claude Flow's Task() tool executes SEQUENTIALLY, not in parallel. For each iteration:
+- Agents are called one after another, not simultaneously
+- They share state through todos and .md files between calls
+- This is by design - Claude Code can only run one task at a time
+
+To maximize efficiency despite sequential execution:
+1. Create comprehensive task lists in TodoWrite first
+2. Each agent should check TodoRead for work assignments
+3. Agents update todos immediately after completing work
+4. Use .md files for persistent documentation between agents
+
+Alternative: Use the swarm command directly for better orchestration:
+\`\`\`
+Bash("./claude-flow swarm 'Iteration 1: Research compact LLM architectures' --strategy research --max-agents 4");
+\`\`\`
+
 ## CRITICAL INSTRUCTIONS
 
 1. **REAL WORK ONLY** - Actually implement solutions, don't simulate
-2. **PARALLEL EXECUTION** - Spawn multiple agents working concurrently
+2. **SEQUENTIAL EXECUTION** - Agents run one after another, sharing state via todos/files
 3. **SHARED STATE** - All agents coordinate through TodoRead/TodoWrite AND .md files
-4. **SPAWN REAL SWARMS** - Use multiple Task() calls for true parallelism
+4. **EFFICIENT TASK DESIGN** - Design tasks to minimize dependencies between agents
 5. **DOCUMENT EVERYTHING** - Create .md files for persistent knowledge
 6. **SELF-IMPROVE** - Each iteration learns from previous swarms via LEARNINGS.md
 
