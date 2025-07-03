@@ -230,6 +230,9 @@ function extractSuccessCriteria(goal) {
  */
 async function launchClaudeWithMetaOrchestrator(prompt, goalId, options) {
   const { spawn } = await import('child_process');
+  const fs = await import('fs/promises');
+  const path = await import('path');
+  const os = await import('os');
   
   printSuccess('🚀 Starting autonomous goal achievement loop...');
   console.log();
@@ -243,6 +246,24 @@ async function launchClaudeWithMetaOrchestrator(prompt, goalId, options) {
   console.log('🤖 No manual intervention required - sit back and watch!');
   console.log();
   
+  // Save prompt to file to avoid command line length issues
+  const tempDir = os.tmpdir();
+  const promptFile = path.join(tempDir, `claude-achieve-${goalId}.txt`);
+  
+  try {
+    await fs.writeFile(promptFile, prompt, 'utf8');
+    console.log(`\n📝 Prompt saved to: ${promptFile}`);
+  } catch (error) {
+    printError('Failed to save prompt file');
+    console.log('\n💡 Copy this prompt and run manually:');
+    console.log('─'.repeat(60));
+    console.log('claude --dangerously-skip-permissions');
+    console.log('─'.repeat(60));
+    console.log(prompt);
+    console.log('─'.repeat(60));
+    return;
+  }
+  
   // Set environment variables for the meta-orchestrator
   const env = {
     ...process.env,
@@ -252,17 +273,19 @@ async function launchClaudeWithMetaOrchestrator(prompt, goalId, options) {
     CLAUDE_FLOW_MEMORY_NAMESPACE: `goal_${goalId}`,
   };
   
-  // Launch claude the same way SPARC does it - with direct arguments
-  const claudeArgs = [prompt, '--dangerously-skip-permissions'];
-  
-  if (options.verbose) {
-    claudeArgs.push('--verbose');
-  }
-  
   console.log('\n📡 Launching claude process...\n');
+  console.log('📋 Instructions:');
+  console.log('1. Claude Code will open');
+  console.log(`2. Copy and paste the prompt from: ${promptFile}`);
+  console.log('3. Or run this command:');
+  console.log(`   cat "${promptFile}" | pbcopy  # Copies to clipboard on macOS`);
+  console.log();
   
-  const claudeProcess = spawn('claude', claudeArgs, {
-    cwd: process.cwd(),
+  // Launch claude with a minimal prompt to start the interface
+  const claudeProcess = spawn('claude', [
+    'Please paste the meta-orchestrator prompt from the file mentioned above.',
+    '--dangerously-skip-permissions'
+  ], {
     env: env,
     stdio: 'inherit'
   });
