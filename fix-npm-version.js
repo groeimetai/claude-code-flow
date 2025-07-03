@@ -84,4 +84,4 @@ console.log('      - npm cache clean --force');
 console.log('      - rm -rf ~/.npm/_npx');
 console.log('   3. Then use: npx claude-flow@latest --version');
 console.log('\n💡 The issue is that npm/npx caches the old version.');
-console.log('   Publishing a new patch version (1.0.71) might be the best solution.');
+console.log('   Publishing a new patch version (2.0.0-enhanced) might be the best solution.');
