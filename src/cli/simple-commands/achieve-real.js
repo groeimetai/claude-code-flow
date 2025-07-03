@@ -230,25 +230,17 @@ function extractSuccessCriteria(goal) {
  */
 async function launchClaudeWithMetaOrchestrator(prompt, goalId, options) {
   const { spawn } = await import('child_process');
-  const claudeArgs = [prompt];
+  const fs = await import('fs/promises');
+  const path = await import('path');
+  const os = await import('os');
   
-  // Always use --dangerously-skip-permissions for full tool access
-  claudeArgs.push('--dangerously-skip-permissions');
-  
-  if (options.verbose) {
-    claudeArgs.push('--verbose');
-  }
-  
-  // Set environment variables for the meta-orchestrator
-  const env = {
-    ...process.env,
-    CLAUDE_META_ORCHESTRATOR: 'true',
-    CLAUDE_GOAL_ID: goalId,
-    CLAUDE_FLOW_MEMORY_ENABLED: 'true',
-    CLAUDE_FLOW_MEMORY_NAMESPACE: `goal_${goalId}`,
-  };
+  // Write the prompt to a temporary file (like SPARC does)
+  const tempDir = os.tmpdir();
+  const promptFile = path.join(tempDir, `achieve-prompt-${goalId}.txt`);
   
   try {
+    await fs.writeFile(promptFile, prompt, 'utf8');
+    
     printSuccess('🚀 Starting autonomous goal achievement loop...');
     console.log();
     console.log('The system will now:');
@@ -261,14 +253,31 @@ async function launchClaudeWithMetaOrchestrator(prompt, goalId, options) {
     console.log('🤖 No manual intervention required - sit back and watch!');
     console.log();
     
-    const claudeProcess = spawn('claude', claudeArgs, {
+    // Set environment variables for the meta-orchestrator
+    const env = {
+      ...process.env,
+      CLAUDE_META_ORCHESTRATOR: 'true',
+      CLAUDE_GOAL_ID: goalId,
+      CLAUDE_FLOW_MEMORY_ENABLED: 'true',
+      CLAUDE_FLOW_MEMORY_NAMESPACE: `goal_${goalId}`,
+    };
+    
+    // Launch claude using cat to pipe the prompt (avoids terminal issues)
+    const claudeProcess = spawn('bash', ['-c', `cat "${promptFile}" | claude --dangerously-skip-permissions`], {
       cwd: process.cwd(),
       env: env,
       stdio: 'inherit',
-      shell: false  // Don't use shell to avoid interpretation issues
+      shell: false
     });
     
-    claudeProcess.on('close', (code) => {
+    claudeProcess.on('close', async (code) => {
+      // Cleanup temp file
+      try {
+        await fs.unlink(promptFile);
+      } catch (err) {
+        // Ignore cleanup errors
+      }
+      
       if (code === 0) {
         printSuccess('✅ Goal achievement process completed!');
         console.log(`Check memory namespace "goal_${goalId}" for results`);
@@ -277,19 +286,33 @@ async function launchClaudeWithMetaOrchestrator(prompt, goalId, options) {
       }
     });
     
-    claudeProcess.on('error', (error) => {
-      printError(`Failed to launch Claude: ${error.message}`);
-      console.log();
-      console.log('Please ensure:');
-      console.log('1. Claude Code is installed (https://claude.ai/code)');
-      console.log('2. The "claude" command is available in your PATH');
+    claudeProcess.on('error', async (error) => {
+      // Cleanup temp file
+      try {
+        await fs.unlink(promptFile);
+      } catch (err) {
+        // Ignore cleanup errors
+      }
+      
+      if (error.code === 'ENOENT') {
+        printError('Claude Code is not installed or not in PATH');
+        console.log('\n📦 To install Claude Code:');
+        console.log('  1. Install via Cursor/VS Code extension');
+        console.log('  2. Or download from: https://claude.ai/code');
+        console.log('\n💡 Alternatively, copy this prompt to use manually:');
+        console.log('\n' + '─'.repeat(60));
+        console.log(prompt);
+        console.log('─'.repeat(60));
+      } else {
+        printError(`Failed to launch Claude Code: ${error.message}`);
+      }
     });
     
   } catch (error) {
-    printError(`Failed to launch Claude: ${error.message}`);
-    console.log();
-    console.log('Please ensure:');
-    console.log('1. Claude Code is installed (https://claude.ai/code)');
-    console.log('2. The "claude" command is available in your PATH');
+    printError(`Failed to create prompt file: ${error.message}`);
+    console.log('\n💡 Fallback - copy this prompt to use manually:');
+    console.log('\n' + '─'.repeat(60));
+    console.log(prompt);
+    console.log('─'.repeat(60));
   }
 }

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-07-03T13:05:04.285Z",
+  "timestamp": "2025-07-03T13:06:54.032Z",
   "version": "1.0",
   "entries": [
     {
@@ -61,23 +61,43 @@
       "checksum": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
       "references": [],
       "dependencies": []
+    },
+    {
+      "id": "entry_mcnegp8s_i0s5hxjie",
+      "key": "goal/1751547759873-jsqko5bf9/requirements",
+      "value": "{\"functionalRequirements\":{\"basicOperations\":[\"Addition (a + b)\",\"Subtraction (a - b)\",\"Multiplication (a × b)\",\"Division (a ÷ b with zero handling)\"],\"advancedOperations\":[\"Power (a^b)\",\"Square root (√a)\",\"Percentage calculations\",\"Memory functions (M+, M-, MR, MC)\",\"History of calculations\"],\"userInterface\":[\"Command-line interface (CLI)\",\"Interactive prompt mode\",\"Batch calculation mode\",\"Expression parser for complex calculations\"],\"inputHandling\":[\"Validate numeric inputs\",\"Handle decimal numbers\",\"Support negative numbers\",\"Parse mathematical expressions\",\"Error handling for invalid inputs\"]},\"nonFunctionalRequirements\":{\"performance\":[\"Response time < 100ms for calculations\",\"Support for large numbers (BigInt)\",\"Efficient memory usage\"],\"reliability\":[\"Graceful error handling\",\"Input validation\",\"Divide by zero protection\",\"Overflow/underflow detection\"],\"usability\":[\"Clear error messages\",\"Help documentation\",\"Intuitive command structure\",\"Calculation history\"],\"maintainability\":[\"Modular architecture\",\"Unit tests with >90% coverage\",\"Integration tests\",\"Performance benchmarks\",\"Clear documentation\"]},\"additionalFeatures\":[\"Scientific notation support\",\"Constants (π, e)\",\"Trigonometric functions (future)\",\"Logarithmic functions (future)\",\"Unit conversions (future)\"]}",
+      "type": "object",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-07-03T13:06:54.028Z",
+      "updatedAt": "2025-07-03T13:06:54.028Z",
+      "lastAccessedAt": "2025-07-03T13:06:54.028Z",
+      "version": 1,
+      "size": 1425,
+      "compressed": true,
+      "checksum": "2cd5749fe8fcfa928a34f8c4dfdf63b5d3962636d654dfd6f80ea1ca1138b331",
+      "references": [],
+      "dependencies": []
     }
   ],
   "statistics": {
     "overview": {
-      "totalEntries": 3,
-      "totalSize": 97,
-      "compressedEntries": 0,
-      "compressionRatio": 1,
-      "indexSize": 150,
-      "memoryUsage": 7055568,
+      "totalEntries": 4,
+      "totalSize": 1522,
+      "compressedEntries": 1,
+      "compressionRatio": -13.690721649484535,
+      "indexSize": 200,
+      "memoryUsage": 7125736,
       "diskUsage": 0
     },
     "distribution": {
       "byNamespace": {
         "default": {
-          "count": 3,
-          "size": 97
+          "count": 4,
+          "size": 1522
         }
       },
       "byType": {
@@ -88,31 +108,35 @@
         "number": {
           "count": 2,
           "size": 60
+        },
+        "object": {
+          "count": 1,
+          "size": 1425
         }
       },
       "byOwner": {
         "system": {
-          "count": 3,
-          "size": 97
+          "count": 4,
+          "size": 1522
         }
       },
       "byAccessLevel": {
         "shared": {
-          "count": 3,
-          "size": 97
+          "count": 4,
+          "size": 1522
         }
       }
     },
     "temporal": {
-      "entriesCreatedLast24h": 3,
-      "entriesUpdatedLast24h": 3,
-      "entriesAccessedLast24h": 3,
+      "entriesCreatedLast24h": 4,
+      "entriesUpdatedLast24h": 4,
+      "entriesAccessedLast24h": 4,
       "oldestEntry": "2025-07-03T13:05:01.173Z",
-      "newestEntry": "2025-07-03T13:05:04.283Z"
+      "newestEntry": "2025-07-03T13:06:54.028Z"
     },
     "performance": {
       "averageQueryTime": 0,
-      "averageWriteTime": 0,
+      "averageWriteTime": 1,
       "cacheHitRatio": 0,
       "indexEfficiency": 0.95
     },
