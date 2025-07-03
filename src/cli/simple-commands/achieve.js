@@ -182,8 +182,8 @@ You MUST follow this iterative process until the goal is achieved:
    \`\`\`
    
    EVALUATE RESULTS:
-   - Review logs: `cat swarm_logs/iteration_${iteration}/*.log`
-   - Check created files: `find . -newer SWARM_COORDINATION.md -type f`
+   - Review logs: \`cat swarm_logs/iteration_\${iteration}/*.log\`
+   - Check created files: \`find . -newer SWARM_COORDINATION.md -type f\`
    - Review todos: Use TodoRead to see completed work
    - Read team reports: Check all .md files created by swarms
    - Calculate progress based on concrete deliverables
