@@ -25,16 +25,18 @@ git clone https://github.com/groeimetai/claude-code-flow.git
 cd claude-code-flow
 npm install
 
-# Run autonomous goal achievement
+# Run autonomous goal achievement (requires Claude Code installed)
 ./claude-flow achieve "Create a URL shortener service with analytics"
 
-# Watch as it automatically:
-# ✅ Designs the architecture
-# ✅ Builds the service
-# ✅ Adds analytics
-# ✅ Creates tests
-# ✅ Fixes any issues
-# ✅ Delivers working code
+# What happens:
+# 1. Launches Claude Code with meta-orchestrator prompt
+# 2. Claude analyzes your goal and creates a plan
+# 3. Spawns specialized swarms iteratively
+# 4. Uses cognitive triangulation for understanding
+# 5. Self-corrects and improves with each iteration
+# 6. Continues until goal is achieved (95% threshold)
+
+# No manual intervention required!
 ```
 
 ### Option 2: NPX for Other Commands
@@ -98,15 +100,23 @@ npm install
 
 ### 🎯 **Autonomous Goal Achievement** (NEW!)
 ```bash
-# Just tell it what you want - it handles EVERYTHING
-npx github:groeimetai/claude-code-flow achieve "Create a profitable trading system"
+# Clone and run locally (required for achieve command)
+git clone https://github.com/groeimetai/claude-code-flow.git
+cd claude-code-flow
+npm install
 
-# The system will automatically:
-# 1. Research and design architecture
-# 2. Spawn specialized swarms
-# 3. Build and test iteratively
-# 4. Fix issues autonomously
-# 5. Deliver working solution
+# Launch autonomous goal achievement
+./claude-flow achieve "Create a profitable trading system"
+
+# The system launches Claude Code with a meta-orchestrator that:
+# 1. Analyzes your goal and extracts success criteria
+# 2. Creates an iterative loop of swarm orchestration
+# 3. Each iteration builds on previous progress
+# 4. Uses ALL available tools (cognitive triangulation, neural swarms, etc.)
+# 5. Continues until 95% success threshold is reached
+# 6. No manual intervention - fully autonomous!
+
+# Requires Claude Code to be installed: https://claude.ai/code
 ```
 
 ### 🧠 **Cognitive Triangulation Usage**
