@@ -1,10 +1,10 @@
 #!/usr/bin/env -S deno run --allow-all
 /**
- * Achieve Command - Deno version that works like swarm and sparc
- * Launches Claude Code with Meta-Orchestrator Loop
+ * Achieve Command - Spawns multiple swarms for autonomous goal achievement
+ * Uses the same Deno execution model as swarm.js for consistency
  */
 
-import { printSuccess, printError, printWarning } from '../utils.js';
+import { generateId } from "../../utils/helpers.js";
 
 export async function achieveCommand(subArgs, flags) {
   const goal = subArgs.join(' ');
@@ -15,608 +15,520 @@ export async function achieveCommand(subArgs, flags) {
     return;
   }
 
-  printSuccess('🎯 Claude-Flow Meta-Orchestrator: Autonomous Goal Achievement');
+  console.log('🎯 Claude-Flow Swarm-of-Swarms: Autonomous Goal Achievement');
   console.log(`Goal: ${goal}`);
   console.log('─'.repeat(60));
   
-  const goalId = `goal_${Math.random().toString(36).substring(2, 11)}_${Math.random().toString(36).substring(2, 11)}`;
+  const achievementId = generateId('achieve');
   const maxIterations = parseInt(flags.maxIterations || flags['max-iterations'] || '10');
   const convergenceThreshold = parseFloat(flags.convergence || '0.95');
+  const swarmsPerIteration = parseInt(flags.swarmsPerIteration || flags['swarms-per-iteration'] || '3');
   
-  // Create the meta-orchestrator prompt
-  const metaPrompt = generateMetaOrchestratorPrompt({
+  // Create achievement directory
+  const achieveDir = `./achieve-runs/${achievementId}`;
+  await Deno.mkdir(achieveDir, { recursive: true });
+  
+  // Initialize achievement state
+  const state = {
     goal,
-    goalId,
-    maxIterations,
-    convergenceThreshold,
-    enableParallel: flags.parallel,
-    autoEvolve: !flags.noEvolve && !flags['no-evolve'],
-    budget: flags.budget,
-    deadline: flags.deadline
-  });
-
+    achievementId,
+    iteration: 0,
+    progress: 0,
+    swarmHistory: [],
+    learnings: [],
+    artifacts: [],
+    startTime: new Date().toISOString()
+  };
+  
+  await saveState(achieveDir, state);
+  
   if (flags.dryRun || flags.d || flags['dry-run']) {
-    printWarning('DRY RUN - Meta-Orchestrator Configuration:');
-    console.log(`Goal ID: ${goalId}`);
+    console.log('\n⚠️  DRY RUN - Swarm-of-Swarms Configuration:');
+    console.log(`Achievement ID: ${achievementId}`);
     console.log(`Max Iterations: ${maxIterations}`);
     console.log(`Convergence Threshold: ${convergenceThreshold}`);
-    console.log(`Parallel Swarms: ${flags.parallel || false}`);
-    console.log(`Auto Evolution: ${!flags.noEvolve && !flags['no-evolve']}`);
+    console.log(`Swarms per Iteration: ${swarmsPerIteration}`);
+    console.log(`Max Agents per Swarm: ${flags.maxAgents || flags['max-agents'] || 5}`);
     console.log();
-    console.log('Meta-orchestrator prompt preview:');
-    console.log(metaPrompt.substring(0, 500) + '...');
-    console.log();
-    console.log('This would launch Claude Code with the meta-orchestrator loop');
+    console.log('This would spawn real swarm processes in parallel');
     return;
   }
 
-  // Launch Claude Code with the meta-orchestrator prompt
-  printSuccess('Launching Claude Code with Meta-Orchestrator...');
-  console.log(`📝 Goal ID: ${goalId}`);
+  console.log('\n📝 Starting autonomous achievement loop...');
+  console.log(`📝 Achievement ID: ${achievementId}`);
   console.log(`🔄 Max Iterations: ${maxIterations}`);
   console.log(`🎯 Success Threshold: ${Math.round(convergenceThreshold * 100)}%`);
+  console.log(`🐝 Swarms per Iteration: ${swarmsPerIteration}`);
   console.log();
 
-  // Execute Claude using same pattern as SPARC
-  await executeClaude(metaPrompt, goalId, subArgs, flags);
-}
-
-/**
- * Generate the meta-orchestrator prompt that creates the autonomous loop
- */
-function generateMetaOrchestratorPrompt(config) {
-  return `# 🎯 META-ORCHESTRATOR: Autonomous Goal Achievement Loop
-
-You are a META-ORCHESTRATOR with a critical mission: autonomously achieve the following goal through iterative swarm orchestration.
-
-## YOUR GOAL
-${config.goal}
-
-## META-ORCHESTRATOR CONFIGURATION
-- Goal ID: ${config.goalId}
-- Max Iterations: ${config.maxIterations}
-- Success Threshold: ${Math.round(config.convergenceThreshold * 100)}%
-- Parallel Swarms: ${config.enableParallel ? 'Enabled' : 'Disabled'}
-- Auto Evolution: ${config.autoEvolve ? 'Enabled' : 'Disabled'}
-${config.budget ? `- Budget Limit: ${config.budget}` : ''}
-${config.deadline ? `- Deadline: ${config.deadline}` : ''}
-
-## YOUR AUTONOMOUS LOOP
-
-You MUST follow this iterative process until the goal is achieved:
-
-### ITERATION LOOP (Repeat until success or max iterations)
-
-1. **ANALYZE CURRENT STATE**
-   - Use memory get "goal/${config.goalId}/progress" to check current progress
-   - If first iteration, progress = 0
-   - Use cognitive_triangulation tools to understand the project state
-
-2. **DETERMINE NEXT ACTION**
-   Based on progress:
-   - 0-30%: Focus on research, architecture, and foundation
-   - 30-60%: Core implementation and feature development
-   - 60-80%: Testing, optimization, and refinement
-   - 80-95%: Polish, documentation, and edge cases
-   - 95%+: Final validation and delivery
-
-3. **SPAWN PARALLEL SWARM**
-   Create MULTIPLE agents working in parallel based on current needs:
-   
-   Example for development phase (30-60% progress):
-   \`\`\`
-   // Spawn multiple agents concurrently
-   Task("Frontend Developer", "Build UI components based on TodoRead state. Focus on: {specific_ui_tasks}");
-   Task("Backend Developer", "Implement API endpoints. Check TodoRead for requirements. Focus on: {specific_api_tasks}");
-   Task("Test Engineer", "Write tests for completed features. Use TodoRead to track what's done. Focus on: {specific_test_tasks}");
-   Task("Code Reviewer", "Review and optimize implemented code. Check for patterns and improvements.");
-   \`\`\`
-   
-   Example for research phase (0-30% progress):
-   \`\`\`
-   Task("Research Analyst", "Research best practices for: {technology_stack}. Store findings in todos.");
-   Task("Architecture Designer", "Design system architecture based on requirements. Create diagrams.");
-   Task("Technology Scout", "Evaluate tools and libraries. Compare options and make recommendations.");
-   Task("Requirements Analyst", "Break down the goal into concrete requirements and success criteria.");
-   \`\`\`
-   
-   IMPORTANT - META-SWARM PATTERN:
-   Instead of individual Task() calls, spawn MULTIPLE SWARMS:
-   
-   \`\`\`
-   // Create iteration plan (replace X with iteration number)
-   Write("ITERATION_X_PLAN.md", "Define goals and team assignments for this iteration");
-   
-   // Launch parallel swarms - each is a separate process!
-   Bash("./claude-flow swarm 'Research Swarm: investigate best practices' --strategy research --max-agents 4 --background");
-   Bash("./claude-flow swarm 'Development Swarm: implement core features' --strategy development --max-agents 4 --background"); 
-   Bash("./claude-flow swarm 'Testing Swarm: create test suite' --strategy testing --max-agents 3 --background");
-   
-   // Monitor all swarms
-   Bash("./claude-flow swarm status --watch");
-   
-   // Swarms automatically:
-   - Run in separate processes (TRUE PARALLELISM!)
-   - Share state through .md files and todos
-   - Have their own internal agent coordination
-   - Can spawn sub-swarms if needed
-   \`\`\`
-   
-   BENEFITS:
-   - True parallel execution (multiple processes)
-   - Each swarm has 3-5 agents working on related tasks
-   - Total parallelism: 3 swarms × 4 agents = 12 parallel workers
-   - Swarms coordinate through shared documentation
-   - You can monitor all swarms with status commands
-   
-   LIVE COORDINATION:
-   - Just like 'swarm' command, agents see each other's work IMMEDIATELY
-   - Use TodoRead frequently to check what others have done
-   - Update todos immediately after completing work
-   - React to other agents' discoveries and adjust approach
-   
-   DOCUMENTATION & KNOWLEDGE SHARING:
-   - Create .md files for persistent documentation
-   - Write SWARM_COORDINATION.md to track overall progress
-   - Create ARCHITECTURE.md when designing systems
-   - Write PLAN.md for iteration planning
-   - Create API_SPEC.md, TESTING_STRATEGY.md, etc. as needed
-   - Other agents can Read these .md files for context
-
-4. **MONITOR & EVALUATE**
-   
-   REAL-TIME MONITORING:
-   \`\`\`
-   // Create monitoring dashboard
-   Write("SWARM_MONITOR.md", "# Swarm Activity Dashboard\\n\\nUpdated: " + new Date().toISOString());
-   
-   // Display live logs from all swarms
-   Bash("echo '🔍 Live Swarm Activity Feed:'");
-   Bash("tail -f swarm_logs/iteration_*/\\*.log | while read line; do echo \"[$(date +%H:%M:%S)] $line\"; done &");
-   
-   // Show swarm status every 30 seconds
-   Bash("watch -n 30 './claude-flow swarm status --all'");
-   
-   // Track file changes
-   Bash("find . -name '*.md' -o -name '*.js' -o -name '*.py' | entr -c echo 'Files updated by swarms!'");
-   \`\`\`
-   
-   EVALUATE RESULTS:
-   - Review logs: \`cat swarm_logs/iteration_X/*.log\` (replace X with current iteration)
-   - Check created files: \`find . -newer SWARM_COORDINATION.md -type f\`
-   - Review todos: Use TodoRead to see completed work
-   - Read team reports: Check all .md files created by swarms
-   - Calculate progress based on concrete deliverables
-   - Check if goal is achieved (progress >= convergence threshold)
-
-5. **ITERATE OR COMPLETE**
-   - If goal achieved: Prepare final deliverables and exit
-   - If not achieved and iterations < ${config.maxIterations}: Go to step 1
-   - If max iterations reached: Report best effort results
-
-## SWARM COORDINATION PATTERNS
-
-Choose the right pattern based on your goal:
-
-1. **PARALLEL DEVELOPMENT** (for apps/systems)
-   - Frontend, Backend, Database, DevOps agents working simultaneously
-   - Shared interface definitions in todos
-
-2. **RESEARCH SWARM** (for analysis/exploration)
-   - Multiple researchers exploring different aspects
-   - Synthesizer agent to combine findings
-
-3. **ITERATIVE REFINEMENT** (for optimization)
-   - Implementer, Tester, Optimizer agents in tight loops
-   - Continuous improvement cycles
-
-4. **HIERARCHICAL SWARM** (for complex projects)
-   - Lead architect spawns specialized sub-swarms
-   - Each sub-swarm handles a component
-   
-5. **MULTI-COORDINATOR PATTERN** (for very complex goals)
-   Example for large system:
-   \`\`\`
-   // Multiple coordinators managing different domains
-   Task("Frontend Coordinator", "Manage UI team. Spawn agents for: components, styling, state management. Sync with Backend Coordinator via todos.");
-   Task("Backend Coordinator", "Manage API team. Spawn agents for: endpoints, database, auth. Sync with Frontend Coordinator via todos.");
-   Task("DevOps Coordinator", "Manage infrastructure team. Spawn agents for: CI/CD, monitoring, deployment. Sync with other coordinators.");
-   Task("QA Coordinator", "Manage testing team. Spawn agents for: unit tests, integration, E2E. Monitor all coordinators' work.");
-   \`\`\`
-   
-   MULTI-COORDINATOR BENEFITS:
-   - Each coordinator manages 3-5 specialized agents
-   - Coordinators sync through shared todos
-   - Total parallelism: 4 coordinators × 4 agents = 16 parallel workers
-   - Coordinators can see ALL todos from ALL agents in real-time
-
-## LOGGING & MONITORING
-
-The meta-orchestrator provides comprehensive logging:
-
-1. **Swarm Logs** - Each swarm writes to its own log file:
-   - \`swarm_logs/iteration_1/research_swarm_1.log\`
-   - \`swarm_logs/iteration_1/development_swarm.log\`
-   - Shows all agent activities, file creations, decisions
-
-2. **Live Monitoring** - Real-time activity feeds:
-   - \`tail -f\` shows live updates from all swarms
-   - \`watch\` displays swarm status updates
-   - File change notifications
-
-3. **Consolidated Reports**:
-   - \`ITERATION_X_FULL_LOG.md\` - Complete activity log
-   - \`SWARM_MONITOR.md\` - Live dashboard
-   - \`SWARM_RESULTS.md\` - Summary of achievements
-
-To view swarm activities:
-\`\`\`
-// See what a specific swarm is doing
-Bash("tail -100 swarm_logs/iteration_1/research_swarm_1.log");
-
-// Watch all swarms live
-Bash("tail -f swarm_logs/iteration_*/*.log");
-
-// Get swarm status
-Bash("./claude-flow swarm status --all");
-\`\`\`
-
-## STANDARD DOCUMENTATION FILES
-
-Create these .md files as you work:
-
-1. **SWARM_COORDINATION.md** - Overall swarm progress and decisions
-   - Current iteration and progress %
-   - Active agents and their missions
-   - Key decisions and rationale
-   - Blockers and solutions
-
-2. **ARCHITECTURE.md** - System design (for development goals)
-   - Component structure
-   - Data flow diagrams
-   - Technology choices
-   - Integration points
-
-3. **PLAN.md** - Iteration planning
-   - Goals for current iteration
-   - Task breakdown
-   - Success criteria
-   - Risk mitigation
-
-4. **LEARNINGS.md** - Knowledge accumulation
-   - What worked well
-   - What didn't work
-   - Optimization opportunities
-   - Patterns discovered
-
-## IMPORTANT: PARALLELISM IN CLAUDE FLOW
-
-Claude Flow's Task() tool executes SEQUENTIALLY, not in parallel. For each iteration:
-- Agents are called one after another, not simultaneously
-- They share state through todos and .md files between calls
-- This is by design - Claude Code can only run one task at a time
-
-To maximize efficiency despite sequential execution:
-1. Create comprehensive task lists in TodoWrite first
-2. Each agent should check TodoRead for work assignments
-3. Agents update todos immediately after completing work
-4. Use .md files for persistent documentation between agents
-
-RECOMMENDED: Spawn multiple swarms for true parallel execution:
-\`\`\`
-// Launch multiple swarms simultaneously - each swarm runs in its own process!
-Bash("./claude-flow swarm 'Research Team: Analyze compact LLM architectures' --strategy research --max-agents 3 --background");
-Bash("./claude-flow swarm 'Architecture Team: Design optimal model structure' --strategy development --max-agents 3 --background");
-Bash("./claude-flow swarm 'Documentation Team: Create comprehensive docs' --strategy analysis --max-agents 2 --background");
-
-// Check swarm status
-Bash("./claude-flow swarm status");
-
-// Swarms coordinate through shared .md files and todos
-\`\`\`
-
-## CRITICAL INSTRUCTIONS
-
-1. **REAL WORK ONLY** - Actually implement solutions, don't simulate
-2. **SEQUENTIAL EXECUTION** - Agents run one after another, sharing state via todos/files
-3. **SHARED STATE** - All agents coordinate through TodoRead/TodoWrite AND .md files
-4. **EFFICIENT TASK DESIGN** - Design tasks to minimize dependencies between agents
-5. **DOCUMENT EVERYTHING** - Create .md files for persistent knowledge
-6. **SELF-IMPROVE** - Each iteration learns from previous swarms via LEARNINGS.md
-
-## AVAILABLE ENHANCED TOOLS
-
-You have access to ALL tools including:
-- **Cognitive Triangulation**: analyze_codebase, extract_pois, build_graph
-- **Neural Swarms**: spawn_cognitive_agent, neural_forecast
-- **Autonomous Agents**: create_agent, execute_mrap
-- **Standard Tools**: All file operations, web search, memory, etc.
-
-### WHEN TO USE ADVANCED TOOLS:
-
-1. **COGNITIVE TRIANGULATION** (as codebase grows):
-   - When project has 10+ files: Use analyze_codebase for navigation
-   - When debugging complex issues: Use extract_pois to find key functions
-   - When refactoring: Use build_graph to understand dependencies
-   - ALWAYS use for large codebases to maintain overview
-
-2. **NEURAL SWARMS** (for ML/AI projects):
-   - When goal involves prediction or forecasting
-   - For pattern recognition tasks
-   - When optimizing complex systems
-   - For adaptive learning requirements
-
-3. **AUTONOMOUS AGENTS** (for self-improving systems):
-   - When agents need to evolve strategies
-   - For long-running optimization tasks
-   - When building self-aware systems
-   - For meta-learning scenarios
-
-## SUCCESS CRITERIA EXTRACTION
-
-Analyze the goal and extract concrete success criteria. For "${config.goal}":
-${extractSuccessCriteria(config.goal)}
-
-## START THE LOOP NOW
-
-Begin with iteration 1. Remember: You're not simulating - you're actually achieving this goal!
-
-IMPORTANT: Skip memory initialization - we'll use TodoWrite for state tracking instead.
-
-Initial state (already initialized):
-- Goal ID: ${config.goalId}
-- Status: active
-- Iteration: 1
-- Progress: 0%
-
-EXAMPLE META-SWARM PATTERN:
-\`\`\`
-// First, create coordination documents
-Write("SWARM_COORDINATION.md", "# Meta-Orchestrator Progress\\n\\nGoal: Create calculator\\nIteration: 1\\nProgress: 0%");
-Write("ITERATION_1_PLAN.md", "# Iteration 1 Plan\\n\\n## Swarm Assignments\\n- Research Swarm: UI patterns\\n- Dev Swarm: Core logic\\n- Test Swarm: Test suite");
-
-// Launch multiple swarms in parallel with LOGGING
-// Each swarm runs in its own process and logs its activities
-
-// Create log directory for current iteration
-Bash("mkdir -p swarm_logs/iteration_1");
-
-// For research phase (0-30%), spawn research swarms:
-Bash("./claude-flow swarm 'Research calculator UI patterns and best practices' --strategy research --max-agents 4 --background --verbose > swarm_logs/iteration_1/research_swarm_1.log 2>&1 &");
-Bash("./claude-flow swarm 'Analyze calculator requirements and edge cases' --strategy analysis --max-agents 3 --background --verbose > swarm_logs/iteration_1/analysis_swarm.log 2>&1 &");
-
-// For development phase (30-60%), spawn development swarms:
-Bash("./claude-flow swarm 'Build calculator UI components' --strategy development --max-agents 5 --background --verbose > swarm_logs/iteration_1/development_swarm.log 2>&1 &");
-Bash("./claude-flow swarm 'Implement calculator logic and operations' --strategy development --max-agents 4 --background --verbose > swarm_logs/iteration_1/logic_swarm.log 2>&1 &");
-Bash("./claude-flow swarm 'Create calculator test suite' --strategy testing --max-agents 3 --background --verbose > swarm_logs/iteration_1/testing_swarm.log 2>&1 &");
-
-// Monitor and display swarm progress
-Bash("echo '📊 Monitoring swarm activities...'");
-Bash("tail -f swarm_logs/iteration_1/*.log | grep -E '(Starting agent|Completing task|Created file|Updated|Error)' &");
-
-// Periodically check status
-Bash("for i in {1..12}; do sleep 5; echo '\\n=== Swarm Status Update ==='; ./claude-flow swarm status --all; done");
-
-// After swarms complete, consolidate logs
-Bash("cat swarm_logs/iteration_1/*.log > ITERATION_1_FULL_LOG.md");
-
-// Consolidate results
-TodoWrite([{
-  id: "consolidate_iteration",
-  content: "Review SWARM_RESULTS.md and all team outputs. Update progress percentage.",
-  status: "pending",
-  priority: "high"
-}]);
-\`\`\`
-
-Start immediately by spawning your first PARALLEL swarm to begin!`;
-}
-
-/**
- * Extract success criteria from goal description
- */
-function extractSuccessCriteria(goal) {
-  const criteria = [];
-  
-  // Common patterns
-  if (goal.toLowerCase().includes('profitable') || goal.toLowerCase().includes('winstgevend')) {
-    criteria.push('- System generates positive returns/profit');
-    criteria.push('- Risk management is implemented');
-    criteria.push('- Backtesting shows consistent results');
-  }
-  
-  if (goal.toLowerCase().includes('trading')) {
-    criteria.push('- Can execute buy/sell orders');
-    criteria.push('- Real-time market data integration');
-    criteria.push('- Stop-loss and take-profit mechanisms');
-  }
-  
-  if (goal.toLowerCase().includes('api')) {
-    criteria.push('- RESTful endpoints implemented');
-    criteria.push('- Authentication and authorization');
-    criteria.push('- Error handling and validation');
-    criteria.push('- API documentation generated');
-  }
-  
-  if (goal.toLowerCase().includes('calculator')) {
-    criteria.push('- Basic operations work correctly (add, subtract, multiply, divide)');
-    criteria.push('- User interface is intuitive and responsive');
-    criteria.push('- Edge cases handled (division by zero, overflow)');
-    criteria.push('- Clear/reset functionality works');
-    criteria.push('- Tests validate all operations');
-  }
-  
-  if (goal.toLowerCase().includes('test')) {
-    criteria.push('- Test coverage > 80%');
-    criteria.push('- All tests passing');
-    criteria.push('- Integration tests included');
-  }
-  
-  // Default criteria
-  criteria.push('- Code is production-ready');
-  criteria.push('- Documentation is complete');
-  criteria.push('- Deployment instructions provided');
-  
-  return criteria.join('\n');
-}
-
-async function executeClaude(enhancedTask, goalId, subArgs, flags) {
-  // Build arguments array using same pattern as SPARC
-  const claudeArgs = [];
-  claudeArgs.push(enhancedTask);
-  
-  // Add --dangerously-skip-permissions by default
-  claudeArgs.push('--dangerously-skip-permissions');
-  
-  if (flags.verbose || flags.v) {
-    claudeArgs.push('--verbose');
-  }
-  
-  console.log('\n🚀 Starting autonomous goal achievement loop...');
-  console.log();
-  console.log('The system will now:');
-  console.log('1. Analyze your goal and create a plan');
-  console.log('2. Spawn specialized swarms iteratively');
-  console.log('3. Use cognitive triangulation for understanding');
-  console.log('4. Self-correct and improve with each iteration');
-  console.log('5. Continue until goal is achieved');
-  console.log();
-  console.log('🤖 No manual intervention required - sit back and watch!');
-  console.log();
-  
-  try {
-    const command = new Deno.Command('claude', {
-      args: claudeArgs,
-      cwd: Deno.cwd(),
-      env: {
-        ...Deno.env.toObject(),
-        CLAUDE_META_ORCHESTRATOR: 'true',
-        CLAUDE_GOAL_ID: goalId,
-        CLAUDE_FLOW_MEMORY_ENABLED: 'true',
-        CLAUDE_FLOW_MEMORY_NAMESPACE: `goal_${goalId}`,
-      },
-      stdin: 'inherit',
-      stdout: 'inherit',
-      stderr: 'inherit',
+  // Main achievement loop
+  for (let iteration = 1; iteration <= maxIterations && state.progress < convergenceThreshold; iteration++) {
+    console.log(`\n🔄 Iteration ${iteration}/${maxIterations} - Current Progress: ${Math.round(state.progress * 100)}%`);
+    
+    state.iteration = iteration;
+    
+    // Determine objectives for this iteration
+    const objectives = await planIterationObjectives(state, swarmsPerIteration);
+    
+    console.log('\n📋 Objectives for this iteration:');
+    objectives.forEach((obj, i) => {
+      console.log(`  ${i + 1}. ${obj.description} (${obj.strategy})`);
     });
     
-    console.log('\n📡 Spawning claude process...\n');
-    const child = command.spawn();
-    const status = await child.status;
+    // Spawn swarms in parallel
+    const swarmPromises = objectives.map(obj => 
+      spawnSwarm(obj, achieveDir, iteration, flags)
+    );
     
-    if (status.success) {
-      printSuccess(`✅ Goal achievement process completed!`);
-      console.log(`Check memory namespace "goal_${goalId}" for results`);
-    } else {
-      printError(`Process exited with code ${status.code}`);
+    console.log(`\n🚀 Spawning ${objectives.length} swarms in parallel...`);
+    
+    // Wait for all swarms to complete
+    const swarmResults = await Promise.all(swarmPromises);
+    
+    // Process results
+    const iterationResults = await processSwarmResults(swarmResults, achieveDir);
+    
+    // Update state based on results
+    state.progress = calculateProgress(state, iterationResults);
+    state.learnings.push(...iterationResults.learnings);
+    state.artifacts.push(...iterationResults.artifacts);
+    state.swarmHistory.push({
+      iteration,
+      swarms: swarmResults.map(r => r.swarmId),
+      progress: state.progress,
+      learnings: iterationResults.learnings
+    });
+    
+    await saveState(achieveDir, state);
+    
+    // Show iteration summary
+    console.log(`\n📊 Iteration ${iteration} Summary:`);
+    console.log(`  - Progress: ${Math.round(state.progress * 100)}%`);
+    console.log(`  - Learnings: ${iterationResults.learnings.length}`);
+    console.log(`  - Artifacts: ${iterationResults.artifacts.length}`);
+    
+    if ((flags.verbose || flags.v) && iterationResults.learnings.length > 0) {
+      console.log('\n💡 Key Learnings:');
+      iterationResults.learnings.slice(0, 3).forEach(l => {
+        console.log(`  - ${l}`);
+      });
     }
+  }
+  
+  // Final results
+  console.log('\n' + '═'.repeat(60));
+  
+  if (state.progress >= convergenceThreshold) {
+    console.log('✅ GOAL ACHIEVED!');
+  } else {
+    console.log('⚠️  PARTIAL SUCCESS');
+  }
+  
+  console.log(`\n📈 Final Results:`);
+  console.log(`  - Final Progress: ${Math.round(state.progress * 100)}%`);
+  console.log(`  - Iterations Used: ${state.iteration}`);
+  console.log(`  - Total Swarms Spawned: ${state.swarmHistory.reduce((sum, h) => sum + h.swarms.length, 0)}`);
+  console.log(`  - Total Learnings: ${state.learnings.length}`);
+  console.log(`  - Total Artifacts: ${state.artifacts.length}`);
+  console.log(`  - Results saved to: ${achieveDir}`);
+  
+  // Save final state
+  state.endTime = new Date().toISOString();
+  state.success = state.progress >= convergenceThreshold;
+  await saveState(achieveDir, state);
+  
+  console.log(`\n🏁 Achievement ${achievementId} completed`);
+}
+
+/**
+ * Plan objectives for the current iteration based on progress
+ */
+async function planIterationObjectives(state, swarmsPerIteration) {
+  const objectives = [];
+  const phase = getPhase(state.progress);
+  
+  switch (phase) {
+    case 'exploration':
+      // Early phase: research and architecture
+      objectives.push({
+        description: `Research best practices for: ${state.goal}`,
+        strategy: 'research',
+        priority: 'high'
+      });
+      objectives.push({
+        description: `Design system architecture for: ${state.goal}`,
+        strategy: 'development',
+        priority: 'high'
+      });
+      objectives.push({
+        description: `Analyze requirements and constraints for: ${state.goal}`,
+        strategy: 'analysis',
+        priority: 'medium'
+      });
+      break;
+      
+    case 'implementation':
+      // Mid phase: build core functionality
+      objectives.push({
+        description: `Implement core features for: ${state.goal}`,
+        strategy: 'development',
+        priority: 'high'
+      });
+      objectives.push({
+        description: `Create test suite for implemented features`,
+        strategy: 'testing',
+        priority: 'high'
+      });
+      objectives.push({
+        description: `Optimize performance and architecture`,
+        strategy: 'optimization',
+        priority: 'medium'
+      });
+      break;
+      
+    case 'refinement':
+      // Late phase: polish and validate
+      objectives.push({
+        description: `Perform comprehensive testing and validation`,
+        strategy: 'testing',
+        priority: 'high'
+      });
+      objectives.push({
+        description: `Create documentation and deployment guides`,
+        strategy: 'maintenance',
+        priority: 'high'
+      });
+      objectives.push({
+        description: `Final optimization and edge case handling`,
+        strategy: 'optimization',
+        priority: 'medium'
+      });
+      break;
+  }
+  
+  // Add learnings-based objectives
+  if (state.learnings.length > 0) {
+    const recentLearning = state.learnings[state.learnings.length - 1];
+    objectives.push({
+      description: `Apply learning: ${recentLearning}`,
+      strategy: 'development',
+      priority: 'high'
+    });
+  }
+  
+  // Return only the requested number of objectives
+  return objectives
+    .sort((a, b) => {
+      const priorityOrder = { high: 0, medium: 1, low: 2 };
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    })
+    .slice(0, swarmsPerIteration);
+}
+
+/**
+ * Spawn a single swarm process using the same method as swarm.js
+ */
+async function spawnSwarm(objective, achieveDir, iteration, flags) {
+  const swarmId = generateId('swarm');
+  const swarmDir = `${achieveDir}/swarms/iteration-${iteration}/${swarmId}`;
+  await Deno.mkdir(swarmDir, { recursive: true });
+  
+  console.log(`  🐝 Spawning swarm ${swarmId}...`);
+  
+  // Build swarm command arguments
+  const swarmArgs = [
+    'swarm',
+    objective.description,
+    '--strategy', objective.strategy,
+    '--max-agents', flags.maxAgents || flags['max-agents'] || '5',
+    '--parallel',  // Always use parallel for better performance
+    '--persistence',  // Enable persistence
+    '--memory-namespace', `achieve_${swarmId}`
+  ];
+  
+  if (flags.monitor) {
+    swarmArgs.push('--monitor');
+  }
+  
+  // Get the path to claude-flow binary
+  const scriptPath = new URL(import.meta.url).pathname;
+  const projectRoot = scriptPath.substring(0, scriptPath.indexOf('/src/'));
+  const claudeFlowBin = `${projectRoot}/bin/claude-flow`;
+  
+  // Log the command
+  const commandLog = `${claudeFlowBin} ${swarmArgs.join(' ')}`;
+  await Deno.writeTextFile(`${swarmDir}/command.txt`, commandLog);
+  
+  // Create log files
+  const stdoutPath = `${swarmDir}/stdout.log`;
+  const stderrPath = `${swarmDir}/stderr.log`;
+  
+  // Create a wrapper script for proper output capture (like swarm.js does)
+  const wrapperScript = `#!/bin/bash
+${claudeFlowBin} ${swarmArgs.map(arg => `"${arg}"`).join(' ')} > "${stdoutPath}" 2> "${stderrPath}"
+exit_code=$?
+echo "EXIT_CODE=$exit_code" >> "${swarmDir}/status.txt"
+exit $exit_code`;
+  
+  const wrapperPath = `${swarmDir}/wrapper.sh`;
+  await Deno.writeTextFile(wrapperPath, wrapperScript);
+  await Deno.chmod(wrapperPath, 0o755);
+  
+  // Execute the swarm
+  const command = new Deno.Command('bash', {
+    args: [wrapperPath],
+    env: {
+      ...Deno.env.toObject(),
+      CLAUDE_FLOW_SWARM_ID: swarmId,
+      CLAUDE_FLOW_ACHIEVEMENT_ID: achieveDir.split('/').pop(),
+      CLAUDE_FLOW_ITERATION: iteration.toString()
+    }
+  });
+  
+  const startTime = new Date().toISOString();
+  
+  try {
+    const process = command.spawn();
+    const { code, success } = await process.status;
+    
+    // Read the output
+    const stdout = await Deno.readTextFile(stdoutPath).catch(() => '');
+    const stderr = await Deno.readTextFile(stderrPath).catch(() => '');
+    
+    const endTime = new Date().toISOString();
+    
+    // Extract results from output
+    const results = extractSwarmResults(stdout, stderr);
+    
+    // Save swarm metadata
+    const metadata = {
+      swarmId,
+      objective,
+      iteration,
+      exitCode: code,
+      success,
+      startTime,
+      endTime,
+      results
+    };
+    
+    await Deno.writeTextFile(
+      `${swarmDir}/metadata.json`,
+      JSON.stringify(metadata, null, 2)
+    );
+    
+    if (success) {
+      console.log(`  ✅ Swarm ${swarmId} completed successfully`);
+    } else {
+      console.log(`  ⚠️  Swarm ${swarmId} exited with code ${code}`);
+    }
+    
+    // Show some output if verbose
+    if (flags.verbose || flags.v) {
+      const lines = stdout.split('\n').filter(l => l.trim());
+      const summaryLines = lines.filter(l => 
+        l.includes('✅') || l.includes('completed') || l.includes('Summary')
+      ).slice(-3);
+      
+      if (summaryLines.length > 0) {
+        console.log(`     Output from ${swarmId}:`);
+        summaryLines.forEach(line => {
+          console.log(`       ${line.trim()}`);
+        });
+      }
+    }
+    
+    return metadata;
+    
   } catch (err) {
-    printError(`Failed to execute Claude: ${err.message}`);
-    console.error('Stack trace:', err.stack);
+    console.log(`  ❌ Failed to spawn swarm ${swarmId}: ${err.message}`);
+    return {
+      swarmId,
+      objective,
+      iteration,
+      exitCode: -1,
+      success: false,
+      error: err.message,
+      results: { tasksCompleted: 0, tasksFailed: 1, learnings: [], artifacts: [] }
+    };
   }
 }
 
-// Help function
+/**
+ * Extract meaningful results from swarm output
+ */
+function extractSwarmResults(stdout, stderr) {
+  const results = {
+    tasksCompleted: 0,
+    tasksFailed: 0,
+    agentsUsed: 0,
+    learnings: [],
+    artifacts: []
+  };
+  
+  // Extract task counts
+  const taskMatch = stdout.match(/Tasks Completed: (\d+)/);
+  if (taskMatch) results.tasksCompleted = parseInt(taskMatch[1]);
+  
+  const failMatch = stdout.match(/Tasks Failed: (\d+)/);
+  if (failMatch) results.tasksFailed = parseInt(failMatch[1]);
+  
+  const agentMatch = stdout.match(/Agents Used: (\d+)/);
+  if (agentMatch) results.agentsUsed = parseInt(agentMatch[1]);
+  
+  // Extract learnings (look for patterns)
+  const learningPatterns = [
+    /Learning: (.+)/g,
+    /Discovered: (.+)/g,
+    /Found that (.+)/g,
+    /Identified: (.+)/g,
+    /💡 (.+)/g
+  ];
+  
+  learningPatterns.forEach(pattern => {
+    const matches = stdout.matchAll(pattern);
+    for (const match of matches) {
+      results.learnings.push(match[1].trim());
+    }
+  });
+  
+  // Extract artifacts (files created/modified)
+  const filePatterns = [
+    /Created file: (.+)/g,
+    /Modified file: (.+)/g,
+    /Generated: (.+)/g,
+    /Writing to (.+)/g,
+    /Saved to (.+)/g
+  ];
+  
+  filePatterns.forEach(pattern => {
+    const matches = stdout.matchAll(pattern);
+    for (const match of matches) {
+      results.artifacts.push(match[1].trim());
+    }
+  });
+  
+  // If no explicit counts found, estimate from output
+  if (results.tasksCompleted === 0 && stdout.includes('✅')) {
+    results.tasksCompleted = (stdout.match(/✅/g) || []).length;
+  }
+  
+  return results;
+}
+
+/**
+ * Process results from all swarms in an iteration
+ */
+async function processSwarmResults(swarmResults, achieveDir) {
+  const aggregated = {
+    learnings: [],
+    artifacts: [],
+    totalTasks: 0,
+    successRate: 0
+  };
+  
+  for (const swarm of swarmResults) {
+    if (swarm.results) {
+      aggregated.learnings.push(...swarm.results.learnings);
+      aggregated.artifacts.push(...swarm.results.artifacts);
+      aggregated.totalTasks += swarm.results.tasksCompleted + swarm.results.tasksFailed;
+      
+      if (swarm.results.tasksCompleted > 0) {
+        const rate = swarm.results.tasksCompleted / (swarm.results.tasksCompleted + swarm.results.tasksFailed || 1);
+        aggregated.successRate += rate;
+      }
+    }
+  }
+  
+  // Average success rate
+  if (swarmResults.length > 0) {
+    aggregated.successRate /= swarmResults.length;
+  }
+  
+  // Deduplicate learnings
+  aggregated.learnings = [...new Set(aggregated.learnings)];
+  
+  return aggregated;
+}
+
+/**
+ * Calculate progress based on current state and iteration results
+ */
+function calculateProgress(state, iterationResults) {
+  // Base progress on multiple factors
+  let progress = state.progress;
+  
+  // Success rate contributes to progress
+  progress += iterationResults.successRate * 0.1;
+  
+  // Each iteration moves us forward
+  progress += 0.05;
+  
+  // Learnings indicate understanding
+  progress += Math.min(iterationResults.learnings.length * 0.02, 0.1);
+  
+  // Artifacts indicate concrete output
+  progress += Math.min(iterationResults.artifacts.length * 0.03, 0.15);
+  
+  // Cap at 1.0
+  return Math.min(progress, 1.0);
+}
+
+/**
+ * Determine the current phase based on progress
+ */
+function getPhase(progress) {
+  if (progress < 0.3) return 'exploration';
+  if (progress < 0.7) return 'implementation';
+  return 'refinement';
+}
+
+/**
+ * Save state to disk
+ */
+async function saveState(achieveDir, state) {
+  await Deno.writeTextFile(
+    `${achieveDir}/state.json`,
+    JSON.stringify(state, null, 2)
+  );
+}
+
 function showAchieveHelp() {
   console.log(`
-🎯 Claude-Flow Achieve: Autonomous Goal Achievement
+🎯 Claude-Flow Achieve - Autonomous Goal Achievement
 
-USAGE:
-  claude-flow achieve <goal> [options]
+Usage: cf-enhanced achieve <goal> [options]
 
-DESCRIPTION:
-  Launches an autonomous meta-orchestrator that iteratively spawns swarms
-  until your goal is achieved. Uses self-improving loops with parallel agents.
+Examples:
+  cf-enhanced achieve "Create a profitable trading bot"
+  cf-enhanced achieve "Build a REST API for user management" --max-iterations 5
+  cf-enhanced achieve "Analyze and optimize database performance" --parallel
 
-EXAMPLES:
-  claude-flow achieve "Create a calculator app"
-  claude-flow achieve "Build profitable trading system" --max-iterations 20
-  claude-flow achieve "Optimize database performance" --parallel --convergence 0.9
-  claude-flow achieve "Create REST API" --dry-run
+Options:
+  --max-iterations <n>       Maximum iterations (default: 10)
+  --convergence <n>          Success threshold 0-1 (default: 0.95)
+  --swarms-per-iteration <n> Parallel swarms per iteration (default: 3)
+  --max-agents <n>           Max agents per swarm (default: 5)
+  --strategy <type>          Default strategy (auto, research, development)
+  --monitor                  Enable real-time monitoring
+  --verbose, -v              Show detailed progress
+  --dry-run, -d              Preview without executing
+  --help, -h                 Show this help
 
-FLAGS:
-  --max-iterations <n>     Maximum iteration loops (default: 10)
-  --convergence <0-1>      Success threshold percentage (default: 0.95)
-  --parallel               Enable parallel swarm execution
-  --no-evolve              Disable self-improvement between iterations
-  --budget <amount>        Resource budget constraints
-  --deadline <time>        Time deadline for completion
-  --dry-run, -d            Preview configuration without executing
-  --verbose, -v            Show detailed progress
-  --help, -h               Show this help message
+The achieve command creates a swarm-of-swarms that:
+1. Analyzes your goal and creates a plan
+2. Spawns multiple specialized swarms in parallel
+3. Each swarm works on a specific aspect
+4. Results are aggregated and progress measured
+5. Process continues until goal is achieved
 
-ADVANCED FLAGS:
-  --monitor                Real-time monitoring of swarm progress
-  --strategy <type>        Force specific swarm strategy
-  --max-agents <n>         Max agents per swarm (default: 5)
-  --memory-namespace <ns>  Custom memory namespace
-  --output <format>        Output format: json, markdown, html
-
-ITERATION PHASES:
-  0-30%: Research and planning phase
-  30-60%: Core implementation phase  
-  60-80%: Testing and optimization phase
-  80-95%: Polish and documentation phase
-  95%+: Final validation and delivery
-
-COORDINATION PATTERNS:
-  - Single swarm: Basic goals with 3-5 agents
-  - Multi-coordinator: Complex goals with 4+ coordinators
-  - Hierarchical: Coordinators spawn sub-swarms
-  - Adaptive: System chooses best pattern
-
-DOCUMENTATION:
-  Agents automatically create and maintain:
-  - SWARM_COORDINATION.md: Overall progress tracking
-  - ARCHITECTURE.md: System design documentation
-  - PLAN.md: Iteration goals and strategies
-  - LEARNINGS.md: Knowledge accumulation
-
-EXAMPLES BY COMPLEXITY:
-  Simple (calculator):
-    claude-flow achieve "Create calculator"
-  
-  Medium (API):
-    claude-flow achieve "Build REST API with auth" --parallel
-  
-  Complex (trading):
-    claude-flow achieve "Create profitable trading system" \\
-      --max-iterations 20 --parallel --monitor
-  
-  Expert (ML system):
-    claude-flow achieve "Build self-improving recommendation engine" \\
-      --max-iterations 30 --convergence 0.98 --parallel
-
-For more info: https://github.com/ruvnet/claude-code-flow
-`);
+Results are saved to ./achieve-runs/<achievement-id>/
+  `);
 }
 
-// Allow direct execution
-if (import.meta.main) {
-  const args = [];
-  const flags = {};
-  
-  // Parse arguments and flags
-  for (let i = 0; i < Deno.args.length; i++) {
-    const arg = Deno.args[i];
-    if (arg.startsWith('--')) {
-      const flagName = arg.substring(2);
-      const nextArg = Deno.args[i + 1];
-      
-      if (nextArg && !nextArg.startsWith('--')) {
-        flags[flagName] = nextArg;
-        i++;
-      } else {
-        flags[flagName] = true;
-      }
-    } else {
-      args.push(arg);
-    }
-  }
-  
-  if (args.length === 0 || flags.help || flags.h) {
-    showAchieveHelp();
-  } else {
-    await achieveCommand(args, flags);
-  }
-}
+// Export for both direct execution and import
+export default {
+  name: 'achieve',
+  description: 'Autonomously achieve any goal through iterative swarm orchestration',
+  action: achieveCommand
+};
