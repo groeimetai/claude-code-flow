@@ -100,50 +100,75 @@ You MUST follow this iterative process until the goal is achieved:
    - 80-95%: Polish, documentation, and edge cases
    - 95%+: Final validation and delivery
 
-3. **SPAWN APPROPRIATE SWARM**
-   Create a swarm with specific instructions based on current needs:
+3. **SPAWN PARALLEL SWARM**
+   Create MULTIPLE agents working in parallel based on current needs:
    
+   Example for development phase (30-60% progress):
    \`\`\`
-   Task("Swarm Coordinator", "
-   ITERATION: {current_iteration}
-   PROGRESS: {current_progress}%
-   
-   YOUR MISSION:
-   [Specific instructions based on current phase]
-   
-   USE THESE TOOLS:
-   - cognitive_triangulation for code analysis
-   - TodoWrite for task management and state tracking
-   - Task for spawning sub-agents
-   - All development tools as needed
-   
-   TRACK PROGRESS WITH TODOWRITE:
-   - Add todos for key learnings and progress
-   - Update task status as you complete work
-   - Use todo content to store important information
-   ")
+   // Spawn multiple agents concurrently
+   Task("Frontend Developer", "Build UI components based on TodoRead state. Focus on: {specific_ui_tasks}");
+   Task("Backend Developer", "Implement API endpoints. Check TodoRead for requirements. Focus on: {specific_api_tasks}");
+   Task("Test Engineer", "Write tests for completed features. Use TodoRead to track what's done. Focus on: {specific_test_tasks}");
+   Task("Code Reviewer", "Review and optimize implemented code. Check for patterns and improvements.");
    \`\`\`
+   
+   Example for research phase (0-30% progress):
+   \`\`\`
+   Task("Research Analyst", "Research best practices for: {technology_stack}. Store findings in todos.");
+   Task("Architecture Designer", "Design system architecture based on requirements. Create diagrams.");
+   Task("Technology Scout", "Evaluate tools and libraries. Compare options and make recommendations.");
+   Task("Requirements Analyst", "Break down the goal into concrete requirements and success criteria.");
+   \`\`\`
+   
+   IMPORTANT: 
+   - Spawn 3-5 agents PER ITERATION working on DIFFERENT aspects
+   - All agents share state through TodoRead/TodoWrite
+   - Agents work CONCURRENTLY not sequentially
+   - Each agent has a SPECIFIC focused mission
 
 4. **EVALUATE RESULTS**
-   After swarm completes:
-   - Calculate new progress percentage
-   - Document learnings
-   - Identify remaining work
+   After ALL swarm agents complete:
+   - Use TodoRead to review what each agent accomplished
+   - Consolidate learnings from all agents
+   - Calculate new progress percentage based on completed work
+   - Identify gaps and remaining work
    - Check if goal is achieved (progress >= ${config.convergenceThreshold * 100}%)
+   
+   COORDINATION TIP: Use TodoWrite to create a "Swarm Results" todo that summarizes what all agents achieved
 
 5. **ITERATE OR COMPLETE**
    - If goal achieved: Prepare final deliverables and exit
    - If not achieved and iterations < ${config.maxIterations}: Go to step 1
    - If max iterations reached: Report best effort results
 
+## SWARM COORDINATION PATTERNS
+
+Choose the right pattern based on your goal:
+
+1. **PARALLEL DEVELOPMENT** (for apps/systems)
+   - Frontend, Backend, Database, DevOps agents working simultaneously
+   - Shared interface definitions in todos
+
+2. **RESEARCH SWARM** (for analysis/exploration)
+   - Multiple researchers exploring different aspects
+   - Synthesizer agent to combine findings
+
+3. **ITERATIVE REFINEMENT** (for optimization)
+   - Implementer, Tester, Optimizer agents in tight loops
+   - Continuous improvement cycles
+
+4. **HIERARCHICAL SWARM** (for complex projects)
+   - Lead architect spawns specialized sub-swarms
+   - Each sub-swarm handles a component
+
 ## CRITICAL INSTRUCTIONS
 
 1. **REAL WORK ONLY** - Actually implement solutions, don't simulate
-2. **USE ALL TOOLS** - Leverage every available tool to achieve the goal
-3. **TRACK WITH TODOS** - Use TodoWrite for all state tracking and progress
-4. **SPAWN REAL SWARMS** - Use Task() to create actual working swarms
-5. **MEASURE PROGRESS** - Use concrete metrics, not estimates
-6. **SELF-IMPROVE** - Each iteration should be smarter than the last
+2. **PARALLEL EXECUTION** - Spawn multiple agents working concurrently
+3. **SHARED STATE** - All agents coordinate through TodoRead/TodoWrite
+4. **SPAWN REAL SWARMS** - Use multiple Task() calls for true parallelism
+5. **MEASURE PROGRESS** - Use concrete metrics from all agents
+6. **SELF-IMPROVE** - Each iteration learns from previous swarms
 
 ## AVAILABLE ENHANCED TOOLS
 
@@ -170,7 +195,16 @@ Initial state (already initialized):
 - Iteration: 1
 - Progress: 0%
 
-Start immediately by spawning your first exploration swarm to begin!`;
+EXAMPLE FIRST SWARM for "Create calculator":
+\`\`\`
+// All agents work in PARALLEL
+Task("UI Designer", "Design calculator interface layout. Create HTML/CSS for buttons, display, and responsive design. Store design in todos.");
+Task("Logic Developer", "Implement calculator operations (add, subtract, multiply, divide). Handle edge cases like division by zero.");
+Task("Feature Developer", "Add advanced features: memory functions, history, scientific mode toggle. Document in todos.");
+Task("Test Engineer", "Create test suite for calculator operations. Test UI interactions and edge cases.");
+\`\`\`
+
+Start immediately by spawning your first PARALLEL swarm to begin!`;
 }
 
 /**
@@ -197,6 +231,14 @@ function extractSuccessCriteria(goal) {
     criteria.push('- Authentication and authorization');
     criteria.push('- Error handling and validation');
     criteria.push('- API documentation generated');
+  }
+  
+  if (goal.toLowerCase().includes('calculator')) {
+    criteria.push('- Basic operations work correctly (add, subtract, multiply, divide)');
+    criteria.push('- User interface is intuitive and responsive');
+    criteria.push('- Edge cases handled (division by zero, overflow)');
+    criteria.push('- Clear/reset functionality works');
+    criteria.push('- Tests validate all operations');
   }
   
   if (goal.toLowerCase().includes('test')) {
