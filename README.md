@@ -16,11 +16,17 @@ This is an enhanced fork of [Claude-Flow](https://github.com/ruvnet/claude-code-
 
 > 🎯 **Version 2.0.0**: Adds advanced code analysis, knowledge graphs, and intelligent swarm coordination
 
-## 🏃 **Test Drive - No Installation Required!**
+## 🏃 **Test Drive - Quick Start!**
 
+### Option 1: Clone and Run (Recommended for `achieve`)
 ```bash
-# Try the autonomous goal achievement RIGHT NOW
-npx github:groeimetai/claude-code-flow achieve "Create a URL shortener service with analytics"
+# Clone the enhanced version
+git clone https://github.com/groeimetai/claude-code-flow.git
+cd claude-code-flow
+npm install
+
+# Run autonomous goal achievement
+./claude-flow achieve "Create a URL shortener service with analytics"
 
 # Watch as it automatically:
 # ✅ Designs the architecture
@@ -29,9 +35,18 @@ npx github:groeimetai/claude-code-flow achieve "Create a URL shortener service w
 # ✅ Creates tests
 # ✅ Fixes any issues
 # ✅ Delivers working code
+```
 
-# With enhanced progress monitoring:
-npx github:groeimetai/claude-code-flow achieve "Create a trading bot" --verbose --monitor
+### Option 2: NPX for Other Commands
+```bash
+# Initialize a project with SPARC
+npx github:groeimetai/claude-code-flow init --sparc
+
+# Run swarms
+npx github:groeimetai/claude-code-flow swarm "Build REST API" --parallel
+
+# Use SPARC modes
+npx github:groeimetai/claude-code-flow sparc run cognitive-analyst "Analyze codebase"
 ```
 
 ## 🆕 **What's New in v2.0.0**

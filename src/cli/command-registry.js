@@ -11,6 +11,7 @@ import { monitorCommand } from './simple-commands/monitor.js';
 import { startCommand } from './simple-commands/start.js';
 import { swarmCommand } from './simple-commands/swarm.js';
 import { batchManagerCommand } from './simple-commands/batch-manager.js';
+import achieveCommand from './simple-commands/achieve.js';
 
 // Command registry for extensible CLI
 export const commandRegistry = new Map();
@@ -180,6 +181,26 @@ Batch operations support:
 Use with init command:
   claude-flow init --batch-init project1,project2,project3
   claude-flow init --config batch-config.json --parallel`
+  });
+
+  commandRegistry.set('achieve', {
+    handler: achieveCommand.action,
+    description: achieveCommand.description,
+    usage: achieveCommand.arguments + ' [options]',
+    examples: achieveCommand.examples ? achieveCommand.examples.map(ex => ex.command) : [
+      'achieve "Create a profitable trading bot"',
+      'achieve "Build e-commerce platform" --max-iterations 20',
+      'achieve "Develop AI code review system" --parallel --verbose'
+    ],
+    details: `
+The achieve command enables fully autonomous goal achievement:
+  • Automatically analyzes your goal
+  • Spawns specialized swarms iteratively
+  • Uses cognitive triangulation for understanding
+  • Self-corrects and improves with each iteration
+  • Continues until goal is achieved
+  
+No manual intervention required!`
   });
 }
 

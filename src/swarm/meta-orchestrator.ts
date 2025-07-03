@@ -344,7 +344,7 @@ ${this.getSelfImprovementInstructions()}`;
     
     if (goalDescription.includes('without')) {
       const withouts = goalDescription.split('without').slice(1);
-      constraints.push(...withouts.map(w => `Avoid ${w.split(/[,.]|[0].trim()}`));
+      constraints.push(...withouts.map(w => `Avoid ${w.split(/[,.]/).join(' ').trim()}`));
     }
 
     return constraints;
