@@ -113,14 +113,14 @@ You MUST follow this iterative process until the goal is achieved:
    
    USE THESE TOOLS:
    - cognitive_triangulation for code analysis
-   - TodoWrite for task management
-   - Memory for persistence
+   - TodoWrite for task management and state tracking
+   - Task for spawning sub-agents
    - All development tools as needed
    
-   STORE EVERYTHING IN MEMORY:
-   - memory store 'goal/${config.goalId}/progress' {new_progress}
-   - memory store 'goal/${config.goalId}/learnings' {what_you_learned}
-   - memory store 'goal/${config.goalId}/artifacts' {deliverables}
+   TRACK PROGRESS WITH TODOWRITE:
+   - Add todos for key learnings and progress
+   - Update task status as you complete work
+   - Use todo content to store important information
    ")
    \`\`\`
 
@@ -140,7 +140,7 @@ You MUST follow this iterative process until the goal is achieved:
 
 1. **REAL WORK ONLY** - Actually implement solutions, don't simulate
 2. **USE ALL TOOLS** - Leverage every available tool to achieve the goal
-3. **PERSIST EVERYTHING** - Use memory extensively for continuity
+3. **TRACK WITH TODOS** - Use TodoWrite for all state tracking and progress
 4. **SPAWN REAL SWARMS** - Use Task() to create actual working swarms
 5. **MEASURE PROGRESS** - Use concrete metrics, not estimates
 6. **SELF-IMPROVE** - Each iteration should be smarter than the last
@@ -162,14 +162,15 @@ ${extractSuccessCriteria(config.goal)}
 
 Begin with iteration 1. Remember: You're not simulating - you're actually achieving this goal!
 
-Store initial state:
-\`\`\`
-memory store "goal/${config.goalId}/status" "active"
-memory store "goal/${config.goalId}/iteration" "1"
-memory store "goal/${config.goalId}/progress" "0"
-\`\`\`
+IMPORTANT: Skip memory initialization - we'll use TodoWrite for state tracking instead.
 
-Then spawn your first exploration swarm to begin!`;
+Initial state (already initialized):
+- Goal ID: ${config.goalId}
+- Status: active
+- Iteration: 1
+- Progress: 0%
+
+Start immediately by spawning your first exploration swarm to begin!`;
 }
 
 /**
