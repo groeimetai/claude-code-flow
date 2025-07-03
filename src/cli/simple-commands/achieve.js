@@ -122,9 +122,16 @@ You MUST follow this iterative process until the goal is achieved:
    
    IMPORTANT: 
    - Spawn 3-5 agents PER ITERATION working on DIFFERENT aspects
-   - All agents share state through TodoRead/TodoWrite
+   - All agents share LIVE state through TodoRead/TodoWrite (they see updates in real-time)
    - Agents work CONCURRENTLY not sequentially
    - Each agent has a SPECIFIC focused mission
+   - Agents can spawn SUB-AGENTS creating hierarchical swarms
+   
+   LIVE COORDINATION:
+   - Just like 'swarm' command, agents see each other's work IMMEDIATELY
+   - Use TodoRead frequently to check what others have done
+   - Update todos immediately after completing work
+   - React to other agents' discoveries and adjust approach
 
 4. **EVALUATE RESULTS**
    After ALL swarm agents complete:
@@ -160,6 +167,22 @@ Choose the right pattern based on your goal:
 4. **HIERARCHICAL SWARM** (for complex projects)
    - Lead architect spawns specialized sub-swarms
    - Each sub-swarm handles a component
+   
+5. **MULTI-COORDINATOR PATTERN** (for very complex goals)
+   Example for large system:
+   \`\`\`
+   // Multiple coordinators managing different domains
+   Task("Frontend Coordinator", "Manage UI team. Spawn agents for: components, styling, state management. Sync with Backend Coordinator via todos.");
+   Task("Backend Coordinator", "Manage API team. Spawn agents for: endpoints, database, auth. Sync with Frontend Coordinator via todos.");
+   Task("DevOps Coordinator", "Manage infrastructure team. Spawn agents for: CI/CD, monitoring, deployment. Sync with other coordinators.");
+   Task("QA Coordinator", "Manage testing team. Spawn agents for: unit tests, integration, E2E. Monitor all coordinators' work.");
+   \`\`\`
+   
+   MULTI-COORDINATOR BENEFITS:
+   - Each coordinator manages 3-5 specialized agents
+   - Coordinators sync through shared todos
+   - Total parallelism: 4 coordinators × 4 agents = 16 parallel workers
+   - Coordinators can see ALL todos from ALL agents in real-time
 
 ## CRITICAL INSTRUCTIONS
 
@@ -177,6 +200,26 @@ You have access to ALL tools including:
 - **Neural Swarms**: spawn_cognitive_agent, neural_forecast
 - **Autonomous Agents**: create_agent, execute_mrap
 - **Standard Tools**: All file operations, web search, memory, etc.
+
+### WHEN TO USE ADVANCED TOOLS:
+
+1. **COGNITIVE TRIANGULATION** (as codebase grows):
+   - When project has 10+ files: Use analyze_codebase for navigation
+   - When debugging complex issues: Use extract_pois to find key functions
+   - When refactoring: Use build_graph to understand dependencies
+   - ALWAYS use for large codebases to maintain overview
+
+2. **NEURAL SWARMS** (for ML/AI projects):
+   - When goal involves prediction or forecasting
+   - For pattern recognition tasks
+   - When optimizing complex systems
+   - For adaptive learning requirements
+
+3. **AUTONOMOUS AGENTS** (for self-improving systems):
+   - When agents need to evolve strategies
+   - For long-running optimization tasks
+   - When building self-aware systems
+   - For meta-learning scenarios
 
 ## SUCCESS CRITERIA EXTRACTION
 
@@ -202,6 +245,15 @@ Task("UI Designer", "Design calculator interface layout. Create HTML/CSS for but
 Task("Logic Developer", "Implement calculator operations (add, subtract, multiply, divide). Handle edge cases like division by zero.");
 Task("Feature Developer", "Add advanced features: memory functions, history, scientific mode toggle. Document in todos.");
 Task("Test Engineer", "Create test suite for calculator operations. Test UI interactions and edge cases.");
+\`\`\`
+
+EXAMPLE FIRST SWARM for "Create profitable trading system" (multi-coordinator):
+\`\`\`
+// Multiple coordinators each managing sub-teams
+Task("Trading Strategy Coordinator", "Research and implement trading strategies. Spawn agents for: technical analysis, fundamental analysis, backtesting. Use cognitive_triangulation as codebase grows.");
+Task("Data Pipeline Coordinator", "Build real-time data infrastructure. Spawn agents for: market data feeds, data cleaning, storage. Coordinate with Trading Strategy team.");
+Task("Risk Management Coordinator", "Implement risk controls. Spawn agents for: position sizing, stop-loss, portfolio analysis. Monitor all trading decisions.");
+Task("ML Coordinator", "Build predictive models. Spawn agents using neural_forecast for: price prediction, pattern recognition, anomaly detection. Share predictions with Strategy team.");
 \`\`\`
 
 Start immediately by spawning your first PARALLEL swarm to begin!`;
