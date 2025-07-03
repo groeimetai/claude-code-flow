@@ -7,6 +7,7 @@ import { printSuccess, printError } from './utils.js';
 import { sparcCommand } from './simple-commands/sparc.js';
 import { swarmCommand } from './simple-commands/swarm.js';
 import { achieveCommand } from './simple-commands/achieve.js';
+import { memoryCommand } from './simple-commands/memory.js';
 
 async function main() {
   const args = Deno.args;
@@ -49,6 +50,10 @@ async function main() {
       
     case 'achieve':
       await achieveCommand(cleanArgs, flags);
+      break;
+      
+    case 'memory':
+      await memoryCommand(cleanArgs, flags);
       break;
       
     case '--version':

@@ -13,16 +13,28 @@ for arg in "$@"; do
   fi
 done
 
-# Try Deno first, but check if it actually works
+# FORCE Deno first for achieve, sparc, swarm, and memory commands
+# These commands require Deno for proper terminal handling
+COMMAND="$1"
+if [ "$COMMAND" = "achieve" ] || [ "$COMMAND" = "sparc" ] || [ "$COMMAND" = "swarm" ] || [ "$COMMAND" = "memory" ]; then
+  if command -v deno >/dev/null 2>&1 && [ -f "$ROOT_DIR/src/cli/main-deno.ts" ]; then
+    exec deno run --allow-all "$ROOT_DIR/src/cli/main-deno.ts" "$@"
+  else
+    echo "⚠️  Error: Deno is required for the '$COMMAND' command"
+    echo ""
+    echo "Please install Deno:"
+    echo "  curl -fsSL https://deno.land/x/install/install.sh | sh"
+    echo ""
+    echo "Or on macOS with Homebrew:"
+    echo "  brew install deno"
+    exit 1
+  fi
+fi
+
+# Try Deno first for other commands
 if command -v deno >/dev/null 2>&1 && [ -f "$ROOT_DIR/src/cli/main-deno.ts" ]; then
   # Use Deno for full functionality including achieve command
   exec deno run --allow-all "$ROOT_DIR/src/cli/main-deno.ts" "$@"
-elif command -v deno >/dev/null 2>&1 && [ -f "$ROOT_DIR/src/cli/main.ts" ]; then
-  # Test if Deno can actually run the main file
-  if deno check "$ROOT_DIR/src/cli/main.ts" >/dev/null 2>&1; then
-    # Use Deno for full functionality
-    exec deno run --allow-all "$ROOT_DIR/src/cli/main.ts" "$@"
-  fi
 fi
 
 # Fall back to Node.js version

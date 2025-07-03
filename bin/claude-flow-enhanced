@@ -1,0 +1,6 @@
+#!/bin/sh
+# Claude-Flow-Enhanced - Enhanced version with Cognitive Triangulation
+# This is an alias for claude-flow with enhanced features
+
+SCRIPT_DIR=$(dirname "$0")
+exec "$SCRIPT_DIR/claude-flow" "$@"
