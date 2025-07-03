@@ -163,15 +163,31 @@ You MUST follow this iterative process until the goal is achieved:
    - Create API_SPEC.md, TESTING_STRATEGY.md, etc. as needed
    - Other agents can Read these .md files for context
 
-4. **EVALUATE RESULTS**
-   After ALL swarm agents complete:
-   - Use TodoRead to review what each agent accomplished
-   - Consolidate learnings from all agents
-   - Calculate new progress percentage based on completed work
-   - Identify gaps and remaining work
-   - Check if goal is achieved (progress >= ${config.convergenceThreshold * 100}%)
+4. **MONITOR & EVALUATE**
    
-   COORDINATION TIP: Use TodoWrite to create a "Swarm Results" todo that summarizes what all agents achieved
+   REAL-TIME MONITORING:
+   \`\`\`
+   // Create monitoring dashboard
+   Write("SWARM_MONITOR.md", "# Swarm Activity Dashboard\\n\\nUpdated: ${new Date()}");
+   
+   // Display live logs from all swarms
+   Bash("echo '🔍 Live Swarm Activity Feed:'");
+   Bash("tail -f swarm_logs/iteration_*/\\*.log | while read line; do echo \"[$(date +%H:%M:%S)] $line\"; done &");
+   
+   // Show swarm status every 30 seconds
+   Bash("watch -n 30 './claude-flow swarm status --all'");
+   
+   // Track file changes
+   Bash("find . -name '*.md' -o -name '*.js' -o -name '*.py' | entr -c echo 'Files updated by swarms!'");
+   \`\`\`
+   
+   EVALUATE RESULTS:
+   - Review logs: `cat swarm_logs/iteration_${iteration}/*.log`
+   - Check created files: `find . -newer SWARM_COORDINATION.md -type f`
+   - Review todos: Use TodoRead to see completed work
+   - Read team reports: Check all .md files created by swarms
+   - Calculate progress based on concrete deliverables
+   - Check if goal is achieved (progress >= ${config.convergenceThreshold * 100}%)
 
 5. **ITERATE OR COMPLETE**
    - If goal achieved: Prepare final deliverables and exit
@@ -213,6 +229,37 @@ Choose the right pattern based on your goal:
    - Coordinators sync through shared todos
    - Total parallelism: 4 coordinators × 4 agents = 16 parallel workers
    - Coordinators can see ALL todos from ALL agents in real-time
+
+## LOGGING & MONITORING
+
+The meta-orchestrator provides comprehensive logging:
+
+1. **Swarm Logs** - Each swarm writes to its own log file:
+   - `swarm_logs/iteration_1/research_swarm_1.log`
+   - `swarm_logs/iteration_1/development_swarm.log`
+   - Shows all agent activities, file creations, decisions
+
+2. **Live Monitoring** - Real-time activity feeds:
+   - `tail -f` shows live updates from all swarms
+   - `watch` displays swarm status updates
+   - File change notifications
+
+3. **Consolidated Reports**:
+   - `ITERATION_X_FULL_LOG.md` - Complete activity log
+   - `SWARM_MONITOR.md` - Live dashboard
+   - `SWARM_RESULTS.md` - Summary of achievements
+
+To view swarm activities:
+\`\`\`
+// See what a specific swarm is doing
+Bash("tail -100 swarm_logs/iteration_1/research_swarm_1.log");
+
+// Watch all swarms live
+Bash("tail -f swarm_logs/iteration_*/*.log");
+
+// Get swarm status
+Bash("./claude-flow swarm status --all");
+\`\`\`
 
 ## STANDARD DOCUMENTATION FILES
 
@@ -328,24 +375,31 @@ EXAMPLE META-SWARM PATTERN:
 Write("SWARM_COORDINATION.md", "# Meta-Orchestrator Progress\\n\\nGoal: ${goal}\\nIteration: ${iteration}\\nProgress: ${progress}%");
 Write("ITERATION_${iteration}_PLAN.md", "# Iteration Plan\\n\\n## Swarm Assignments\\n- Research Swarm: ...");
 
-// Launch multiple swarms in parallel (TRUE PARALLELISM!)
-// Each swarm runs in its own process and manages its own agents
+// Launch multiple swarms in parallel with LOGGING
+// Each swarm runs in its own process and logs its activities
+
+// Create log directory
+Bash("mkdir -p swarm_logs/iteration_${iteration}");
 
 // For research phase (0-30%):
-Bash("./claude-flow swarm 'Research best practices and architectures' --strategy research --max-agents 4 --background");
-Bash("./claude-flow swarm 'Analyze requirements and constraints' --strategy analysis --max-agents 3 --background");
-Bash("./claude-flow swarm 'Explore technology options' --strategy research --max-agents 3 --background");
+Bash("./claude-flow swarm 'Research best practices and architectures' --strategy research --max-agents 4 --background --verbose > swarm_logs/iteration_${iteration}/research_swarm_1.log 2>&1 &");
+Bash("./claude-flow swarm 'Analyze requirements and constraints' --strategy analysis --max-agents 3 --background --verbose > swarm_logs/iteration_${iteration}/analysis_swarm.log 2>&1 &");
+Bash("./claude-flow swarm 'Explore technology options' --strategy research --max-agents 3 --background --verbose > swarm_logs/iteration_${iteration}/research_swarm_2.log 2>&1 &");
 
 // For development phase (30-60%):
-Bash("./claude-flow swarm 'Core implementation team' --strategy development --max-agents 5 --background");
-Bash("./claude-flow swarm 'Testing and validation team' --strategy testing --max-agents 4 --background");
-Bash("./claude-flow swarm 'Documentation team' --strategy analysis --max-agents 3 --background");
+Bash("./claude-flow swarm 'Core implementation team' --strategy development --max-agents 5 --background --verbose > swarm_logs/iteration_${iteration}/development_swarm.log 2>&1 &");
+Bash("./claude-flow swarm 'Testing and validation team' --strategy testing --max-agents 4 --background --verbose > swarm_logs/iteration_${iteration}/testing_swarm.log 2>&1 &");
+Bash("./claude-flow swarm 'Documentation team' --strategy analysis --max-agents 3 --background --verbose > swarm_logs/iteration_${iteration}/docs_swarm.log 2>&1 &");
 
-// Monitor all swarms
-Bash("./claude-flow swarm status --all");
+// Monitor and display swarm progress
+Bash("echo '📊 Monitoring swarm activities...'");
+Bash("tail -f swarm_logs/iteration_${iteration}/*.log | grep -E '(Starting agent|Completing task|Created file|Updated|Error)' &");
 
-// Wait for swarms to complete
-Bash("sleep 60 && ./claude-flow swarm status --all > SWARM_RESULTS.md");
+// Periodically check status
+Bash("for i in {1..12}; do sleep 5; echo '\\n=== Swarm Status Update ==='; ./claude-flow swarm status --all; done");
+
+// Consolidate logs
+Bash("cat swarm_logs/iteration_${iteration}/*.log > ITERATION_${iteration}_FULL_LOG.md");
 
 // Consolidate results
 TodoWrite([{
