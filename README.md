@@ -16,6 +16,21 @@ This is an enhanced fork of [Claude-Flow](https://github.com/ruvnet/claude-code-
 
 > 🎯 **Version 2.0.0**: Adds advanced code analysis, knowledge graphs, and intelligent swarm coordination
 
+## 🏃 **Test Drive - No Installation Required!**
+
+```bash
+# Try the autonomous goal achievement RIGHT NOW
+npx github:groeimetai/claude-code-flow achieve "Create a URL shortener service with analytics"
+
+# Watch as it automatically:
+# ✅ Designs the architecture
+# ✅ Builds the service
+# ✅ Adds analytics
+# ✅ Creates tests
+# ✅ Fixes any issues
+# ✅ Delivers working code
+```
+
 ## 🆕 **What's New in v2.0.0**
 
 ### 🧠 **Cognitive Triangulation Integration**
@@ -34,7 +49,19 @@ This is an enhanced fork of [Claude-Flow](https://github.com/ruvnet/claude-code-
 
 ## ⚡ **Quick Start**
 
-### 🚀 **Installation**
+### 🚀 **Try Without Installation (Recommended)**
+```bash
+# Run directly with npx - no installation needed!
+npx github:groeimetai/claude-code-flow achieve "Create a profitable trading system"
+
+# Or with options
+npx github:groeimetai/claude-code-flow achieve "Build an e-commerce platform" --max-iterations 20 --parallel
+
+# Initialize a new project with npx
+npx github:groeimetai/claude-code-flow init --sparc --cognitive
+```
+
+### 📦 **Full Installation**
 ```bash
 # Clone this enhanced version
 git clone https://github.com/groeimetai/claude-code-flow.git
@@ -53,7 +80,7 @@ npm install
 ### 🎯 **Autonomous Goal Achievement** (NEW!)
 ```bash
 # Just tell it what you want - it handles EVERYTHING
-./claude-flow achieve "Create a profitable trading system"
+npx github:groeimetai/claude-code-flow achieve "Create a profitable trading system"
 
 # The system will automatically:
 # 1. Research and design architecture
@@ -128,12 +155,37 @@ Maintain graph integrity
 }
 ```
 
-## 🤖 **Enhanced Swarm Automation Ideas**
+## 🚀 **Quick NPX Examples**
+
+### 🎯 **Autonomous Goal Achievement**
+```bash
+# Create any system autonomously
+npx github:groeimetai/claude-code-flow achieve "Build a SaaS billing system with Stripe"
+npx github:groeimetai/claude-code-flow achieve "Create a real-time chat application"
+npx github:groeimetai/claude-code-flow achieve "Develop a machine learning pipeline"
+```
+
+### 🐝 **Self-Aware Swarms**
+```bash
+# Run self-improving swarms without installation
+npx github:groeimetai/claude-code-flow swarm "Optimize this codebase" --self-aware advanced
+npx github:groeimetai/claude-code-flow swarm "Build REST API" --evolution --collective
+```
+
+### 🧠 **SPARC Modes**
+```bash
+# Use any SPARC mode directly
+npx github:groeimetai/claude-code-flow sparc run neural-orchestrator "Analyze system architecture"
+npx github:groeimetai/claude-code-flow sparc run cognitive-analyst "Find code smells"
+npx github:groeimetai/claude-code-flow sparc run autonomous-architect "Design microservices"
+```
+
+## 🤖 **Enhanced Swarm Automation Examples**
 
 ### 🎯 **Auto-Refactoring Swarm**
 ```bash
 # Automatically refactor code based on analysis
-./claude-flow swarm "Refactor codebase using cognitive analysis" \
+npx github:groeimetai/claude-code-flow swarm "Refactor codebase using cognitive analysis" \
   --strategy optimization \
   --mode hierarchical \
   --agents cognitive-analyst,graph-architect,coder,tester \
@@ -143,7 +195,7 @@ Maintain graph integrity
 ### 🔍 **Dependency Migration Swarm**
 ```bash
 # Migrate dependencies intelligently
-./claude-flow swarm "Migrate from Express to Fastify" \
+npx github:groeimetai/claude-code-flow swarm "Migrate from Express to Fastify" \
   --analyze-first \
   --preserve-functionality \
   --test-coverage 90
@@ -152,7 +204,7 @@ Maintain graph integrity
 ### 🛡️ **Security Audit Swarm**
 ```bash
 # Deep security analysis with fixes
-./claude-flow swarm "Security audit with automatic fixes" \
+npx github:groeimetai/claude-code-flow swarm "Security audit with automatic fixes" \
   --cognitive-scan \
   --fix-vulnerabilities \
   --generate-report
@@ -161,7 +213,7 @@ Maintain graph integrity
 ### 🧠 **Self-Aware Swarm**
 ```bash
 # Create a self-improving swarm
-./claude-flow swarm "Build self-optimizing API server" \
+npx github:groeimetai/claude-code-flow swarm "Build self-optimizing API server" \
   --self-aware advanced \
   --evolution \
   --collective \
