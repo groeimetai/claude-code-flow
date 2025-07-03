@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-07-03T13:08:46.801Z",
+  "timestamp": "2025-07-03T13:16:58.112Z",
   "version": "1.0",
   "entries": [
     {
@@ -54,7 +54,7 @@
       "accessLevel": "shared",
       "createdAt": "2025-07-03T13:05:04.283Z",
       "updatedAt": "2025-07-03T13:05:04.283Z",
-      "lastAccessedAt": "2025-07-03T13:05:04.283Z",
+      "lastAccessedAt": "2025-07-03T13:09:34.942Z",
       "version": 1,
       "size": 30,
       "compressed": false,
@@ -161,33 +161,93 @@
       "checksum": "e629fa6598d732768f7c726b4b621285f9c3b85303900aa912017db7617d8bdb",
       "references": [],
       "dependencies": []
+    },
+    {
+      "id": "entry_mcnek9oh_oc0eb8c9k",
+      "key": "goal/1751547759873-jsqko5bf9/progress",
+      "value": 15,
+      "type": "number",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-07-03T13:09:40.481Z",
+      "updatedAt": "2025-07-03T13:09:40.481Z",
+      "lastAccessedAt": "2025-07-03T13:09:40.481Z",
+      "version": 1,
+      "size": 31,
+      "compressed": false,
+      "checksum": "e629fa6598d732768f7c726b4b621285f9c3b85303900aa912017db7617d8bdb",
+      "references": [],
+      "dependencies": []
+    },
+    {
+      "id": "entry_mcnetj2h_73d4zz9hb",
+      "key": "goal/1751547759873-jsqko5bf9/progress",
+      "value": "25%",
+      "type": "string",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-07-03T13:16:52.553Z",
+      "updatedAt": "2025-07-03T13:16:52.553Z",
+      "lastAccessedAt": "2025-07-03T13:16:52.553Z",
+      "version": 1,
+      "size": 34,
+      "compressed": false,
+      "checksum": "7c2f8cf65548fc5afe5144902f17184db4f5b3f8d4e8372485b1507971d9a147",
+      "references": [],
+      "dependencies": []
+    },
+    {
+      "id": "entry_mcnetnct_vjhrr2w4y",
+      "key": "goal/1751547759873-jsqko5bf9/project-path",
+      "value": "/Users/nielsvanderwerf/Projects/cognitive-triangulation-pipeline-mcp/claude-code-flow-fork/examples/calculator-prod",
+      "type": "string",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-07-03T13:16:58.109Z",
+      "updatedAt": "2025-07-03T13:16:58.109Z",
+      "lastAccessedAt": "2025-07-03T13:16:58.109Z",
+      "version": 1,
+      "size": 146,
+      "compressed": false,
+      "checksum": "94d1a0c36d3486ea61bfe512987949605d88b96c8c949fe4b50d5fcb8f66c3f8",
+      "references": [],
+      "dependencies": []
     }
   ],
   "statistics": {
     "overview": {
-      "totalEntries": 8,
-      "totalSize": 9905,
+      "totalEntries": 11,
+      "totalSize": 10116,
       "compressedEntries": 4,
-      "compressionRatio": -75.3828125,
-      "indexSize": 400,
-      "memoryUsage": 6560408,
+      "compressionRatio": -27.84070796460177,
+      "indexSize": 550,
+      "memoryUsage": 6679688,
       "diskUsage": 0
     },
     "distribution": {
       "byNamespace": {
         "default": {
-          "count": 8,
-          "size": 9905
+          "count": 11,
+          "size": 10116
         }
       },
       "byType": {
         "string": {
-          "count": 1,
-          "size": 37
+          "count": 3,
+          "size": 217
         },
         "number": {
-          "count": 3,
-          "size": 91
+          "count": 4,
+          "size": 122
         },
         "object": {
           "count": 4,
@@ -196,27 +256,27 @@
       },
       "byOwner": {
         "system": {
-          "count": 8,
-          "size": 9905
+          "count": 11,
+          "size": 10116
         }
       },
       "byAccessLevel": {
         "shared": {
-          "count": 8,
-          "size": 9905
+          "count": 11,
+          "size": 10116
         }
       }
     },
     "temporal": {
-      "entriesCreatedLast24h": 8,
-      "entriesUpdatedLast24h": 8,
-      "entriesAccessedLast24h": 8,
+      "entriesCreatedLast24h": 11,
+      "entriesUpdatedLast24h": 11,
+      "entriesAccessedLast24h": 11,
       "oldestEntry": "2025-07-03T13:05:01.173Z",
-      "newestEntry": "2025-07-03T13:08:46.799Z"
+      "newestEntry": "2025-07-03T13:16:58.109Z"
     },
     "performance": {
       "averageQueryTime": 0,
-      "averageWriteTime": 0,
+      "averageWriteTime": 1,
       "cacheHitRatio": 0,
       "indexEfficiency": 0.95
     },
@@ -234,7 +294,7 @@
       "potentialSavings": {
         "compression": 0,
         "cleanup": 0,
-        "deduplication": 31
+        "deduplication": 96
       },
       "indexOptimization": [
         "Consider periodic index rebuilding for optimal performance"

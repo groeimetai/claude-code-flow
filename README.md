@@ -18,38 +18,40 @@ This is an enhanced fork of [Claude-Flow](https://github.com/ruvnet/claude-code-
 
 ## 🏃 **Test Drive - Quick Start!**
 
-### Option 1: Clone and Run (Recommended for `achieve`)
+### Recommended: Full Installation (for all features including `achieve`)
 ```bash
-# Clone the enhanced version
+# Clone and install globally
 git clone https://github.com/groeimetai/claude-code-flow.git
 cd claude-code-flow
-npm install
+./install.sh  # Or: npm install && npm link
 
-# Run autonomous goal achievement (requires Claude Code installed)
-./claude-flow achieve "Create a URL shortener service with analytics"
+# Now use anywhere:
+claude-flow init --sparc
+claude-flow achieve "Create a URL shortener service with analytics"
+```
 
-# What happens:
+### Quick Start in New Project
+```bash
+# In your project directory:
+claude-flow init --sparc                    # Initialize with SPARC modes
+claude-flow achieve "Build trading system"  # Start autonomous development
+
+# What happens with achieve:
 # 1. Launches Claude Code with meta-orchestrator prompt
 # 2. Claude analyzes your goal and creates a plan
 # 3. Spawns specialized swarms iteratively
 # 4. Uses cognitive triangulation for understanding
 # 5. Self-corrects and improves with each iteration
 # 6. Continues until goal is achieved (95% threshold)
-
-# No manual intervention required!
 ```
 
-### Option 2: NPX for Other Commands
+### Alternative: NPX (limited features)
 ```bash
-# Initialize a project with SPARC
+# For init and basic commands only (achieve may not work properly via npx)
 npx github:groeimetai/claude-code-flow init --sparc
-
-# Run swarms
-npx github:groeimetai/claude-code-flow swarm "Build REST API" --parallel
-
-# Use SPARC modes
-npx github:groeimetai/claude-code-flow sparc run cognitive-analyst "Analyze codebase"
 ```
+
+⚠️ **Note**: The `achieve` command requires a full installation due to its complex interaction with Claude Code. NPX may cause terminal rendering issues.
 
 ## 🆕 **What's New in v2.0.0**
 

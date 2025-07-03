@@ -1,0 +1,20 @@
+{
+  "mainMemory": 10,
+  "slots": {},
+  "history": [
+    {
+      "operation": "MC",
+      "value": null,
+      "slot": "main",
+      "result": 0,
+      "timestamp": "2025-07-03T13:25:11.249Z"
+    },
+    {
+      "operation": "M+",
+      "value": 10,
+      "slot": "main",
+      "result": 10,
+      "timestamp": "2025-07-03T13:25:11.354Z"
+    }
+  ]
+}
