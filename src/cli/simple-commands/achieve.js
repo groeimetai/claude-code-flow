@@ -120,12 +120,34 @@ You MUST follow this iterative process until the goal is achieved:
    Task("Requirements Analyst", "Break down the goal into concrete requirements and success criteria.");
    \`\`\`
    
-   IMPORTANT: 
-   - Spawn 3-5 agents PER ITERATION working on DIFFERENT aspects
-   - All agents share LIVE state through TodoRead/TodoWrite (they see updates in real-time)
-   - Agents work CONCURRENTLY not sequentially
-   - Each agent has a SPECIFIC focused mission
-   - Agents can spawn SUB-AGENTS creating hierarchical swarms
+   IMPORTANT - META-SWARM PATTERN:
+   Instead of individual Task() calls, spawn MULTIPLE SWARMS:
+   
+   \`\`\`
+   // Create iteration plan
+   Write("ITERATION_${iteration}_PLAN.md", "Define goals and team assignments");
+   
+   // Launch parallel swarms - each is a separate process!
+   Bash("./claude-flow swarm 'Research Swarm: ${research_goals}' --strategy research --max-agents 4 --background");
+   Bash("./claude-flow swarm 'Development Swarm: ${dev_goals}' --strategy development --max-agents 4 --background"); 
+   Bash("./claude-flow swarm 'Testing Swarm: ${test_goals}' --strategy testing --max-agents 3 --background");
+   
+   // Monitor all swarms
+   Bash("./claude-flow swarm status --watch");
+   
+   // Swarms automatically:
+   - Run in separate processes (TRUE PARALLELISM!)
+   - Share state through .md files and todos
+   - Have their own internal agent coordination
+   - Can spawn sub-swarms if needed
+   \`\`\`
+   
+   BENEFITS:
+   - True parallel execution (multiple processes)
+   - Each swarm has 3-5 agents working on related tasks
+   - Total parallelism: 3 swarms × 4 agents = 12 parallel workers
+   - Swarms coordinate through shared documentation
+   - You can monitor all swarms with status commands
    
    LIVE COORDINATION:
    - Just like 'swarm' command, agents see each other's work IMMEDIATELY
@@ -233,9 +255,17 @@ To maximize efficiency despite sequential execution:
 3. Agents update todos immediately after completing work
 4. Use .md files for persistent documentation between agents
 
-Alternative: Use the swarm command directly for better orchestration:
+RECOMMENDED: Spawn multiple swarms for true parallel execution:
 \`\`\`
-Bash("./claude-flow swarm 'Iteration 1: Research compact LLM architectures' --strategy research --max-agents 4");
+// Launch multiple swarms simultaneously - each swarm runs in its own process!
+Bash("./claude-flow swarm 'Research Team: Analyze compact LLM architectures' --strategy research --max-agents 3 --background");
+Bash("./claude-flow swarm 'Architecture Team: Design optimal model structure' --strategy development --max-agents 3 --background");
+Bash("./claude-flow swarm 'Documentation Team: Create comprehensive docs' --strategy analysis --max-agents 2 --background");
+
+// Check swarm status
+Bash("./claude-flow swarm status");
+
+// Swarms coordinate through shared .md files and todos
 \`\`\`
 
 ## CRITICAL INSTRUCTIONS
@@ -292,26 +322,38 @@ Initial state (already initialized):
 - Iteration: 1
 - Progress: 0%
 
-EXAMPLE FIRST SWARM for "Create calculator":
+EXAMPLE META-SWARM PATTERN:
 \`\`\`
-// First create initial documentation
-Write("SWARM_COORDINATION.md", "# Calculator Project Coordination\\n\\nIteration: 1\\nProgress: 0%\\nGoal: Create functional calculator\\n\\n## Active Agents\\n- UI Designer\\n- Logic Developer\\n- Feature Developer\\n- Test Engineer");
-Write("PLAN.md", "# Iteration 1 Plan\\n\\n## Goals\\n- Design calculator UI\\n- Implement basic operations\\n- Add memory features\\n- Create test suite\\n\\n## Success Criteria\\n- All basic operations work\\n- UI is responsive\\n- Tests pass");
+// First, create coordination documents
+Write("SWARM_COORDINATION.md", "# Meta-Orchestrator Progress\\n\\nGoal: ${goal}\\nIteration: ${iteration}\\nProgress: ${progress}%");
+Write("ITERATION_${iteration}_PLAN.md", "# Iteration Plan\\n\\n## Swarm Assignments\\n- Research Swarm: ...");
 
-// All agents work in PARALLEL and use .md files
-Task("UI Designer", "Read PLAN.md for requirements. Design calculator interface layout. Create HTML/CSS. Update ARCHITECTURE.md with UI component structure. Document decisions in SWARM_COORDINATION.md.");
-Task("Logic Developer", "Read PLAN.md. Implement calculator operations. Create calculator.js with proper error handling. Update ARCHITECTURE.md with logic design.");
-Task("Feature Developer", "Read ARCHITECTURE.md to understand structure. Add memory functions and history. Update SWARM_COORDINATION.md with feature status.");
-Task("Test Engineer", "Read all .md files to understand system. Create comprehensive test suite. Write TESTING_STRATEGY.md with test plan.");
-\`\`\`
+// Launch multiple swarms in parallel (TRUE PARALLELISM!)
+// Each swarm runs in its own process and manages its own agents
 
-EXAMPLE FIRST SWARM for "Create profitable trading system" (multi-coordinator):
-\`\`\`
-// Multiple coordinators each managing sub-teams
-Task("Trading Strategy Coordinator", "Research and implement trading strategies. Spawn agents for: technical analysis, fundamental analysis, backtesting. Use cognitive_triangulation as codebase grows.");
-Task("Data Pipeline Coordinator", "Build real-time data infrastructure. Spawn agents for: market data feeds, data cleaning, storage. Coordinate with Trading Strategy team.");
-Task("Risk Management Coordinator", "Implement risk controls. Spawn agents for: position sizing, stop-loss, portfolio analysis. Monitor all trading decisions.");
-Task("ML Coordinator", "Build predictive models. Spawn agents using neural_forecast for: price prediction, pattern recognition, anomaly detection. Share predictions with Strategy team.");
+// For research phase (0-30%):
+Bash("./claude-flow swarm 'Research best practices and architectures' --strategy research --max-agents 4 --background");
+Bash("./claude-flow swarm 'Analyze requirements and constraints' --strategy analysis --max-agents 3 --background");
+Bash("./claude-flow swarm 'Explore technology options' --strategy research --max-agents 3 --background");
+
+// For development phase (30-60%):
+Bash("./claude-flow swarm 'Core implementation team' --strategy development --max-agents 5 --background");
+Bash("./claude-flow swarm 'Testing and validation team' --strategy testing --max-agents 4 --background");
+Bash("./claude-flow swarm 'Documentation team' --strategy analysis --max-agents 3 --background");
+
+// Monitor all swarms
+Bash("./claude-flow swarm status --all");
+
+// Wait for swarms to complete
+Bash("sleep 60 && ./claude-flow swarm status --all > SWARM_RESULTS.md");
+
+// Consolidate results
+TodoWrite([{
+  id: "consolidate_iteration",
+  content: "Review SWARM_RESULTS.md and all team outputs. Update progress percentage.",
+  status: "pending",
+  priority: "high"
+}]);
 \`\`\`
 
 Start immediately by spawning your first PARALLEL swarm to begin!`;
