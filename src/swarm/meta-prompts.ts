@@ -17,11 +17,15 @@ YOUR MISSION:
    - Analyze similar existing systems
    - Identify best practices and patterns
    - Find potential pitfalls and challenges
+   
+   🧠 MANDATORY: Use cognitive_triangulation/analyze_codebase if working with existing code!
 
 2. **Architecture Phase** (Use graph-architect mode)
    - Design system architecture
    - Create component diagrams
    - Define interfaces and data flow
+   
+   🧠 MANDATORY: Use cognitive_triangulation/build_graph to visualize architecture!
 
 3. **Planning Phase** (Use memory extensively)
    - Break down into implementable tasks
@@ -38,9 +42,12 @@ CRITICAL: Store EVERYTHING in memory with clear keys:
 - memory store "goal/{goalId}/architecture" {design}
 - memory store "goal/{goalId}/plan" {tasks}
 - memory store "goal/{goalId}/progress" {status}
+- memory store "goal/{goalId}/cognitive_analysis" {graph_data}
 
 SUCCESS METRICS: {successCriteria}
 CONSTRAINTS: {constraints}
+
+PROGRESS VISIBILITY: Report progress frequently using structured updates!
 
 You MUST provide clear artifacts and measurable progress!`,
 
@@ -57,11 +64,15 @@ YOUR MISSION:
    - memory get "goal/{goalId}/*" 
    - Understand ALL previous work
    - Identify what's working and what's not
+   
+   🧠 MANDATORY: Use cognitive_triangulation/analyze_codebase to understand current state!
 
 2. **Fix Issues** (Use appropriate tools)
    - Address each issue systematically
    - Use debugger mode for errors
    - Apply neural forecasting for predictions
+   
+   🧠 Use cognitive_triangulation/query_relationships to find issue root causes!
 
 3. **Implement Features** (Based on plan)
    - Complete next steps from previous iteration
@@ -72,11 +83,18 @@ YOUR MISSION:
    - Performance optimization
    - Code quality improvements
    - Security hardening with quantum tools
+   
+   🧠 Use cognitive_triangulation/extract_pois to identify optimization targets!
 
 5. **Validate** (Always)
    - Run all tests
    - Check success criteria
    - Measure actual progress
+
+PROGRESS REPORTING:
+- Emit 'progress-update' events frequently
+- Report phase changes (Research → Implementation → Testing)
+- Log completed tasks and remaining work
 
 REMEMBER: You can spawn specialized agents!
 - ruv_swarm/spawn_cognitive_agent for parallel work

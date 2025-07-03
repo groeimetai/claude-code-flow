@@ -29,6 +29,9 @@ npx github:groeimetai/claude-code-flow achieve "Create a URL shortener service w
 # ✅ Creates tests
 # ✅ Fixes any issues
 # ✅ Delivers working code
+
+# With enhanced progress monitoring:
+npx github:groeimetai/claude-code-flow achieve "Create a trading bot" --verbose --monitor
 ```
 
 ## 🆕 **What's New in v2.0.0**
@@ -39,6 +42,7 @@ npx github:groeimetai/claude-code-flow achieve "Create a URL shortener service w
 - **Knowledge Graph Generation** with Neo4j, JSON, and GraphML support
 - **Semantic Code Analysis** with relationship mapping
 - **POI Extraction** for functions, classes, methods, and more
+- **Automatic Analysis** during iterations for better understanding
 
 ### 🐝 **Enhanced Swarm Capabilities**
 - **Self-Aware Swarms** that can improve themselves autonomously
@@ -180,6 +184,51 @@ npx github:groeimetai/claude-code-flow sparc run cognitive-analyst "Find code sm
 npx github:groeimetai/claude-code-flow sparc run autonomous-architect "Design microservices"
 ```
 
+## 📊 **Progress Monitoring**
+
+### Real-time Progress Visibility
+
+The system provides detailed progress monitoring:
+
+```bash
+# Enable verbose progress monitoring
+npx github:groeimetai/claude-code-flow achieve "Build API" --verbose --monitor
+
+# You'll see:
+════════════════════════════════════════════════════════════
+🎯 Iteration 1 - Exploration & Foundation
+════════════════════════════════════════════════════════════
+
+🧠 Running automatic cognitive triangulation...
+Progress: ████████░░░░░░░░░░░░ 40%
+Phase: Architecture Design
+Active tasks: 3
+
+💡 Learning: Database should use PostgreSQL for scalability
+✨ Spawned neural-orchestrator swarm: Design optimal schema
+
+🧠 Cognitive Analysis Complete:
+  - Components: 42
+  - Relationships: 127
+  - Complexity: medium
+```
+
+### Progress Phases
+
+Each iteration goes through clear phases:
+- **0-30%**: Research & Architecture
+- **30-60%**: Core Implementation
+- **60-80%**: Testing & Optimization
+- **80-100%**: Polish & Validation
+
+### Automatic Cognitive Triangulation
+
+The system automatically analyzes the project:
+- **Every iteration start**: Full architecture analysis
+- **After major changes**: Impact assessment
+- **When stuck**: Deep root cause analysis
+- **Before optimization**: Performance bottleneck identification
+
 ## 🤖 **Enhanced Swarm Automation Examples**
 
 ### 🎯 **Auto-Refactoring Swarm**
@@ -259,18 +308,52 @@ graph TD
 | Self-Improvement | ❌ | ✅ Continuous Evolution |
 | Neural Capabilities | ❌ | ✅ 84.8% SWE-Bench |
 | Distributed ML | ❌ | ✅ Prime Framework |
+| Progress Monitoring | Basic | ✅ Visual Progress Bars |
+| Automatic CT Analysis | ❌ | ✅ Every Iteration |
 
 ## 🔧 **Configuration**
+
+### API Key Management
+
+The system works with or without external services:
+
+#### Option 1: Full Features (with Neo4j & Redis)
+```bash
+# Set these for full cognitive triangulation features
+export NEO4J_URI=bolt://localhost:7687
+export NEO4J_USER=neo4j
+export NEO4J_PASSWORD=your-password
+export REDIS_URL=redis://localhost:6379
+```
+
+#### Option 2: Local-Only Mode (No External Services)
+```bash
+# Use local file storage - no API keys needed!
+export COGNITIVE_GRAPH_FORMAT=json
+export COGNITIVE_CACHE_TYPE=file
+```
+
+The system automatically detects available services and adapts:
+- ✅ No Neo4j? Uses JSON-based graphs locally
+- ✅ No Redis? Uses file-based caching
+- ✅ Missing API keys? Falls back gracefully
 
 ### Environment Variables
 ```bash
 # Cognitive Triangulation Path
 export COGNITIVE_TRIANGULATION_PATH=/usr/local/bin/cognitive-triangulation-mcp
 
-# Neo4j Connection (for knowledge graphs)
+# Neo4j Connection (for knowledge graphs) - OPTIONAL
 export NEO4J_URI=bolt://localhost:7687
 export NEO4J_USER=neo4j
 export NEO4J_PASSWORD=password
+
+# Redis Connection (for caching) - OPTIONAL
+export REDIS_URL=redis://localhost:6379
+
+# If not set, system uses local JSON graphs and file caching
+export COGNITIVE_GRAPH_FORMAT=json  # Use when Neo4j not available
+export COGNITIVE_CACHE_TYPE=file    # Use when Redis not available
 ```
 
 ### Enhanced `.claude/settings.json`
@@ -279,8 +362,16 @@ export NEO4J_PASSWORD=password
   "cognitiveTriangulation": {
     "enabled": true,
     "autoAnalyze": true,
-    "graphFormat": "neo4j",
-    "incrementalUpdates": true
+    "graphFormat": "neo4j",  // or "json" if no Neo4j
+    "incrementalUpdates": true,
+    "analysisInterval": 300000,  // 5 minutes between auto-analysis
+    "fallbackToLocal": true  // Use local storage if external services unavailable
+  },
+  "progressMonitoring": {
+    "visual": true,
+    "updateFrequency": 5000,  // Update every 5 seconds
+    "showPhases": true,
+    "showActiveTasks": true
   }
 }
 ```

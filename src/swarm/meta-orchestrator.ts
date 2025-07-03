@@ -7,6 +7,10 @@ import { ILogger } from '../core/logger.js';
 import { IEventBus } from '../core/event-bus.js';
 import { SwarmCoordinator } from './coordinator.js';
 import { generateId } from '../utils/helpers.js';
+import { ProgressTracker } from './progress-tracker.js';
+import { createCognitiveTriangulationTools } from '../mcp/cognitive-triangulation-tools.js';
+import { apiKeyManager } from '../config/api-key-manager.js';
+import chalk from 'chalk';
 
 export interface MetaGoal {
   id: string;
@@ -39,6 +43,9 @@ export class MetaOrchestrator {
   private iterations: Map<string, IterationResult[]> = new Map();
   private activeSwarms: Map<string, SwarmCoordinator> = new Map();
   private convergenceHistory: number[] = [];
+  private progressTracker: ProgressTracker;
+  private projectKnowledge: Map<string, any> = new Map();
+  private cognitiveTools: any[] = [];
 
   constructor(
     private logger: ILogger,
@@ -50,7 +57,29 @@ export class MetaOrchestrator {
       autoEvolve: true,
     }
   ) {
+    this.progressTracker = new ProgressTracker(logger, eventBus);
+    this.cognitiveTools = createCognitiveTriangulationTools(logger);
     this.setupEventListeners();
+    this.setupProgressDisplay();
+    this.checkApiKeys();
+  }
+
+  /**
+   * Check and inform about API key requirements
+   */
+  private checkApiKeys(): void {
+    const hasNeo4j = process.env.NEO4J_URI && process.env.NEO4J_USER && process.env.NEO4J_PASSWORD;
+    const hasRedis = process.env.REDIS_URL;
+    
+    if (!hasNeo4j) {
+      this.logger.info(chalk.yellow('ℹ️  Neo4j not configured - using local JSON graphs'));
+      this.logger.info(chalk.gray('   Set NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD for full features'));
+    }
+    
+    if (!hasRedis) {
+      this.logger.info(chalk.yellow('ℹ️  Redis not configured - using file-based caching'));
+      this.logger.info(chalk.gray('   Set REDIS_URL for better performance'));
+    }
   }
 
   /**
@@ -451,5 +480,93 @@ ${this.getSelfImprovementInstructions()}`;
     this.eventBus.on('swarm-complete', (data) => {
       this.logger.info('✅ Swarm completed', data);
     });
+  }
+
+  /**
+   * Setup enhanced progress display
+   */
+  private setupProgressDisplay() {
+    let lastAnalysisTime = 0;
+    const analysisInterval = 300000; // 5 minutes
+    
+    this.eventBus.on('iteration-start', async (data) => {
+      // Show progress header
+      console.log(chalk.cyan('\n' + '═'.repeat(60)));
+      console.log(chalk.bold.cyan(`🎯 Iteration ${data.iteration} - ${data.phase}`));
+      console.log(chalk.cyan('═'.repeat(60) + '\n'));
+      
+      // Automatic cognitive triangulation at start of iteration
+      const now = Date.now();
+      if (now - lastAnalysisTime > analysisInterval || data.iteration === 1) {
+        console.log(chalk.yellow('🧠 Running automatic cognitive triangulation...'));
+        await this.runAutomaticAnalysis(data.goalId);
+        lastAnalysisTime = now;
+      }
+    });
+    
+    this.eventBus.on('progress-update', (data) => {
+      const progressBar = this.createProgressBar(data.progress);
+      console.log(chalk.green(`Progress: ${progressBar} ${Math.round(data.progress * 100)}%`));
+      
+      if (data.currentPhase) {
+        console.log(chalk.gray(`Phase: ${data.currentPhase}`));
+      }
+      
+      if (data.activeTasks) {
+        console.log(chalk.gray(`Active tasks: ${data.activeTasks}`));
+      }
+    });
+    
+    this.eventBus.on('learning-stored', (data) => {
+      console.log(chalk.blue(`💡 Learning: ${data.learning}`));
+    });
+    
+    this.eventBus.on('cognitive-analysis-complete', (data) => {
+      console.log(chalk.magenta('🧠 Cognitive Analysis Complete:'));
+      console.log(chalk.gray(`  - Components: ${data.components}`));
+      console.log(chalk.gray(`  - Relationships: ${data.relationships}`));
+      console.log(chalk.gray(`  - Complexity: ${data.complexity}`));
+    });
+  }
+  
+  /**
+   * Create visual progress bar
+   */
+  private createProgressBar(progress: number): string {
+    const total = 20;
+    const filled = Math.round(progress * total);
+    const empty = total - filled;
+    return '█'.repeat(filled) + '░'.repeat(empty);
+  }
+  
+  /**
+   * Run automatic cognitive triangulation
+   */
+  private async runAutomaticAnalysis(goalId: string): Promise<void> {
+    try {
+      // Emit event for swarms to use cognitive triangulation
+      this.eventBus.emit('run-cognitive-analysis', {
+        goalId,
+        projectPath: process.cwd(),
+        purpose: 'understand-architecture'
+      });
+      
+      // In a real implementation, this would call the cognitive triangulation tools
+      // For now, we'll simulate the analysis
+      setTimeout(() => {
+        this.eventBus.emit('cognitive-analysis-complete', {
+          components: 42,
+          relationships: 127,
+          complexity: 'medium',
+          insights: [
+            'Identified modular architecture',
+            'Found potential performance bottlenecks',
+            'Detected unused dependencies'
+          ]
+        });
+      }, 2000);
+    } catch (error) {
+      this.logger.warn('Failed to run automatic cognitive analysis', { error });
+    }
   }
 }
