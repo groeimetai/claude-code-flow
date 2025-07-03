@@ -23,7 +23,10 @@ if command -v deno >/dev/null 2>&1 && [ -f "$ROOT_DIR/src/cli/main.ts" ]; then
 fi
 
 # Fall back to Node.js version
-if command -v tsx >/dev/null 2>&1 && [ -f "$ROOT_DIR/src/cli/simple-cli.ts" ]; then
+if [ -f "$ROOT_DIR/cli.js" ]; then
+  # Use cli.js wrapper that handles achieve command
+  exec node "$ROOT_DIR/cli.js" "$@"
+elif command -v tsx >/dev/null 2>&1 && [ -f "$ROOT_DIR/src/cli/simple-cli.ts" ]; then
   # Use tsx for Node.js functionality
   exec tsx "$ROOT_DIR/src/cli/simple-cli.ts" "$@"
 elif [ -f "$ROOT_DIR/src/cli/simple-cli.ts" ]; then

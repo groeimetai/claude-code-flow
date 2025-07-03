@@ -28,6 +28,11 @@ export function ensureDataDir() {
  * @returns {Object} Memory state or default
  */
 export function loadMemoryState() {
+  // Skip persistence in test environment
+  if (process.env.NODE_ENV === 'test') {
+    return null;
+  }
+  
   ensureDataDir();
   
   if (existsSync(MEMORY_FILE)) {
@@ -48,6 +53,11 @@ export function loadMemoryState() {
  * @param {Object} state - Memory state to save
  */
 export function saveMemoryState(state) {
+  // Skip persistence in test environment
+  if (process.env.NODE_ENV === 'test') {
+    return;
+  }
+  
   ensureDataDir();
   
   try {

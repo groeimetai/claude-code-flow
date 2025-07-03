@@ -1,20 +1,107 @@
 {
-  "mainMemory": 10,
-  "slots": {},
+  "mainMemory": 0,
+  "slots": {
+    "x": 20,
+    "new": 5
+  },
   "history": [
+    {
+      "operation": "MC_ALL",
+      "value": null,
+      "slot": "all",
+      "result": 0,
+      "timestamp": "2025-07-03T13:46:59.160Z"
+    },
+    {
+      "operation": "MS",
+      "value": 10,
+      "slot": "main",
+      "result": 10,
+      "timestamp": "2025-07-03T13:46:59.161Z"
+    },
+    {
+      "operation": "MS",
+      "value": 20,
+      "slot": "x",
+      "result": 20,
+      "timestamp": "2025-07-03T13:46:59.162Z"
+    },
+    {
+      "operation": "M+",
+      "value": 5,
+      "slot": "main",
+      "result": 15,
+      "timestamp": "2025-07-03T13:46:59.162Z"
+    },
+    {
+      "operation": "MS",
+      "value": 10,
+      "slot": "main",
+      "result": 10,
+      "timestamp": "2025-07-03T13:46:59.164Z"
+    },
+    {
+      "operation": "MR",
+      "value": null,
+      "slot": "nonexistent",
+      "result": 0,
+      "timestamp": "2025-07-03T13:46:59.165Z"
+    },
+    {
+      "operation": "M+",
+      "value": 5,
+      "slot": "new",
+      "result": 5,
+      "timestamp": "2025-07-03T13:46:59.165Z"
+    },
+    {
+      "operation": "MS",
+      "value": -10,
+      "slot": "main",
+      "result": -10,
+      "timestamp": "2025-07-03T13:46:59.166Z"
+    },
+    {
+      "operation": "M+",
+      "value": -5,
+      "slot": "main",
+      "result": -15,
+      "timestamp": "2025-07-03T13:46:59.166Z"
+    },
+    {
+      "operation": "M-",
+      "value": -3,
+      "slot": "main",
+      "result": -12,
+      "timestamp": "2025-07-03T13:46:59.167Z"
+    },
+    {
+      "operation": "MS",
+      "value": 3.14,
+      "slot": "main",
+      "result": 3.14,
+      "timestamp": "2025-07-03T13:46:59.167Z"
+    },
+    {
+      "operation": "M+",
+      "value": 2.86,
+      "slot": "main",
+      "result": 6,
+      "timestamp": "2025-07-03T13:46:59.167Z"
+    },
+    {
+      "operation": "M+",
+      "value": 25,
+      "slot": "main",
+      "result": 31,
+      "timestamp": "2025-07-03T13:52:46.995Z"
+    },
     {
       "operation": "MC",
       "value": null,
       "slot": "main",
       "result": 0,
-      "timestamp": "2025-07-03T13:25:11.249Z"
-    },
-    {
-      "operation": "M+",
-      "value": 10,
-      "slot": "main",
-      "result": 10,
-      "timestamp": "2025-07-03T13:25:11.354Z"
+      "timestamp": "2025-07-03T13:52:54.640Z"
     }
   ]
 }

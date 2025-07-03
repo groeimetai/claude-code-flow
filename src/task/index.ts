@@ -4,8 +4,20 @@
  * Integrates with TodoWrite/TodoRead for coordination and Memory for persistence
  */
 
-export {
-  TaskEngine,
+import { TaskEngine } from './engine.js';
+import { TaskCoordinator } from './coordination.js';
+import {
+  createTaskCreateCommand,
+  createTaskListCommand,
+  createTaskStatusCommand,
+  createTaskCancelCommand,
+  createTaskWorkflowCommand
+} from './commands.js';
+import type { TaskCommandContext } from './commands.js';
+import type { TodoItem, CoordinationContext } from './coordination.js';
+
+export { TaskEngine } from './engine.js';
+export type {
   WorkflowTask,
   TaskDependency,
   ResourceRequirement,
@@ -24,12 +36,12 @@ export {
   createTaskListCommand,
   createTaskStatusCommand,
   createTaskCancelCommand,
-  createTaskWorkflowCommand,
-  TaskCommandContext
+  createTaskWorkflowCommand
 } from './commands.js';
+export type { TaskCommandContext } from './commands.js';
 
-export {
-  TaskCoordinator,
+export { TaskCoordinator } from './coordination.js';
+export type {
   TodoItem,
   MemoryEntry,
   CoordinationContext

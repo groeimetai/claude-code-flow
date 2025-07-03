@@ -57,6 +57,25 @@ export const operations = {
       throw new Error('Natural logarithm input must be positive');
     }
     return Math.log(n);
+  },
+  
+  // Number theory operations
+  gcd: (a, b) => {
+    // Greatest Common Divisor using Euclidean algorithm
+    a = Math.abs(Math.floor(a));
+    b = Math.abs(Math.floor(b));
+    while (b !== 0) {
+      const temp = b;
+      b = a % b;
+      a = temp;
+    }
+    return a;
+  },
+  lcm: (a, b) => {
+    // Least Common Multiple
+    a = Math.abs(Math.floor(a));
+    b = Math.abs(Math.floor(b));
+    return (a * b) / operations.gcd(a, b);
   }
 };
 
@@ -87,7 +106,9 @@ export function getOperationArity(operation) {
     cos: 1,
     tan: 1,
     log: 1,
-    ln: 1
+    ln: 1,
+    gcd: 2,
+    lcm: 2
   };
   
   return arityMap[operation] || 0;

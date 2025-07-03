@@ -23,8 +23,12 @@ async function handleAchieve() {
         verbose: process.argv.includes('--verbose'),
         monitor: process.argv.includes('--monitor'),
         parallel: process.argv.includes('--parallel'),
+        dryRun: process.argv.includes('--dry-run'),
+        noEvolve: process.argv.includes('--no-evolve'),
         maxIterations: process.argv.find((arg, i) => process.argv[i-1] === '--max-iterations') || '10',
-        convergence: process.argv.find((arg, i) => process.argv[i-1] === '--convergence') || '0.95'
+        convergence: process.argv.find((arg, i) => process.argv[i-1] === '--convergence') || '0.95',
+        budget: process.argv.find((arg, i) => process.argv[i-1] === '--budget'),
+        deadline: process.argv.find((arg, i) => process.argv[i-1] === '--deadline')
       };
       
       if (!goal) {

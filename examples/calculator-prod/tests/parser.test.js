@@ -2,7 +2,6 @@
  * Tests for Expression Parser
  */
 
-import { describe, it, expect } from 'vitest';
 import { ExpressionParser, evaluateExpression } from '../src/parser.js';
 
 describe('ExpressionParser', () => {

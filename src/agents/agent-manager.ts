@@ -191,25 +191,25 @@ export class AgentManager extends EventEmitter {
   }
 
   private setupEventHandlers(): void {
-    this.eventBus.on('agent:heartbeat', (data) => {
-      this.handleHeartbeat(data);
+    this.eventBus.on('agent:heartbeat', (data: any) => {
+      this.handleHeartbeat(data as { agentId: string; timestamp: Date; metrics?: AgentMetrics });
     });
 
-    this.eventBus.on('agent:error', (data) => {
-      this.handleAgentError(data);
+    this.eventBus.on('agent:error', (data: any) => {
+      this.handleAgentError(data as { agentId: string; error: AgentError });
     });
 
-    this.eventBus.on('task:assigned', (data) => {
-      this.updateAgentWorkload(data.agentId, 1);
+    this.eventBus.on('task:assigned', (data: any) => {
+      this.updateAgentWorkload((data as any).agentId, 1);
     });
 
-    this.eventBus.on('task:completed', (data) => {
-      this.updateAgentWorkload(data.agentId, -1);
-      this.updateAgentMetrics(data.agentId, data.metrics);
+    this.eventBus.on('task:completed', (data: any) => {
+      this.updateAgentWorkload((data as any).agentId, -1);
+      this.updateAgentMetrics((data as any).agentId, (data as any).metrics);
     });
 
-    this.eventBus.on('resource:usage', (data) => {
-      this.updateResourceUsage(data.agentId, data.usage);
+    this.eventBus.on('resource:usage', (data: any) => {
+      this.updateResourceUsage((data as any).agentId, (data as any).usage);
     });
   }
 
@@ -448,8 +448,33 @@ export class AgentManager extends EventEmitter {
       metrics: this.createDefaultMetrics(),
       workload: 0,
       health: 1.0,
-      config: { ...template.config, ...overrides.config },
-      environment: { ...template.environment, ...overrides.environment },
+      config: {
+        autonomyLevel: template.config?.autonomyLevel ?? this.config.agentDefaults.autonomyLevel,
+        learningEnabled: template.config?.learningEnabled ?? this.config.agentDefaults.learningEnabled,
+        adaptationEnabled: template.config?.adaptationEnabled ?? this.config.agentDefaults.adaptationEnabled,
+        maxTasksPerHour: template.config?.maxTasksPerHour ?? 100,
+        maxConcurrentTasks: template.config?.maxConcurrentTasks ?? 5,
+        timeoutThreshold: template.config?.timeoutThreshold ?? 60000,
+        reportingInterval: template.config?.reportingInterval ?? 30000,
+        heartbeatInterval: template.config?.heartbeatInterval ?? this.config.heartbeatInterval,
+        permissions: template.config?.permissions ?? [],
+        trustedAgents: template.config?.trustedAgents ?? [],
+        expertise: template.config?.expertise ?? {},
+        preferences: template.config?.preferences ?? {},
+        ...overrides.config
+      },
+      environment: {
+        runtime: template.environment?.runtime ?? this.config.environmentDefaults.runtime,
+        version: template.environment?.version ?? '1.0.0',
+        workingDirectory: template.environment?.workingDirectory ?? this.config.environmentDefaults.workingDirectory,
+        tempDirectory: template.environment?.tempDirectory ?? this.config.environmentDefaults.tempDirectory,
+        logDirectory: template.environment?.logDirectory ?? this.config.environmentDefaults.logDirectory,
+        apiEndpoints: template.environment?.apiEndpoints ?? {},
+        credentials: template.environment?.credentials ?? {},
+        availableTools: template.environment?.availableTools ?? [],
+        toolConfigs: template.environment?.toolConfigs ?? {},
+        ...overrides.environment
+      },
       endpoints: [],
       lastHeartbeat: new Date(),
       taskHistory: [],
@@ -509,10 +534,11 @@ export class AgentManager extends EventEmitter {
 
     } catch (error) {
       agent.status = 'error';
+      const errorMessage = error instanceof Error ? error.message : String(error);
       this.addAgentError(agentId, {
         timestamp: new Date(),
         type: 'startup_failed',
-        message: error.message,
+        message: errorMessage,
         context: { agentId },
         severity: 'critical',
         resolved: false
@@ -926,22 +952,22 @@ export class AgentManager extends EventEmitter {
       JSON.stringify(agent.config)
     ];
 
-    const process = spawn(agent.environment.runtime, args, {
+    const childProcess = spawn(agent.environment.runtime, args, {
       env,
       stdio: ['pipe', 'pipe', 'pipe'],
       cwd: agent.environment.workingDirectory
     });
 
     // Handle process events
-    process.on('exit', (code) => {
+    childProcess.on('exit', (code: number | null) => {
       this.handleProcessExit(agent.id.id, code);
     });
 
-    process.on('error', (error) => {
+    childProcess.on('error', (error: Error) => {
       this.handleProcessError(agent.id.id, error);
     });
 
-    return process;
+    return childProcess;
   }
 
   private async waitForAgentReady(agentId: string, timeout: number): Promise<void> {
@@ -950,8 +976,8 @@ export class AgentManager extends EventEmitter {
         reject(new Error(`Agent ${agentId} startup timeout`));
       }, timeout);
 
-      const handler = (data: { agentId: string }) => {
-        if (data.agentId === agentId) {
+      const handler = (data: any) => {
+        if ((data as { agentId: string }).agentId === agentId) {
           clearTimeout(timer);
           this.eventBus.off('agent:ready', handler);
           resolve();

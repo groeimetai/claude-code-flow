@@ -13,9 +13,11 @@
   },
   "include": [
     "src/cli/simple-cli.ts",
-    "src/cli/simple-cli.js",
-    "src/cli/index.ts",
-    "src/cli/index-remote.ts"
+    "src/cli/simple-commands/**/*.js",
+    "src/cli/simple-commands/**/*.ts",
+    "src/cli/command-registry.js",
+    "src/cli/init/**/*.js",
+    "src/cli/init/**/*.ts"
   ],
   "exclude": [
     "node_modules",
@@ -24,6 +26,11 @@
     "src/agents",
     "src/swarm",
     "src/memory",
-    "src/terminal"
+    "src/terminal",
+    "src/cli/commands/**/*",
+    "src/mcp/**/*",
+    "src/core/**/*",
+    "src/coordination/**/*",
+    "src/task/**/*"
   ]
 }

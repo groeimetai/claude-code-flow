@@ -56,8 +56,17 @@ export class ExpressionParser {
     const tokens = [];
     const regex = /(\d+\.?\d*|[+\-*/()^,]|[a-zA-Z]+|MR)/g;
     let match;
+    let lastIndex = 0;
     
     while ((match = regex.exec(expression)) !== null) {
+      // Check for invalid characters between matches
+      if (match.index > lastIndex) {
+        const between = expression.substring(lastIndex, match.index).trim();
+        if (between) {
+          throw new Error(`Unexpected token: ${between[0]}`);
+        }
+      }
+      lastIndex = regex.lastIndex;
       const value = match[0];
       let type;
       
@@ -80,6 +89,14 @@ export class ExpressionParser {
       }
       
       tokens.push({ type, value });
+    }
+    
+    // Check for invalid characters after the last match
+    if (lastIndex < expression.length) {
+      const remaining = expression.substring(lastIndex).trim();
+      if (remaining) {
+        throw new Error(`Unexpected token: ${remaining[0]}`);
+      }
     }
     
     return tokens;

@@ -226,7 +226,8 @@ export function createAdvancedMemoryCommand(): Command {
         }
 
       } catch (error) {
-        printError(`Query failed: ${error.message}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        printError(`Query failed: ${errorMessage}`);
         if (options.debug) {
           console.error(error);
         }
@@ -308,7 +309,8 @@ export function createAdvancedMemoryCommand(): Command {
         }
 
       } catch (error) {
-        printError(`Export failed: ${error.message}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        printError(`Export failed: ${errorMessage}`);
         if (options.debug) {
           console.error(error);
         }
@@ -373,7 +375,7 @@ export function createAdvancedMemoryCommand(): Command {
           if (options.valueTransform) {
             try {
               // Create function from string (simplified - in production, use a proper sandbox)
-              transformation.valueTransformation = new Function('value', options.valueTransform);
+              transformation.valueTransformation = new Function('value', options.valueTransform) as (value: any) => any;
             } catch (error) {
               printError('Invalid value transformation function');
               return;
@@ -382,7 +384,7 @@ export function createAdvancedMemoryCommand(): Command {
           
           if (options.metadataExtract) {
             try {
-              transformation.metadataExtraction = new Function('entry', options.metadataExtract);
+              transformation.metadataExtraction = new Function('entry', options.metadataExtract) as (entry: any) => Record<string, any>;
             } catch (error) {
               printError('Invalid metadata extraction function');
               return;
@@ -580,7 +582,8 @@ export function createAdvancedMemoryCommand(): Command {
         }
 
       } catch (error) {
-        printError(`Statistics generation failed: ${error.message}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        printError(`Statistics generation failed: ${errorMessage}`);
         if (options.debug) {
           console.error(error);
         }
@@ -1017,4 +1020,4 @@ export function createAdvancedMemoryCommand(): Command {
 }
 
 // Export for use in the main CLI
-export { createAdvancedMemoryCommand };
+// Already exported above

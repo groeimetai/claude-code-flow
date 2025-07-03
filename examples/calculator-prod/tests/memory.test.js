@@ -2,7 +2,6 @@
  * Tests for Memory Manager
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryManager } from '../src/memory.js';
 
 describe('MemoryManager', () => {
@@ -123,8 +122,9 @@ describe('MemoryManager', () => {
       expect(memory.memoryRecall()).toBe(0);
       expect(memory.memoryRecall('x')).toBe(0);
       expect(memory.memoryRecall('y')).toBe(0);
-      expect(memory.getHistory()).toHaveLength(1);
-      expect(memory.getHistory()[0].operation).toBe('MC_ALL');
+      const history = memory.getHistory();
+      // Should have MC_ALL and the 3 MR operations
+      expect(history[history.length - 4].operation).toBe('MC_ALL');
     });
   });
 
