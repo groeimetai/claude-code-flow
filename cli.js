@@ -16,7 +16,7 @@ async function handleAchieve() {
   if (process.argv[2] === 'achieve') {
     // Handle achieve command directly
     try {
-      const module = await import('./src/cli/simple-commands/achieve.js');
+      const module = await import('./src/cli/simple-commands/achieve-real.js');
       const achieveCommand = module.default;
       const goal = process.argv[3];
       const options = {
