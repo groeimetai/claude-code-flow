@@ -235,19 +235,19 @@ Choose the right pattern based on your goal:
 The meta-orchestrator provides comprehensive logging:
 
 1. **Swarm Logs** - Each swarm writes to its own log file:
-   - `swarm_logs/iteration_1/research_swarm_1.log`
-   - `swarm_logs/iteration_1/development_swarm.log`
+   - \`swarm_logs/iteration_1/research_swarm_1.log\`
+   - \`swarm_logs/iteration_1/development_swarm.log\`
    - Shows all agent activities, file creations, decisions
 
 2. **Live Monitoring** - Real-time activity feeds:
-   - `tail -f` shows live updates from all swarms
-   - `watch` displays swarm status updates
+   - \`tail -f\` shows live updates from all swarms
+   - \`watch\` displays swarm status updates
    - File change notifications
 
 3. **Consolidated Reports**:
-   - `ITERATION_X_FULL_LOG.md` - Complete activity log
-   - `SWARM_MONITOR.md` - Live dashboard
-   - `SWARM_RESULTS.md` - Summary of achievements
+   - \`ITERATION_X_FULL_LOG.md\` - Complete activity log
+   - \`SWARM_MONITOR.md\` - Live dashboard
+   - \`SWARM_RESULTS.md\` - Summary of achievements
 
 To view swarm activities:
 \`\`\`
