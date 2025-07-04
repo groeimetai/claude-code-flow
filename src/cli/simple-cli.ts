@@ -469,7 +469,7 @@ async function createProgram() {
       output += '  npx claude-flow@latest init --sparc  # Initialize SPARC development environment\n';
       output += '  \n';
       output += '  The --sparc flag creates:\n';
-      output += '  • .roomodes file with 24 pre-configured SPARC modes\n';
+      output += '  • .roomodes file with 27 pre-configured SPARC modes\n';
       output += '  • CLAUDE.md for project instructions\n';
       output += '  • Ready-to-use TDD and code generation environment\n\n';
       
@@ -1771,7 +1771,7 @@ See .claude/commands/swarm/ for detailed documentation on each strategy.
         console.log('\n🎯 Core Development Commands:');
         console.log('  • sparc "<task>" - Run orchestrator mode (default)');
         console.log('  • sparc run <mode> "<task>" - Run specific SPARC mode');
-        console.log('  • sparc modes - List all 17 available modes');
+        console.log('  • sparc modes - List all 27 available modes');
         console.log('  • sparc tdd "<feature>" - Test-driven development');
         console.log('  • sparc workflow "<workflow>" - Execute workflow orchestration');
         console.log('  • sparc batch "<tasks>" - Execute multiple tasks in batch');
@@ -1804,10 +1804,10 @@ See .claude/commands/swarm/ for detailed documentation on each strategy.
 
   sparcCmd
     .command('modes')
-    .description('List all 24 available SPARC development modes')
+    .description('List all 27 available SPARC development modes')
     .option('--detailed', 'Show detailed descriptions for each mode')
     .action(async (options) => {
-      printSuccess('🧠 SPARC Development Modes - Complete Collection (24 Modes)');
+      printSuccess('🧠 SPARC Development Modes - Complete Collection (27 Modes)');
       
       if (options.detailed) {
         // Load mode descriptions from files
@@ -1845,6 +1845,11 @@ See .claude/commands/swarm/ for detailed documentation on each strategy.
         console.log('\n🧪 Testing & Quality (2 modes):');  
         console.log('  • tester - Comprehensive testing with parallel execution');
         console.log('  • memory-manager - Knowledge management with Memory tools');
+        
+        console.log('\n📋 Specification & Integration (3 modes):');
+        console.log('  • spec-pseudocode - Requirements and pseudocode planning');
+        console.log('  • integration - System integration and coordination');
+        console.log('  • debug - Advanced debugging and troubleshooting');
         
         console.log('\n🧠 Advanced AI & Analysis (7 modes):');
         console.log('  • cognitive-analyst - Deep code analysis with cognitive triangulation');
@@ -3346,9 +3351,9 @@ You MUST use the above tools to conduct thorough research and store findings in 
 - \`./claude-flow sparc "<task>"\`: Run orchestrator mode (default)
 - \`./claude-flow sparc run <mode> "<task>"\`: Run specific SPARC mode
 - \`./claude-flow sparc tdd "<feature>"\`: Test-driven development mode
-- \`./claude-flow sparc modes\`: List all 17 available SPARC modes
+- \`./claude-flow sparc modes\`: List all 27 available SPARC modes
 
-Available SPARC modes: orchestrator, coder, researcher, tdd, architect, reviewer, debugger, tester, analyzer, optimizer, documenter, designer, innovator, swarm-coordinator, memory-manager, batch-executor, workflow-manager
+Available SPARC modes: orchestrator, coder, researcher, tdd, architect, reviewer, debugger, tester, analyzer, optimizer, documenter, designer, innovator, swarm-coordinator, memory-manager, batch-executor, workflow-manager, cognitive-analyst, graph-architect, neural-orchestrator, autonomous-architect, ml-coordinator, quantum-security, self-aware-orchestrator, spec-pseudocode, integration, debug
 
 ### Swarm Coordination
 - \`./claude-flow swarm "<objective>" [options]\`: Multi-agent swarm coordination
