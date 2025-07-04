@@ -2977,56 +2977,6 @@ Use ▶ to indicate actionable items`;
       }
     });
 
-  // Helper functions for roomodes conversion
-  function getModeName(slug: string): string {
-    const modeNames = {
-      'orchestrator': '🎭 Orchestrator',
-      'coder': '💻 Coder',
-      'researcher': '🔍 Researcher',
-      'tdd': '🧪 TDD',
-      'architect': '🏗️ Architect',
-      'reviewer': '👁️ Reviewer',
-      'debugger': '🐛 Debugger',
-      'tester': '✅ Tester',
-      'analyzer': '📊 Analyzer',
-      'optimizer': '⚡ Optimizer',
-      'documenter': '📝 Documenter',
-      'designer': '🎨 Designer',
-      'innovator': '💡 Innovator',
-      'swarm-coordinator': '🐝 Swarm Coordinator',
-      'memory-manager': '🧠 Memory Manager',
-      'batch-executor': '⚙️ Batch Executor',
-      'workflow-manager': '🔄 Workflow Manager',
-      'cognitive-analyst': '🧠 Cognitive Analyst',
-      'graph-architect': '🕸️ Graph Architect',
-      'neural-orchestrator': '🤖 Neural Orchestrator',
-      'autonomous-architect': '🚀 Autonomous Architect',
-      'ml-coordinator': '🤖 ML Coordinator',
-      'quantum-security': '🔐 Quantum Security',
-      'self-aware-orchestrator': '🎯 Self-Aware Orchestrator',
-      'spec-pseudocode': '📋 Specification Writer',
-      'integration': '🔗 System Integrator',
-      'debug': '🪲 Debugger'
-    };
-    return modeNames[slug] || slug;
-  }
-  
-  function mapToolsToGroups(tools: string[]): string[] {
-    const groups = new Set<string>();
-    
-    tools.forEach(tool => {
-      if (['Read', 'Write', 'Edit', 'Glob', 'Grep'].includes(tool)) {
-        groups.add('read');
-        if (['Write', 'Edit'].includes(tool)) groups.add('edit');
-      }
-      if (['Bash'].includes(tool)) groups.add('command');
-      if (['WebSearch', 'WebFetch'].includes(tool)) groups.add('browser');
-      if (tool.startsWith('mcp__')) groups.add('mcp');
-    });
-    
-    return Array.from(groups);
-  }
-
   // Helper function for comprehensive SPARC setup when module import fails
   async function createComprehensiveSparcSetup() {
     const fs = await import('fs/promises');
@@ -3179,17 +3129,8 @@ Use ▶ to indicate actionable items`;
       }
     };
       
-      // Convert to new format with customModes array
-      const customModes = Object.entries(roomodes).map(([slug, config]) => ({
-        slug,
-        name: getModeName(slug),
-        roleDefinition: config.prompt.split('\\n')[1],
-        customInstructions: config.prompt,
-        groups: mapToolsToGroups(config.tools),
-        source: "project"
-      }));
-      
-      roomodesContent = JSON.stringify({ customModes }, null, 2);
+      // Use the old roomodes format directly without conversion
+      roomodesContent = JSON.stringify(roomodes, null, 2);
     }
     
     // Write the roomodes file
