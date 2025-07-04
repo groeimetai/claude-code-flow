@@ -15,8 +15,8 @@ CLAUDE_FLOW_MEMORY_SIZE=2GB
 
   const neo4jTemplate = `
 # Cognitive Triangulation Configuration
-# Set to true to use real Neo4j + Redis (requires docker-compose up -d)
-USE_REAL_COGNITIVE_TRIANGULATION=false
+# Claude automatically starts Neo4j + Redis when needed
+USE_REAL_COGNITIVE_TRIANGULATION=true
 
 # Neo4j Configuration (Required for real Cognitive Triangulation)
 NEO4J_URI=bolt://localhost:7687

@@ -3,7 +3,9 @@ import Redis from 'ioredis';
 import neo4j from 'neo4j-driver';
 import Database from 'better-sqlite3';
 import { EntityScout } from './entity-scout.js';
-import { FileAnalysisWorker } from './file-analysis-worker.js';
+import { processFileAnalysis } from './file-analysis-worker.js';
+import { processRelationshipResolution } from './relationship-worker.js';
+import { processGraphBuilding } from './graph-building-worker.js';
 import { GraphBuilder } from './graph-builder.js';
 import { Logger } from '../../utils/logger.js';
 
@@ -157,20 +159,17 @@ export class CognitiveTriangulationService {
       this.fileAnalysisWorker = new Worker(
         'file-analysis',
         async (job) => {
-          const { filePath, content } = job.data;
+          const result = await processFileAnalysis(job);
           
-          // Use LLM to extract POIs
-          const pois = await this.extractPOIs(filePath, content);
-          
-          // Store in SQLite
+          // Store POIs in SQLite
           const stmt = this.sqlite.prepare(`
             INSERT INTO pois (file_path, name, type, start_line, end_line, metadata)
             VALUES (?, ?, ?, ?, ?, ?)
           `);
           
-          for (const poi of pois) {
+          for (const poi of result.pois) {
             stmt.run(
-              filePath,
+              result.filePath,
               poi.name,
               poi.type,
               poi.startLine,
@@ -181,17 +180,59 @@ export class CognitiveTriangulationService {
           
           // Queue for relationship resolution
           await this.queues.relationshipResolution.add('resolve-relationships', {
-            filePath,
-            pois,
+            analysisId: result.analysisId,
+            filePath: result.filePath,
+            pois: result.pois,
           });
           
-          return { processed: pois.length };
+          return { processed: result.count };
         },
         { connection: this.redis }
       );
     }
     
-    // More workers would be started here...
+    // Relationship Resolution Worker
+    if (!this.relationshipWorker) {
+      this.relationshipWorker = new Worker(
+        'relationship-resolution',
+        async (job) => {
+          const result = await processRelationshipResolution(job);
+          
+          // Store relationships and queue for graph building
+          for (const rel of result.relationships) {
+            await this.queues.graphBuilding.add('build-graph', {
+              analysisId: result.analysisId,
+              relationship: rel,
+            });
+          }
+          
+          return { processed: result.count };
+        },
+        { connection: this.redis }
+      );
+    }
+    
+    // Graph Building Worker
+    if (!this.graphBuildingWorker) {
+      this.graphBuildingWorker = new Worker(
+        'graph-building',
+        async (job) => {
+          const { analysisId, relationship } = job.data;
+          
+          // Create nodes and relationships in Neo4j
+          await this.graphBuilder.createPOINode(relationship.source, analysisId);
+          await this.graphBuilder.createPOINode(relationship.target, analysisId);
+          await this.graphBuilder.createRelationship(
+            relationship.source,
+            relationship.target,
+            relationship
+          );
+          
+          return { processed: 1 };
+        },
+        { connection: this.redis }
+      );
+    }
   }
   
   async extractPOIs(filePath, content) {

@@ -1,7 +1,9 @@
 import { getCognitiveTriangulationService } from '../services/cognitive-triangulation/index.js';
+import { getAutoManager } from '../services/cognitive-triangulation/auto-manager.js';
 
 export function createRealCognitiveTriangulationTools(logger) {
   const service = getCognitiveTriangulationService();
+  const autoManager = getAutoManager();
   
   return [
     {
@@ -28,36 +30,47 @@ export function createRealCognitiveTriangulationTools(logger) {
         try {
           logger.info('Starting real Cognitive Triangulation analysis:', input.directory);
           
+          // Auto-start services if needed
+          logger.info('Ensuring services are running...');
+          const servicesReady = await autoManager.ensureServicesRunning();
+          
+          if (!servicesReady) {
+            return {
+              success: false,
+              error: 'Could not start required services automatically',
+              instructions: 'Please ensure Docker is installed and running'
+            };
+          }
+          
+          // Services are ready, proceed with analysis
           const result = await service.analyzeProject(input.directory, {
             includePatterns: input.includePatterns,
             excludePatterns: input.excludePatterns,
           });
           
+          // Extract project name from directory
+          const projectName = input.directory.split('/').pop() || 'project';
+          
+          // Create project view in Neo4j
+          await autoManager.createProjectView(result.analysisId, projectName);
+          
+          // Get Neo4j info
+          const neo4jInfo = autoManager.getNeo4jInfo();
+          
           return {
             success: true,
             ...result,
-            neo4jUrl: 'http://localhost:7474',
-            message: `Analysis started. View progress at http://localhost:7474 (neo4j/test1234)`
+            neo4j: neo4jInfo,
+            message: `Analysis started! Each project gets its own graph (analysisId: ${result.analysisId}). View in Neo4j Browser.`,
+            tip: 'Claude automatically started Neo4j and Redis for you. The knowledge graph is being built in the background.'
           };
         } catch (error) {
           logger.error('Analysis failed:', error);
           
-          if (error.message.includes('ECONNREFUSED')) {
-            return {
-              success: false,
-              error: 'Services not running. Please run: docker-compose up -d',
-              instructions: [
-                '1. cd claude-flow-enhanced',
-                '2. docker-compose up -d',
-                '3. Wait for services to start',
-                '4. Try again'
-              ]
-            };
-          }
-          
           return {
             success: false,
-            error: error.message
+            error: error.message,
+            tip: 'Check if Docker is running'
           };
         }
       }
