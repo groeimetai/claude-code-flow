@@ -6,6 +6,10 @@ An enhanced fork of [claude-code-flow](https://github.com/ruvnet/claude-code-flo
 
 ### 🛠️ Integrated MCP Tools (6 total)
 
+**Note**: Cognitive Triangulation can run in two modes:
+- **Stub mode** (default): Works out-of-box for demos
+- **Real mode**: Full Neo4j + Redis integration for actual knowledge graphs
+
 #### Cognitive Triangulation
 - `cognitive_triangulation/analyze_codebase` - Deep code analysis with knowledge graphs
 - `cognitive_triangulation/extract_pois` - Extract points of interest from code
@@ -39,11 +43,28 @@ cd claude-code-flow
 # Install dependencies
 npm install
 
-# Test that MCP tools work
+# Test that MCP tools work (stub mode)
 node test-simple-tools.js
 
 # Start using enhanced features!
 ./claude-flow swarm "Analyze my code with cognitive triangulation"
+```
+
+### 🧠 Enable Real Cognitive Triangulation (Optional)
+
+For actual knowledge graphs with Neo4j:
+
+```bash
+# 1. Start required services
+./start-cognitive-triangulation.sh
+
+# 2. Edit .env
+echo "USE_REAL_COGNITIVE_TRIANGULATION=true" >> .env
+
+# 3. Use it!
+./claude-flow swarm "Build knowledge graph of this project"
+
+# View results at http://localhost:7474 (neo4j/test1234)
 ```
 
 ## 📚 Usage Examples

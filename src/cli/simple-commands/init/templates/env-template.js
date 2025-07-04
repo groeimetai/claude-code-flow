@@ -14,12 +14,19 @@ CLAUDE_FLOW_MEMORY_SIZE=2GB
 `;
 
   const neo4jTemplate = `
-# Neo4j Configuration (Optional - for Cognitive Triangulation)
-# Uncomment and configure if you want to use real knowledge graph storage
-# NEO4J_URI=bolt://localhost:7687
-# NEO4J_USER=neo4j
-# NEO4J_PASSWORD=your-secure-password
-# NEO4J_DATABASE=cognitive
+# Cognitive Triangulation Configuration
+# Set to true to use real Neo4j + Redis (requires docker-compose up -d)
+USE_REAL_COGNITIVE_TRIANGULATION=false
+
+# Neo4j Configuration (Required for real Cognitive Triangulation)
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=test1234
+NEO4J_DATABASE=neo4j
+
+# Redis Configuration (Required for real Cognitive Triangulation)
+REDIS_HOST=localhost
+REDIS_PORT=6379
 `;
 
   const advancedTemplate = `

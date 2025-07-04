@@ -1,4 +1,5 @@
 import { createCognitiveTriangulationTools } from './cognitive-triangulation.js';
+import { createRealCognitiveTriangulationTools } from '../cognitive-triangulation-real.js';
 import { createRuvSwarmTools } from './ruv-fann.js';
 import { createDAATools } from './daa.js';
 
@@ -6,8 +7,16 @@ export function loadSimpleTools(logger) {
   const tools = [];
   
   try {
-    tools.push(...createCognitiveTriangulationTools(logger));
-    logger.info('Loaded Cognitive Triangulation tools');
+    // Check if we should use real implementation
+    const useRealCT = process.env.USE_REAL_COGNITIVE_TRIANGULATION === 'true';
+    
+    if (useRealCT) {
+      tools.push(...createRealCognitiveTriangulationTools(logger));
+      logger.info('Loaded REAL Cognitive Triangulation tools (Neo4j + Redis)');
+    } else {
+      tools.push(...createCognitiveTriangulationTools(logger));
+      logger.info('Loaded Cognitive Triangulation tools (stub mode)');
+    }
   } catch (error) {
     logger.error('Failed to load Cognitive Triangulation tools', error);
   }
