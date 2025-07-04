@@ -3163,10 +3163,28 @@ Use ▶ to indicate actionable items`;
       
       console.log('   ✅ SPARC command files copied successfully');
     } catch (readError) {
-      console.log('   ⚠️  Could not read SPARC source directory, creating basic SPARC files');
+      console.log('   ⚠️  Could not read SPARC source directory, creating all SPARC mode files');
       
-      // Create basic SPARC command files as fallback
-      await createBasicSparcFiles(sparcDir, fs, path);
+      // Import and use createSparcModeTemplates to create all 27 mode files
+      try {
+        const { createSparcModeTemplates } = await import('./simple-commands/init/templates/sparc-modes.js');
+        const sparcTemplates = createSparcModeTemplates();
+        
+        for (const [filename, content] of Object.entries(sparcTemplates)) {
+          try {
+            await fs.writeFile(path.join(sparcDir, filename), content);
+            console.log(`   ✅ Created SPARC mode file: ${filename}`);
+          } catch (writeError) {
+            console.log(`   ⚠️  Could not create ${filename}: ${writeError.message}`);
+          }
+        }
+        
+        console.log('   ✅ Created all 27 SPARC mode files successfully');
+      } catch (importError) {
+        console.log('   ⚠️  Could not import SPARC templates, creating basic files as fallback');
+        // Fall back to basic files only if import fails
+        await createBasicSparcFiles(sparcDir, fs, path);
+      }
     }
     
     // Create comprehensive CLAUDE.md with all capabilities
