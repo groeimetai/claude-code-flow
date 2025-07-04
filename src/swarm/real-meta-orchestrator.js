@@ -439,38 +439,95 @@ export class RealMetaOrchestrator extends EventEmitter {
   }
 
   /**
-   * Execute actual swarm process
+   * Execute actual swarm process - REAL IMPLEMENTATION
    */
   async executeSwarmProcess(objective, swarmDir) {
-    // In production, this would spawn actual swarm process
-    // For now, we'll parse existing swarm outputs if available
+    this.logger.info('Executing real swarm process', { objective: objective.description });
     
     try {
-      // Build command based on objective
-      const command = [
-        'claude-flow', 'swarm',
-        `"${objective.description}"`,
-        '--strategy', objective.strategy,
+      // Get the path to claude-flow binary
+      const projectRoot = dirname(dirname(dirname(import.meta.url.replace('file://', ''))));
+      const claudeFlowBin = join(projectRoot, 'bin', 'claude-flow');
+      
+      // Build swarm arguments
+      const swarmArgs = [
+        'swarm',
+        objective.description,
+        '--strategy', objective.strategy || 'auto',
         '--max-agents', '5',
         '--parallel',
-        '--output-dir', swarmDir
-      ].join(' ');
+        '--memory-namespace', `achieve_swarm_${generateId()}`
+      ];
       
       // Log the command
+      const command = `${claudeFlowBin} ${swarmArgs.join(' ')}`;
       await writeFile(join(swarmDir, 'command.txt'), command);
       
-      // In a real implementation, we would execute:
-      // const result = execSync(command, { encoding: 'utf8' });
+      // Create log files
+      const stdoutPath = join(swarmDir, 'stdout.log');
+      const stderrPath = join(swarmDir, 'stderr.log');
       
-      // For now, return a placeholder
-      return {
-        success: true,
-        command,
-        message: 'Swarm execution would happen here'
-      };
+      // Create a wrapper script for proper output capture
+      const wrapperScript = `#!/bin/bash
+${claudeFlowBin} ${swarmArgs.map(arg => `"${arg}"`).join(' ')} > "${stdoutPath}" 2> "${stderrPath}"
+exit_code=$?
+echo "EXIT_CODE=$exit_code" >> "${swarmDir}/status.txt"
+exit $exit_code`;
+      
+      const wrapperPath = join(swarmDir, 'wrapper.sh');
+      await writeFile(wrapperPath, wrapperScript);
+      
+      // Make wrapper executable
+      if (process.platform !== 'win32') {
+        execSync(`chmod +x "${wrapperPath}"`);
+      }
+      
+      // Execute the swarm synchronously to get output
+      this.logger.info('Spawning swarm:', command);
+      this.eventBus?.emit('swarm-started', { objective: objective.description });
+      
+      try {
+        execSync(`bash "${wrapperPath}"`, {
+          encoding: 'utf8',
+          maxBuffer: 10 * 1024 * 1024 // 10MB buffer
+        });
+        
+        // Read the output
+        const stdout = await readFile(stdoutPath, 'utf8').catch(() => '');
+        const stderr = await readFile(stderrPath, 'utf8').catch(() => '');
+        
+        this.eventBus?.emit('swarm-completed', { 
+          objective: objective.description, 
+          success: true 
+        });
+        
+        return {
+          success: true,
+          command,
+          stdout,
+          stderr,
+          message: 'Swarm executed successfully'
+        };
+        
+      } catch (execError) {
+        const stderr = await readFile(stderrPath, 'utf8').catch(() => execError.message);
+        this.logger.error('Swarm execution failed', { error: execError.message });
+        
+        this.eventBus?.emit('swarm-completed', { 
+          objective: objective.description, 
+          success: false 
+        });
+        
+        return {
+          success: false,
+          command,
+          error: execError.message,
+          stderr
+        };
+      }
       
     } catch (error) {
-      this.logger.error('Swarm execution failed', { error, objective });
+      this.logger.error('Failed to setup swarm execution', { error, objective });
       return {
         success: false,
         error: error.message
