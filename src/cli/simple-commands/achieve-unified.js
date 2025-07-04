@@ -10,14 +10,14 @@
 
 import { generateId } from "../../utils/helpers.js";
 import { RealMetaOrchestrator } from "../../swarm/real-meta-orchestrator.js";
-import { GoalValidator } from "../../swarm/goal-validator.js";
+import { GoalValidationSystem } from "../../swarm/goal-validator.js";
 import { ProgressCalculator } from "../../swarm/progress-calculator.js";
 import { AdaptiveGoalPlanner } from "../../swarm/adaptive-planner.js";
 import { BatchToolCoordinator } from "../../swarm/batch-coordinator.js";
 import { SwarmBatchExecutor } from "../../swarm/batch-executor.js";
-import { SwarmMessageBus } from "../../swarm/message-bus.js";
-import { SharedKnowledgeBase } from "../../swarm/shared-knowledge.js";
-import { SwarmCoordinationProtocol } from "../../swarm/coordination-protocol.js";
+import SwarmMessageBus from "../../swarm/message-bus.js";
+import SharedKnowledgeBase from "../../swarm/shared-knowledge.js";
+import SwarmCoordinationProtocol from "../../swarm/coordination-protocol.js";
 // SwarmMonitor is optional - only import if monitor flag is set
 // import { SwarmMonitor } from "../../swarm/swarm-monitor.js";
 import { batchPatterns } from "../../swarm/batch-patterns.js";
@@ -54,7 +54,7 @@ export async function achieveCommand(subArgs, flags) {
   });
   
   // 2. Goal Validation System
-  const validator = new GoalValidator();
+  const validator = new GoalValidationSystem();
   const progressCalc = new ProgressCalculator();
   const planner = new AdaptiveGoalPlanner();
   
@@ -81,7 +81,7 @@ export async function achieveCommand(subArgs, flags) {
   let monitor = null;
   if (flags.monitor) {
     try {
-      const { SwarmMonitor } = await import("../../swarm/swarm-monitor.js");
+      const SwarmMonitor = (await import("../../swarm/swarm-monitor.js")).default;
       monitor = new SwarmMonitor();
     } catch (e) {
       console.log('⚠️  Monitor not available (blessed dependency missing)');
@@ -118,19 +118,31 @@ export async function achieveCommand(subArgs, flags) {
 
   // Parse and validate goal
   console.log('\n📋 Analyzing goal...');
-  const parsedGoal = validator.parseGoal(goal);
+  const parsedGoal = await validator.parseGoal(goal);
   const decomposedGoals = await orchestrator.decomposeGoal(goal);
   
-  console.log(`\n✅ Identified ${parsedGoal.criteria.length} success criteria`);
+  // Count total criteria across all categories
+  const totalCriteria = Object.values(parsedGoal).reduce((sum, category) => sum + category.length, 0);
+  
+  console.log(`\n✅ Identified ${totalCriteria} success criteria`);
   console.log(`📊 Decomposed into ${Object.keys(decomposedGoals).length} sub-goals`);
   
   if (flags.verbose || flags.v) {
     console.log('\nSuccess Criteria:');
-    parsedGoal.criteria.slice(0, 5).forEach((c, i) => {
-      console.log(`  ${i + 1}. ${c.description}`);
-    });
-    if (parsedGoal.criteria.length > 5) {
-      console.log(`  ... and ${parsedGoal.criteria.length - 5} more`);
+    let criteriaCount = 0;
+    for (const [category, criteria] of Object.entries(parsedGoal)) {
+      if (criteria.length > 0) {
+        console.log(`  ${category}:`);
+        for (const c of criteria) {
+          criteriaCount++;
+          if (criteriaCount <= 5) {
+            console.log(`    ${criteriaCount}. ${c.description}`);
+          }
+        }
+      }
+    }
+    if (totalCriteria > 5) {
+      console.log(`  ... and ${totalCriteria - 5} more`);
     }
   }
 
@@ -158,7 +170,7 @@ export async function achieveCommand(subArgs, flags) {
     // Get current state
     const currentState = await orchestrator.getCurrentState();
     const progressData = await progressCalc.calculateProgress(
-      parsedGoal.criteria,
+      parsedGoal,
       validationResult,
       currentState.metrics,
       { current: iteration, max: maxIterations }
@@ -238,7 +250,7 @@ export async function achieveCommand(subArgs, flags) {
     }
     
     // Validate current state
-    validationResult = await validator.validateGoal(parsedGoal, achieveDir);
+    validationResult = await validator.validateGoal(achieveDir, parsedGoal);
     
     // Show validation details
     if (flags.verbose || flags.v) {
@@ -288,7 +300,7 @@ export async function achieveCommand(subArgs, flags) {
   // Get final metrics
   const finalState = await orchestrator.getCurrentState();
   const finalProgress = await progressCalc.calculateProgress(
-    parsedGoal.criteria,
+    parsedGoal,
     validationResult,
     finalState.metrics,
     { current: maxIterations, max: maxIterations }
