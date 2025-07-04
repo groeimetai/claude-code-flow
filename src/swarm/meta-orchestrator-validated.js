@@ -7,7 +7,8 @@ import { MetaOrchestrator } from './meta-orchestrator.js';
 import { GoalValidationSystem } from './goal-validator.js';
 import { ProgressCalculator } from './progress-calculator.js';
 import { AdaptiveGoalPlanner } from './adaptive-planner.js';
-import { logger } from '../core/logger.js';
+import { Logger } from '../core/logger.js';
+const logger = new Logger({ component: 'MetaOrchestrator' });
 import chalk from 'chalk';
 import path from 'node:path';
 

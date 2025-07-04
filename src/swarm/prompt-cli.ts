@@ -11,7 +11,7 @@ import {
   formatFileSize,
   formatDuration
 } from './prompt-utils';
-import { logger } from '../logger';
+import { logger } from '../core/logger';
 
 const program = new Command();
 

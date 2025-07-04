@@ -6,7 +6,8 @@
 import { spawn } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { logger } from '../core/logger.js';
+import { Logger } from '../core/logger.js';
+const logger = new Logger({ component: 'GoalValidator' });
 
 export class GoalValidationSystem {
   constructor() {

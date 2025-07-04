@@ -5,7 +5,8 @@
 
 import { GoalValidationSystem } from './goal-validator.js';
 import { ProgressCalculator } from './progress-calculator.js';
-import { logger } from '../core/logger.js';
+import { Logger } from '../core/logger.js';
+const logger = new Logger({ component: 'AdaptiveGoalPlanner' });
 import fs from 'node:fs/promises';
 import path from 'node:path';
 

@@ -8,7 +8,7 @@ import {
   formatDuration,
   formatFileSize
 } from './prompt-utils';
-import { logger } from '../logger';
+import { logger } from '../core/logger';
 
 export interface PromptManagerOptions {
   configPath?: string;
