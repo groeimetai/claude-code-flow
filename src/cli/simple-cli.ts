@@ -2972,12 +2972,71 @@ Use ▶ to indicate actionable items`;
       }
     });
 
+  // Helper functions for roomodes conversion
+  function getModeName(slug: string): string {
+    const modeNames = {
+      'orchestrator': '🎭 Orchestrator',
+      'coder': '💻 Coder',
+      'researcher': '🔍 Researcher',
+      'tdd': '🧪 TDD',
+      'architect': '🏗️ Architect',
+      'reviewer': '👁️ Reviewer',
+      'debugger': '🐛 Debugger',
+      'tester': '✅ Tester',
+      'analyzer': '📊 Analyzer',
+      'optimizer': '⚡ Optimizer',
+      'documenter': '📝 Documenter',
+      'designer': '🎨 Designer',
+      'innovator': '💡 Innovator',
+      'swarm-coordinator': '🐝 Swarm Coordinator',
+      'memory-manager': '🧠 Memory Manager',
+      'batch-executor': '⚙️ Batch Executor',
+      'workflow-manager': '🔄 Workflow Manager',
+      'cognitive-analyst': '🧠 Cognitive Analyst',
+      'graph-architect': '🕸️ Graph Architect',
+      'neural-orchestrator': '🤖 Neural Orchestrator',
+      'autonomous-architect': '🚀 Autonomous Architect',
+      'ml-coordinator': '🤖 ML Coordinator',
+      'quantum-security': '🔐 Quantum Security',
+      'self-aware-orchestrator': '🎯 Self-Aware Orchestrator',
+      'spec-pseudocode': '📋 Specification Writer',
+      'integration': '🔗 System Integrator',
+      'debug': '🪲 Debugger'
+    };
+    return modeNames[slug] || slug;
+  }
+  
+  function mapToolsToGroups(tools: string[]): string[] {
+    const groups = new Set<string>();
+    
+    tools.forEach(tool => {
+      if (['Read', 'Write', 'Edit', 'Glob', 'Grep'].includes(tool)) {
+        groups.add('read');
+        if (['Write', 'Edit'].includes(tool)) groups.add('edit');
+      }
+      if (['Bash'].includes(tool)) groups.add('command');
+      if (['WebSearch', 'WebFetch'].includes(tool)) groups.add('browser');
+      if (tool.startsWith('mcp__')) groups.add('mcp');
+    });
+    
+    return Array.from(groups);
+  }
+
   // Helper function for comprehensive SPARC setup when module import fails
   async function createComprehensiveSparcSetup() {
     const fs = await import('fs/promises');
     
-    // Create comprehensive .roomodes file
-    const roomodes = {
+    // Try to import the roomodes config
+    let roomodesContent;
+    try {
+      const { createBasicRoomodesConfig } = await import('./simple-commands/init/sparc/roomodes-config.js');
+      roomodesContent = createBasicRoomodesConfig();
+    } catch (importError) {
+      // Fallback to inline definition if import fails
+      console.log('   ⚠️  Could not import roomodes config, using inline definition');
+      
+      // Create comprehensive .roomodes file with new format
+      const roomodes = {
       "orchestrator": {
         "description": "Multi-agent task orchestration and coordination",
         "prompt": "SPARC: orchestrator\\nYou are an AI orchestrator coordinating multiple specialized agents to complete complex tasks efficiently using TodoWrite, TodoRead, Task, and Memory tools.",
@@ -3097,11 +3156,40 @@ Use ▶ to indicate actionable items`;
         "description": "Meta-orchestration with self-improvement",
         "prompt": "SPARC: self-aware-orchestrator\\nYou achieve goals autonomously through self-aware orchestration and continuous improvement.",
         "tools": ["TodoWrite", "TodoRead", "Task", "Memory", "mcp__integration__self_aware_swarm", "mcp__integration__cognitive_swarm_analysis"]
+      },
+      "spec-pseudocode": {
+        "description": "Specification and pseudocode writer",
+        "prompt": "SPARC: spec-pseudocode\\nYou capture full project context—functional requirements, edge cases, constraints—and translate that into modular pseudocode with TDD anchors.",
+        "tools": ["Read", "Write", "Edit", "Memory", "TodoWrite"]
+      },
+      "integration": {
+        "description": "System integration specialist", 
+        "prompt": "SPARC: integration\\nYou merge the outputs of all modes into a working, tested, production-ready system. You ensure consistency, cohesion, and modularity.",
+        "tools": ["Read", "Write", "Edit", "Bash", "Glob", "TodoWrite", "Task"]
+      },
+      "debug": {
+        "description": "Advanced debugging mode",
+        "prompt": "SPARC: debug\\nYou troubleshoot runtime bugs, logic errors, or integration failures by tracing, inspecting, and analyzing behavior.",
+        "tools": ["Read", "Edit", "Bash", "Grep", "TodoWrite", "Memory"]
       }
     };
+      
+      // Convert to new format with customModes array
+      const customModes = Object.entries(roomodes).map(([slug, config]) => ({
+        slug,
+        name: getModeName(slug),
+        roleDefinition: config.prompt.split('\\n')[1],
+        customInstructions: config.prompt,
+        groups: mapToolsToGroups(config.tools),
+        source: "project"
+      }));
+      
+      roomodesContent = JSON.stringify({ customModes }, null, 2);
+    }
     
-    await fs.writeFile('.roomodes', JSON.stringify(roomodes, null, 2));
-    console.log('   ✅ Created comprehensive .roomodes file with 24 modes');
+    // Write the roomodes file
+    await fs.writeFile('.roomodes', roomodesContent);
+    console.log('   ✅ Created comprehensive .roomodes file with 27 modes');
     
     // Create SPARC command files directory
     const path = await import('path');
