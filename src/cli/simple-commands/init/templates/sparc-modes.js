@@ -3,7 +3,7 @@
 export function createSparcModesOverview() {
   return `# SPARC Modes Overview
 
-SPARC (Specification, Planning, Architecture, Review, Code) is a comprehensive development methodology with 24 specialized modes.
+SPARC (Specification, Planning, Architecture, Review, Code) is a comprehensive development methodology with 27 specialized modes.
 
 ## Available Modes
 
@@ -19,6 +19,9 @@ SPARC (Specification, Planning, Architecture, Review, Code) is a comprehensive d
 - **architect**: System design
 - **reviewer**: Code review
 - **tdd**: Test-driven development
+- **spec-pseudocode**: Requirements to pseudocode translation
+- **integration**: System integration and merging
+- **debug**: Systematic debugging and troubleshooting
 
 ### Analysis and Research Modes
 - **researcher**: Deep research capabilities
@@ -274,6 +277,10 @@ export function createSparcModeTemplates() {
     'tdd.md': createTddMode(),
     'tester.md': createTesterMode(),
     'workflow-manager.md': createWorkflowManagerMode(),
+    // Missing core modes
+    'spec-pseudocode.md': createSpecPseudocodeMode(),
+    'integration.md': createIntegrationMode(),
+    'debug.md': createDebugMode(),
     // New modes from our enhancements
     'cognitive-analyst.md': createCognitiveAnalystMode(),
     'graph-architect.md': createGraphArchitectMode(),
@@ -1046,5 +1053,101 @@ Meta-orchestration with self-awareness and autonomous improvement capabilities.
 - Progress tracking
 - Success evaluation
 - Continuous optimization
+`;
+}
+
+function createSpecPseudocodeMode() {
+  return `# SPARC Spec-Pseudocode Mode
+
+## Purpose
+Capture full project context and translate into modular pseudocode with TDD anchors.
+
+## Activation
+\`./claude-flow sparc run spec-pseudocode "design authentication system"\`
+
+## Core Capabilities
+- Requirements gathering
+- Edge case identification
+- Constraint analysis
+- Pseudocode generation
+- Modular decomposition
+
+## Workflow
+1. Capture functional requirements
+2. Identify edge cases and constraints
+3. Design modular architecture
+4. Write pseudocode with clear structure
+5. Add TDD anchor points
+
+## Output Format
+- Phase-numbered markdown files
+- Flow logic documentation
+- Test case specifications
+- Module boundaries
+- Integration points
+`;
+}
+
+function createIntegrationMode() {
+  return `# SPARC Integration Mode
+
+## Purpose
+Merge outputs from all modes into a working, tested, production-ready system.
+
+## Activation
+\`./claude-flow sparc run integration "integrate feature branches"\`
+
+## Core Capabilities
+- Component integration
+- Interface validation
+- System cohesion
+- Module compatibility
+- End-to-end testing
+
+## Integration Process
+1. Verify interface compatibility
+2. Check shared module standards
+3. Validate configuration consistency
+4. Test integration points
+5. Ensure production readiness
+
+## Quality Checks
+- API contract validation
+- Data flow verification
+- Error handling consistency
+- Performance benchmarking
+- Security compliance
+`;
+}
+
+function createDebugMode() {
+  return `# SPARC Debug Mode
+
+## Purpose
+Troubleshoot runtime bugs, logic errors, and integration failures systematically.
+
+## Activation
+\`./claude-flow sparc run debug "investigate memory leak"\`
+
+## Core Capabilities
+- Runtime debugging
+- Error tracing
+- Stack analysis
+- Memory profiling
+- Performance debugging
+
+## Debug Workflow
+1. Reproduce the issue
+2. Collect diagnostic data
+3. Analyze stack traces
+4. Isolate root cause
+5. Implement and test fix
+
+## Tools & Techniques
+- Log analysis
+- Breakpoint debugging
+- Memory dump analysis
+- Performance profiling
+- Integration testing
 `;
 }
