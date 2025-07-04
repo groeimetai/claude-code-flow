@@ -278,6 +278,18 @@ export class RealMetaOrchestrator extends EventEmitter {
    */
   async patternBasedDecomposition(rootGoal, goalDescription) {
     const patterns = {
+      'trading': [
+        'Research trading strategies and market analysis',
+        'Design system architecture and data flow',
+        'Implement market data fetching and storage',
+        'Create trading algorithm and signals',
+        'Implement risk management and position sizing',
+        'Add backtesting framework',
+        'Create performance tracking and reporting',
+        'Write comprehensive tests',
+        'Add monitoring and alerts',
+        'Document system and deployment'
+      ],
       'api': ['Design API', 'Implement endpoints', 'Add authentication', 'Write tests', 'Document API'],
       'app': ['Design architecture', 'Build UI', 'Implement logic', 'Add state management', 'Test features'],
       'service': ['Define interfaces', 'Implement business logic', 'Add data layer', 'Create tests', 'Deploy'],
