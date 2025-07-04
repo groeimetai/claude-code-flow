@@ -236,8 +236,16 @@ export class CognitiveTriangulationService {
   }
   
   async extractPOIs(filePath, content) {
-    // This would use the LLM to extract POIs
-    // For now, a simplified version
+    // Try to use LLM if API key is available
+    if (this.config.llm.apiKey) {
+      try {
+        return await this.extractPOIsWithLLM(filePath, content);
+      } catch (error) {
+        this.logger.warn('LLM extraction failed, falling back to regex:', error.message);
+      }
+    }
+    
+    // Fallback to regex-based extraction
     const pois = [];
     
     // Simple regex-based extraction as fallback
@@ -264,6 +272,12 @@ export class CognitiveTriangulationService {
     }
     
     return pois;
+  }
+  
+  async extractPOIsWithLLM(filePath, content) {
+    // This would call the actual LLM API
+    // For now, throw to trigger fallback
+    throw new Error('LLM extraction not yet implemented - using regex fallback');
   }
   
   async getAnalysisStatus(analysisId) {

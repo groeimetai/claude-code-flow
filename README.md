@@ -50,6 +50,38 @@ node test-simple-tools.js
 ./claude-flow swarm "Analyze my code with cognitive triangulation"
 ```
 
+### 🔑 API Keys Setup (Optional)
+
+For full Cognitive Triangulation with LLM-powered analysis:
+
+```bash
+# Option 1: DeepSeek (Recommended - cheapest)
+echo "DEEPSEEK_API_KEY=your-key-here" >> .env
+
+# Option 2: OpenAI
+echo "OPENAI_API_KEY=sk-..." >> .env
+
+# Option 3: Claude
+echo "CLAUDE_API_KEY=your-key-here" >> .env
+
+# Enable real mode
+echo "USE_REAL_COGNITIVE_TRIANGULATION=true" >> .env
+```
+
+**Note**: Without an LLM API key, Cognitive Triangulation will use regex-based analysis instead of intelligent code understanding.
+
+### 🎯 Easy Setup Script
+
+```bash
+# Run the interactive setup
+./setup-cognitive-triangulation.sh
+```
+
+This will:
+- Guide you through API key setup
+- Check Docker installation
+- Configure everything automatically
+
 ### 🧠 Enable Real Cognitive Triangulation (Optional)
 
 For actual knowledge graphs with Neo4j:
