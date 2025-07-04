@@ -162,6 +162,14 @@ This project uses the SPARC (Specification, Pseudocode, Architecture, Refinement
 - **\`mcp\`**: External service integration
 - **\`swarm\`**: Multi-agent coordination for complex tasks
 
+### MCP-Enhanced AI Modes
+- **\`cognitive-analyst\`**: Deep code analysis using cognitive triangulation
+- **\`graph-architect\`**: Build and query code knowledge graphs
+- **\`neural-orchestrator\`**: Orchestrate tasks with neural swarm intelligence
+- **\`autonomous-architect\`**: Design autonomous AI systems
+- **\`ml-coordinator\`**: Coordinate distributed ML workflows
+- **\`quantum-security\`**: Implement quantum-resistant security
+
 ## Claude Code Slash Commands
 
 Claude Code slash commands are available in \`.claude/commands/\`:
@@ -326,6 +334,26 @@ This SPARC-enabled project follows a systematic development approach:
 - **Iterative refinement** for continuous improvement
 - **Comprehensive documentation** for team collaboration
 - **AI-assisted development** through specialized SPARC modes
+- **MCP Integration** with advanced AI tools:
+  - Cognitive Triangulation for code analysis
+  - Neural Swarm optimization
+  - Autonomous Agent deployment
+
+## MCP Tools Available
+
+This project includes integrated MCP (Model Context Protocol) tools:
+
+### Cognitive Triangulation Tools
+- **\`cognitive_triangulation/analyze_codebase\`**: Deep code analysis with knowledge graphs
+- **\`cognitive_triangulation/extract_pois\`**: Extract points of interest from code
+
+### Neural Swarm Tools (ruv-FANN)
+- **\`ruv_swarm/init\`**: Initialize neural swarm networks
+- **\`ruv_swarm/spawn_cognitive_agent\`**: Spawn specialized cognitive agents
+
+### Autonomous Agent Tools (DAA)
+- **\`daa/create_agent\`**: Create fully autonomous AI agents
+- **\`daa/execute_mrap\`**: Execute Multi-Round Agentic Protocols
 
 ## Important Notes
 

@@ -95,7 +95,13 @@ function getExampleTask(slug) {
     'swarm': 'build complete feature with tests',
     'sparc': 'orchestrate authentication system',
     'ask': 'help me choose the right mode',
-    'tutorial': 'guide me through SPARC methodology'
+    'tutorial': 'guide me through SPARC methodology',
+    'cognitive-analyst': 'analyze codebase with cognitive triangulation',
+    'graph-architect': 'build knowledge graph of API endpoints',
+    'neural-orchestrator': 'coordinate complex refactoring with neural swarm',
+    'autonomous-architect': 'design autonomous monitoring system',
+    'ml-coordinator': 'orchestrate distributed model training',
+    'quantum-security': 'implement quantum-resistant encryption'
   };
   return examples[slug] || 'implement feature';
 }

@@ -29,6 +29,7 @@ import {
   createSparcModesOverview,
   createSwarmStrategyTemplates 
 } from './templates/sparc-modes.js';
+import { createSettings } from './templates/settings-config.js';
 import { showInitHelp } from './help.js';
 import { 
   batchInitCommand, 
@@ -255,6 +256,17 @@ export async function initCommand(subArgs, flags) {
         console.log('  ✓ Created .claude/config.json');
       } catch (err) {
         console.log(`  ⚠️  Could not create config.json: ${err.message}`);
+      }
+      
+      // Create .claude/settings.json with optimized settings for 16GB MacBook
+      try {
+        const settingsProfile = initOptimized ? 'macbook' : initSparc ? 'optimized' : 'default';
+        const settingsContent = createSettings(settingsProfile);
+        
+        await Deno.writeTextFile(`${workingDir}/.claude/settings.json`, JSON.stringify(settingsContent, null, 2));
+        console.log(`  ✓ Created .claude/settings.json (${settingsProfile} profile)`);
+      } catch (err) {
+        console.log(`  ⚠️  Could not create settings.json: ${err.message}`);
       }
     }
     
