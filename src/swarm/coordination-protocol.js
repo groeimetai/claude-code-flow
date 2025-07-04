@@ -4,7 +4,7 @@
  * Implements distributed coordination patterns for swarm collaboration
  */
 
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 import { getGlobalMessageBus, MessageTypes, MessagePriority } from './message-bus.js';
 import { getGlobalKnowledgeBase, KnowledgeTypes, ConfidenceLevels } from './shared-knowledge.js';
 

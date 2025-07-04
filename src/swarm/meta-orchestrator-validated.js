@@ -9,7 +9,7 @@ import { ProgressCalculator } from './progress-calculator.js';
 import { AdaptiveGoalPlanner } from './adaptive-planner.js';
 import { logger } from '../core/logger.js';
 import chalk from 'chalk';
-import path from 'path';
+import path from 'node:path';
 
 export class ValidatedMetaOrchestrator extends MetaOrchestrator {
   constructor(logger, eventBus, config = {}) {

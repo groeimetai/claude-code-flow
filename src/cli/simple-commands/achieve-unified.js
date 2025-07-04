@@ -18,7 +18,8 @@ import { SwarmBatchExecutor } from "../../swarm/batch-executor.js";
 import { SwarmMessageBus } from "../../swarm/message-bus.js";
 import { SharedKnowledgeBase } from "../../swarm/shared-knowledge.js";
 import { SwarmCoordinationProtocol } from "../../swarm/coordination-protocol.js";
-import { SwarmMonitor } from "../../swarm/swarm-monitor.js";
+// SwarmMonitor is optional - only import if monitor flag is set
+// import { SwarmMonitor } from "../../swarm/swarm-monitor.js";
 import { batchPatterns } from "../../swarm/batch-patterns.js";
 
 export async function achieveCommand(subArgs, flags) {
@@ -79,7 +80,13 @@ export async function achieveCommand(subArgs, flags) {
   // 5. Monitoring (if enabled)
   let monitor = null;
   if (flags.monitor) {
-    monitor = new SwarmMonitor();
+    try {
+      const { SwarmMonitor } = await import("../../swarm/swarm-monitor.js");
+      monitor = new SwarmMonitor();
+    } catch (e) {
+      console.log('⚠️  Monitor not available (blessed dependency missing)');
+      flags.monitor = false;
+    }
   }
   
   // Start all services

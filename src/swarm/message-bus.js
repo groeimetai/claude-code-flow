@@ -5,10 +5,10 @@
  * for swarm coordination and knowledge sharing.
  */
 
-import EventEmitter from 'events';
-import fs from 'fs/promises';
-import path from 'path';
-import crypto from 'crypto';
+import EventEmitter from 'node:events';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import crypto from 'node:crypto';
 
 // Message types
 export const MessageTypes = {

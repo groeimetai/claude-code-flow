@@ -3,9 +3,9 @@
  * Validates whether goals are actually achieved through concrete success criteria
  */
 
-import { spawn } from 'child_process';
-import fs from 'fs/promises';
-import path from 'path';
+import { spawn } from 'node:child_process';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import { logger } from '../core/logger.js';
 
 export class GoalValidationSystem {

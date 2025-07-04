@@ -4,7 +4,7 @@
  * Enables efficient parallel execution through batch operations
  */
 
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'node:events';
 import { generateId } from '../utils/helpers.js';
 
 export class BatchToolCoordinator extends EventEmitter {

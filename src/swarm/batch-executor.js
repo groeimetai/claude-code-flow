@@ -4,8 +4,8 @@
  * Collects and executes similar tasks from multiple swarms in parallel
  */
 
-import { EventEmitter } from 'events';
-import { spawn } from 'child_process';
+import { EventEmitter } from 'node:events';
+import { spawn } from 'node:child_process';
 import { generateId } from '../utils/helpers.js';
 
 export class SwarmBatchExecutor extends EventEmitter {

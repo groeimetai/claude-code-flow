@@ -5,9 +5,9 @@
 
 import { GoalValidationSystem } from './goal-validator.js';
 import { logger } from '../core/logger.js';
-import fs from 'fs/promises';
-import path from 'path';
-import { spawn } from 'child_process';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { spawn } from 'node:child_process';
 
 export class ProgressCalculator {
   constructor() {

@@ -6,8 +6,8 @@
 import { GoalValidationSystem } from './goal-validator.js';
 import { ProgressCalculator } from './progress-calculator.js';
 import { logger } from '../core/logger.js';
-import fs from 'fs/promises';
-import path from 'path';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 export class AdaptiveGoalPlanner {
   constructor() {
