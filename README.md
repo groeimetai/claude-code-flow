@@ -1,56 +1,159 @@
 # Claude-Flow MCP Enhanced 🚀
 
-Enhanced fork of [claude-code-flow](https://github.com/ruvnet/claude-code-flow) with integrated MCP (Model Context Protocol) tools.
+An enhanced fork of [claude-code-flow](https://github.com/ruvnet/claude-code-flow) with integrated MCP (Model Context Protocol) tools for advanced AI orchestration.
 
-## 🆕 What's New in This Fork
+## 🌟 Key Features
 
-### 🛠️ Integrated MCP Tools
-- **Cognitive Triangulation** - Deep code analysis and knowledge graphs
-- **ruv-FANN Neural Swarm** - Neural swarm orchestration
-- **DAA Autonomous Agents** - Fully autonomous AI agents
+### 🛠️ Integrated MCP Tools (6 total)
 
-### 🧠 New SPARC Modes
-- `cognitive-analyst` - Deep code analysis
-- `graph-architect` - Knowledge graph building
-- `neural-orchestrator` - Neural swarm coordination
-- `autonomous-architect` - Autonomous system design
-- `ml-coordinator` - Distributed ML workflows
-- `quantum-security` - Quantum-resistant security
+#### Cognitive Triangulation
+- `cognitive_triangulation/analyze_codebase` - Deep code analysis with knowledge graphs
+- `cognitive_triangulation/extract_pois` - Extract points of interest from code
 
-### 📁 Extended .roomodes
-Automatically configured with `init --sparc` command.
+#### ruv-FANN Neural Swarm  
+- `ruv_swarm/init` - Initialize neural swarm networks
+- `ruv_swarm/spawn_cognitive_agent` - Spawn specialized cognitive agents
+
+#### DAA Autonomous Agents
+- `daa/create_agent` - Create fully autonomous AI agents
+- `daa/execute_mrap` - Execute Multi-Round Agentic Protocols
+
+### 🧠 New SPARC Modes (6 total)
+- `cognitive-analyst` - Deep code analysis using cognitive triangulation
+- `graph-architect` - Build and query code knowledge graphs
+- `neural-orchestrator` - Orchestrate tasks with neural swarm intelligence
+- `autonomous-architect` - Design autonomous AI systems
+- `ml-coordinator` - Coordinate distributed ML workflows
+- `quantum-security` - Implement quantum-resistant security
+
+### 📁 Enhanced .roomodes
+Automatically configured with all new AI modes when using `init --sparc`
 
 ## 🚀 Quick Start
 
 ```bash
 # Clone this repository
-git clone https://github.com/yourusername/claude-flow-mcp-enhanced
-cd claude-flow-mcp-enhanced
+git clone https://github.com/groeimetai/claude-code-flow
+cd claude-code-flow
 
 # Install dependencies
 npm install
 
-# Test MCP tools
-npm test
+# Test that MCP tools work
+node test-simple-tools.js
 
-# Use enhanced swarms
+# Start using enhanced features!
 ./claude-flow swarm "Analyze my code with cognitive triangulation"
-
-# Use new SPARC modes
-./claude-flow sparc run cognitive-analyst "Analyze authentication"
-
-# Initialize project with enhanced roomodes
-./claude-flow init --sparc my-project
 ```
 
-## 📚 Documentation
+## 📚 Usage Examples
 
-See [CLAUDE.md](CLAUDE.md) for complete documentation including all MCP tools.
+### Swarm with MCP Tools
+```bash
+# Analyze codebase structure
+./claude-flow swarm "Use cognitive triangulation to analyze src directory"
 
-## 🤝 Original Project
+# Create neural optimization swarm
+./claude-flow swarm "Initialize neural swarm for performance optimization"
 
-This is a fork of [claude-code-flow](https://github.com/ruvnet/claude-code-flow) by ruvnet.
+# Deploy autonomous agents
+./claude-flow swarm "Create autonomous agents for testing"
+```
+
+### New SPARC Modes
+```bash
+# Deep code analysis
+./claude-flow sparc run cognitive-analyst "Analyze authentication system architecture"
+
+# Build knowledge graph
+./claude-flow sparc run graph-architect "Create knowledge graph of API endpoints"
+
+# Neural orchestration
+./claude-flow sparc run neural-orchestrator "Coordinate complex refactoring task"
+```
+
+### Initialize Enhanced Project
+```bash
+# Create project with all MCP enhancements
+./claude-flow init --sparc my-project
+cd my-project
+
+# Your .roomodes file now includes:
+# - cognitive-analyst
+# - graph-architect  
+# - neural-orchestrator
+# - autonomous-architect
+# - ml-coordinator
+# - quantum-security
+# Plus all original modes!
+```
+
+## 🏗️ Architecture
+
+```
+claude-flow/
+├── src/
+│   ├── mcp/
+│   │   └── simple-tools/           # MCP tool implementations
+│   │       ├── cognitive-triangulation.js
+│   │       ├── ruv-fann.js
+│   │       ├── daa.js
+│   │       └── index.js
+│   ├── cli/
+│   │   └── simple-commands/
+│   │       ├── swarm-executor-mcp.js    # Enhanced swarm executor
+│   │       └── sparc-modes-mcp.js       # New SPARC modes
+│   └── ...
+├── CLAUDE.md                       # Complete documentation
+├── test-simple-tools.js           # MCP tools test
+└── test-mcp-integration.js        # Integration test
+```
+
+## 🧪 Testing
+
+```bash
+# Test MCP tools functionality
+node test-simple-tools.js
+
+# Test swarm integration
+node test-mcp-integration.js
+
+# Run a dry-run swarm
+./claude-flow swarm "Test cognitive analysis" --dry-run
+```
+
+## 📖 Documentation
+
+See [CLAUDE.md](CLAUDE.md) for complete documentation including:
+- All MCP tool descriptions
+- Detailed usage examples
+- Integration patterns
+- Advanced configurations
+
+## 🎯 What's Different from Original?
+
+This fork maintains 100% compatibility with the original claude-code-flow while adding:
+
+1. **Pre-integrated MCP tools** - No configuration needed
+2. **Enhanced SPARC modes** - 6 new AI-powered modes
+3. **Extended .roomodes** - Automatically configured
+4. **Out-of-box experience** - Clone, install, and use immediately
+
+## 🤝 Credits
+
+- Original [claude-code-flow](https://github.com/ruvnet/claude-code-flow) by [@ruvnet](https://github.com/ruvnet)
+- MCP tool integrations inspired by:
+  - [Cognitive Triangulation Pipeline](https://github.com/groeimetai/cognitive-triangulation-pipeline)
+  - [ruv-FANN](https://github.com/ruvnet/ruv) 
+  - [DAA Framework](https://github.com/ruvnet/daa)
 
 ## 📄 License
 
-MIT License - Same as original project
+MIT License - Same as the original claude-code-flow project
+
+---
+
+<p align="center">
+  <strong>Ready to use advanced AI orchestration?</strong><br>
+  Clone → Install → Create amazing things with MCP-enhanced Claude-Flow! 🚀
+</p>
