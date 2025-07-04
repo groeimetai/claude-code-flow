@@ -10,6 +10,8 @@
 
 import { generateId } from "../../utils/helpers.js";
 import { RealMetaOrchestrator } from "../../swarm/real-meta-orchestrator.js";
+import { Logger } from "../../core/logger.js";
+import { EventEmitter } from "node:events";
 import { GoalValidationSystem } from "../../swarm/goal-validator.js";
 import { ProgressCalculator } from "../../swarm/progress-calculator.js";
 import { AdaptiveGoalPlanner } from "../../swarm/adaptive-planner.js";
@@ -47,10 +49,14 @@ export async function achieveCommand(subArgs, flags) {
   console.log('\n🔧 Initializing components...');
   
   // 1. Real Meta-Orchestrator
-  const orchestrator = new RealMetaOrchestrator({
+  const logger = new Logger({ level: flags.verbose ? 'debug' : 'info' });
+  const eventBus = new EventEmitter();
+  const orchestrator = new RealMetaOrchestrator(logger, eventBus, {
     achievementId,
-    baseDir: achieveDir,
-    verbose: flags.verbose || flags.v
+    persistencePath: achieveDir,
+    verbose: flags.verbose || flags.v,
+    maxIterations,
+    swarmsPerIteration
   });
   
   // 2. Goal Validation System
@@ -91,7 +97,7 @@ export async function achieveCommand(subArgs, flags) {
   
   // Start all services
   await Promise.all([
-    orchestrator.initialize(),
+    orchestrator.initializePersistence(),
     batchCoordinator.start(),
     batchExecutor.start(),
     messageBus.start(),
