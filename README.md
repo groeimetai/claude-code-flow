@@ -50,9 +50,20 @@ node test-simple-tools.js
 ./claude-flow swarm "Analyze my code with cognitive triangulation"
 ```
 
+### 💰 Costs Overview
+
+**Free components:**
+- ✅ Neo4j Community Edition (runs locally)
+- ✅ Redis (runs locally)
+- ✅ All claude-flow features
+- ✅ Basic code analysis (regex-based)
+
+**Paid component (optional):**
+- 💵 LLM API for intelligent analysis (~$0.14 per million tokens with DeepSeek)
+
 ### 🔑 API Keys Setup (Optional)
 
-For full Cognitive Triangulation with LLM-powered analysis:
+Only needed for LLM-powered intelligent code analysis:
 
 ```bash
 # Option 1: DeepSeek (Recommended - cheapest)
