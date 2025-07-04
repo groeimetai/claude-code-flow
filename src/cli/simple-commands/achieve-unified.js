@@ -98,11 +98,11 @@ export async function achieveCommand(subArgs, flags) {
   // Start all services
   await Promise.all([
     orchestrator.initializePersistence(),
-    batchCoordinator.start(),
-    batchExecutor.start(),
-    messageBus.start(),
+    batchCoordinator.initialize(),      // Changed from start() to initialize()
+    batchExecutor.initialize(),         // Changed from start() to initialize()
+    // messageBus doesn't need initialization - it starts automatically
     knowledgeBase.initialize(),
-    coordination.start(),
+    coordination.initialize(),          // Changed from start() to initialize()
     monitor?.start()
   ]);
   
@@ -244,12 +244,16 @@ export async function achieveCommand(subArgs, flags) {
     for (const result of swarmResults) {
       if (result.learnings && result.learnings.length > 0) {
         for (const learning of result.learnings) {
-          await knowledgeBase.addEntry({
-            type: 'learning',
+          await knowledgeBase.addKnowledge({  // Changed from addEntry to addKnowledge
+            type: 'discovery',  // Changed to match KnowledgeTypes
+            title: 'Learning from swarm',
             content: learning,
-            source: result.swarmId,
-            iteration,
-            confidence: 0.8
+            swarmId: result.swarmId,
+            confidence: 'high',  // Changed to match ConfidenceLevels
+            metadata: {
+              iteration,
+              source: result.swarmId
+            }
           });
         }
       }
@@ -272,12 +276,12 @@ export async function achieveCommand(subArgs, flags) {
     }
     
     // Show batch statistics
-    const batchStats = batchCoordinator.getStatistics();
+    const batchStats = batchCoordinator.getStats();  // Changed from getStatistics to getStats
     if (batchStats.totalBatches > 0) {
       console.log('\n📊 Batch Efficiency:');
-      console.log(`  Operations Saved: ${batchStats.operationsSaved}`);
+      console.log(`  Operations Saved: ${batchStats.timesSaved}`);  // Changed from operationsSaved to timesSaved
       console.log(`  Batches Processed: ${batchStats.totalBatches}`);
-      console.log(`  Avg Batch Size: ${batchStats.averageBatchSize.toFixed(1)}`);
+      console.log(`  Efficiency: ${batchStats.efficiency}`);  // Changed from averageBatchSize to efficiency
     }
     
     // Check for bottlenecks
@@ -319,7 +323,7 @@ export async function achieveCommand(subArgs, flags) {
   console.log(`  - Test Coverage: ${finalProgress.testMetrics.coverage}%`);
   console.log(`  - Iterations Used: ${orchestrator.iterations.length}`);
   console.log(`  - Total Swarms Spawned: ${finalState.totalSwarms}`);
-  console.log(`  - Knowledge Entries: ${await knowledgeBase.getEntryCount()}`);
+  console.log(`  - Knowledge Entries: ${knowledgeBase.knowledge.size}`)  // Changed to use knowledge.size property;
   console.log(`  - Results saved to: ${achieveDir}`);
   
   // Generate final report
@@ -328,10 +332,10 @@ export async function achieveCommand(subArgs, flags) {
   
   // Cleanup
   await Promise.all([
-    batchCoordinator.stop(),
-    batchExecutor.stop(),
-    messageBus.stop(),
-    coordination.stop(),
+    batchCoordinator.shutdown(),      // Changed from stop() to shutdown()
+    batchExecutor.shutdown(),         // Changed from stop() to shutdown()
+    messageBus.shutdown(),            // Changed from stop() to shutdown()
+    // coordination doesn't have a shutdown method
     monitor?.stop()
   ]);
   
@@ -346,12 +350,18 @@ async function createBatchedSwarmTasks(patterns, achieveDir, iteration, services
   
   for (const { objective, pattern } of patterns) {
     // Register task with coordination protocol
-    const taskId = await services.coordination.registerTask({
+    const task = await services.coordination.createTask({  // Changed from registerTask to createTask
+      title: objective.description,
       description: objective.description,
+      type: objective.type || 'general',
       priority: objective.priority,
       dependencies: objective.dependencies || [],
-      estimatedTime: objective.estimatedTime
+      createdBy: 'achieve-unified',
+      metadata: {
+        estimatedTime: objective.estimatedTime
+      }
     });
+    const taskId = task.id;  // Extract ID from returned task object
     
     // Create batch operations for pattern stages
     const batchOps = [];
@@ -370,7 +380,10 @@ async function createBatchedSwarmTasks(patterns, achieveDir, iteration, services
     
     // Queue batch operations
     if (batchOps.length > 0) {
-      await services.batchCoordinator.queueOperations(batchOps);
+      // Queue operations individually since there's no queueOperations method
+      for (const op of batchOps) {
+        await services.batchCoordinator.queueOperation(op);
+      }
     }
     
     tasks.push({
