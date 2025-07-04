@@ -46,3 +46,7 @@ test-init
 test-full-init
 
 swarm-runs
+
+# MCP test files
+test-simple-tools.js
+test-mcp-integration.js

@@ -1,3 +1,20 @@
+#!/bin/bash
+
+echo "🚀 Preparing for GitHub Push"
+echo "==========================="
+echo ""
+
+# Clean up temporary files
+echo "🧹 Cleaning up temporary files..."
+rm -f extract-mcp-tools.sh
+rm -f cleanup-to-minimal-fork.sh
+rm -f create-standalone-mcp-server.sh
+rm -rf temp-analysis/
+rm -rf mcp-tools-backup-*/
+
+# Update main README
+echo "📝 Updating README..."
+cat > README.md << 'EOF'
 # Claude-Flow MCP Enhanced 🚀
 
 Enhanced fork of [claude-code-flow](https://github.com/ruvnet/claude-code-flow) with integrated MCP (Model Context Protocol) tools.
@@ -54,3 +71,33 @@ This is a fork of [claude-code-flow](https://github.com/ruvnet/claude-code-flow)
 ## 📄 License
 
 MIT License - Same as original project
+EOF
+
+# Create .gitignore if needed
+if ! grep -q "test-simple-tools.js" .gitignore 2>/dev/null; then
+    echo "" >> .gitignore
+    echo "# MCP test files" >> .gitignore
+    echo "test-simple-tools.js" >> .gitignore
+    echo "test-mcp-integration.js" >> .gitignore
+fi
+
+# Final check
+echo ""
+echo "✅ Ready for GitHub!"
+echo ""
+echo "📋 Clean files ready to push:"
+git status --short | grep -E "^\\?\\?" | grep -v "temp-" | grep -v "backup"
+echo ""
+echo "🚀 To push to GitHub:"
+echo "1. git add ."
+echo "2. git commit -m \"Add MCP tools integration: Cognitive Triangulation, ruv-FANN, and DAA\""
+echo "3. git remote add origin https://github.com/yourusername/claude-flow-mcp-enhanced"
+echo "4. git push -u origin main"
+echo ""
+echo "📦 Users can then:"
+echo "   git clone <your-repo>"
+echo "   cd claude-flow-mcp-enhanced"
+echo "   npm install"
+echo "   ./claude-flow swarm \"Test with MCP tools\""
+echo ""
+echo "It's that simple! True Out-Of-Box experience! 🎉"

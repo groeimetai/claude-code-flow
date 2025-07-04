@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Claude-Flow with MCP tools integrated
+# This launcher ensures MCP tools are available
+
+# Get the directory of this script
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Export flag to use MCP-enhanced executor
+export USE_MCP_EXECUTOR=true
+
+# Forward to main claude-flow with all arguments
+exec "$SCRIPT_DIR/claude-flow" "$@"
