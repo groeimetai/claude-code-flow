@@ -8,11 +8,11 @@
  * - Goal validation and real progress tracking
  */
 
-// Import the unified implementation
-import achieveUnified from './achieve-unified.js';
+// Import the real unified implementation that properly uses RealMetaOrchestrator
+import achieveRealUnified from './achieve-real-unified.js';
 
-// Use the unified implementation
-export const achieveCommand = achieveUnified.action;
+// Use the real unified implementation
+export const achieveCommand = achieveRealUnified.action;
 
 // Also export as default for compatibility
-export default achieveUnified;
+export default achieveRealUnified;
