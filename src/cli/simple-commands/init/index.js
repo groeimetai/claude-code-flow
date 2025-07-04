@@ -30,6 +30,7 @@ import {
   createSwarmStrategyTemplates 
 } from './templates/sparc-modes.js';
 import { createSettings } from './templates/settings-config.js';
+import { createEnvTemplate, createEnvExampleTemplate } from './templates/env-template.js';
 import { showInitHelp } from './help.js';
 import { 
   batchInitCommand, 
@@ -298,6 +299,26 @@ export async function initCommand(subArgs, flags) {
       console.log('  ✓ Created memory/claude-flow-data.json (persistence database)');
     } else {
       console.log('  [DRY RUN] Would create memory/claude-flow-data.json (persistence database)');
+    }
+    
+    // Create .env.example file
+    if (!initDryRun) {
+      const envExample = createEnvExampleTemplate();
+      await Deno.writeTextFile('.env.example', envExample);
+      console.log('  ✓ Created .env.example (environment configuration template)');
+      
+      // Check if .env exists, if not create from template
+      try {
+        await Deno.stat('.env');
+        console.log('  ℹ️  .env already exists (skipping)');
+      } catch {
+        const envContent = createEnvTemplate(initSparc ? 'sparc' : 'default');
+        await Deno.writeTextFile('.env', envContent);
+        console.log('  ✓ Created .env (environment configuration)');
+      }
+    } else {
+      console.log('  [DRY RUN] Would create .env.example');
+      console.log('  [DRY RUN] Would create .env (if not exists)');
     }
     
     // Create local claude-flow executable wrapper
