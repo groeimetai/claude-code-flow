@@ -1,0 +1,20 @@
+{
+  "name": "swarm-app",
+  "version": "1.0.0",
+  "description": "Application created by Claude Flow Swarm: Creeer een systeem dat short videos van interessante punten genereert en upload naar tiktok",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "swarm",
+    "claude-flow"
+  ],
+  "author": "Claude Flow Swarm",
+  "license": "MIT",
+  "swarmMetadata": {
+    "swarmId": "swarm_k33t8hqj3_bb4osg5cv",
+    "objective": "Creeer een systeem dat short videos van interessante punten genereert en upload naar tiktok",
+    "created": "2025-07-04T13:16:47.274Z"
+  }
+}

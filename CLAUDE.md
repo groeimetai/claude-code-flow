@@ -38,9 +38,9 @@
 - `./claude-flow sparc "<task>"`: Run orchestrator mode (default)
 - `./claude-flow sparc run <mode> "<task>"`: Run specific SPARC mode
 - `./claude-flow sparc tdd "<feature>"`: Test-driven development mode
-- `./claude-flow sparc modes`: List all 17 available SPARC modes
+- `./claude-flow sparc modes`: List all 27 available SPARC modes
 
-Available SPARC modes: orchestrator, coder, researcher, tdd, architect, reviewer, debugger, tester, analyzer, optimizer, documenter, designer, innovator, swarm-coordinator, memory-manager, batch-executor, workflow-manager
+Available SPARC modes: orchestrator, coder, researcher, tdd, architect, reviewer, debugger, tester, analyzer, optimizer, documenter, designer, innovator, swarm-coordinator, memory-manager, batch-executor, workflow-manager, cognitive-analyst, graph-architect, neural-orchestrator, autonomous-architect, ml-coordinator, quantum-security, self-aware-orchestrator, spec-pseudocode, integration, debug
 
 ### Swarm Coordination
 - `./claude-flow swarm "<objective>" [options]`: Multi-agent swarm coordination

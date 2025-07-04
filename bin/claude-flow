@@ -47,17 +47,17 @@ if [ "$COMMAND" = "achieve" ] || [ "$COMMAND" = "sparc" ] || [ "$COMMAND" = "swa
   fi
 fi
 
-# Try Deno first for other commands
-if [ -n "$DENO_PATH" ] && [ -f "$ROOT_DIR/src/cli/main-deno.ts" ]; then
-  # Use Deno for full functionality including achieve command
-  exec "$DENO_PATH" run --allow-all "$ROOT_DIR/src/cli/main-deno.ts" "$@"
+# Skip Deno for init command - it needs Node.js
+if [ "$COMMAND" != "init" ]; then
+  # Try Deno first for other commands
+  if [ -n "$DENO_PATH" ] && [ -f "$ROOT_DIR/src/cli/main-deno.ts" ]; then
+    # Use Deno for full functionality including achieve command
+    exec "$DENO_PATH" run --allow-all "$ROOT_DIR/src/cli/main-deno.ts" "$@"
+  fi
 fi
 
 # Fall back to Node.js version
-if [ -f "$ROOT_DIR/cli.js" ]; then
-  # Use cli.js wrapper that handles achieve command
-  exec node "$ROOT_DIR/cli.js" "$@"
-elif command -v tsx >/dev/null 2>&1 && [ -f "$ROOT_DIR/src/cli/simple-cli.ts" ]; then
+if command -v tsx >/dev/null 2>&1 && [ -f "$ROOT_DIR/src/cli/simple-cli.ts" ]; then
   # Use tsx for Node.js functionality
   exec tsx "$ROOT_DIR/src/cli/simple-cli.ts" "$@"
 elif [ -f "$ROOT_DIR/src/cli/simple-cli.ts" ]; then
